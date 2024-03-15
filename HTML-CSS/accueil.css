@@ -1,0 +1,26 @@
+/** mise en forme header **/
+header {
+  background-color: blue;
+  display: flex;
+  justify-content: space-between;
+}
+
+header ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 1em;
+  align-items: center;
+  margin-right: 50px;
+}
+
+header img {
+  width: 150px;
+  height: 100px;
+  aspect-ratio: 4/3;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
