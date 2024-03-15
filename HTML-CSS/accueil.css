@@ -24,3 +24,13 @@ header a {
   color: white;
   text-decoration: none;
 }
+
+
+/*Mise en forme section Jeux*/
+
+#jeux h2 {
+  text-align: center;
+  margin-top: 50px;
+  background-color: blue;
+  color: white;
+}
