@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>Slowrun - Accueil</title>
     <link rel="stylesheet" href="accueil.css">
+    <link rel="stylesheet"
+        href="https://fonts.google.com/share?selection.family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900">
 </head>
 
 <body>
@@ -20,34 +22,35 @@
         </ul>
     </header>
 
+    <h2>Jeux les plus populaires</h2>
+
     <section id="jeux">
-        <h2>Jeux les plus populaires</h2>
-        <div id="Trackmania">
-            <img src="Images/Trackmania.png" alt="Trackmania">
+        <div id="Trackmania" class="left">
+            <a href="#Jeu"><img src="Images/Trackmania.png" alt="Trackmania"></a>
             <ul class="infos">
                 <li>Trackmania</li>
                 <li>420 actifs</li>
                 <li>Depuis 2020</li>
             </ul>
         </div>
-        <div id="Tetris">
-            <img src="Images/Tetris.png" alt="Tetris">
+        <div id="Tetris" class="right">
+            <a href="#Jeu"><img src="Images/Tetris.png" alt="Tetris"></a>
             <ul class="infos">
                 <li>Tetris</li>
                 <li>690 actifs</li>
                 <li>Depuis 1989</li>
             </ul>
         </div>
-        <div id="Minecraft">
-            <img src="Images/Minecraft.png" alt="Minecraft">
+        <div id="Minecraft" class="left">
+            <a href="#Jeu"><img src="Images/Minecraft.png" alt="Minecraft"></a>
             <ul class="infos">
                 <li>Minecraft</li>
                 <li>850 actifs</li>
                 <li>Depuis 2020</li>
             </ul>
         </div>
-        <div id="Call Of Duty">
-            <img src="Images/COD.png" alt="Call Of Duty">
+        <div id="Call Of Duty" class="right">
+            <a href="#Jeu"><img src="Images/COD.png" alt="Call Of Duty"></a>
             <ul class="infos">
                 <li>Call of Duty</li>
                 <li>350 actifs</li>
@@ -56,52 +59,58 @@
         </div>
     </section>
 
-    <section id="Record">
-        <h2>Derniers records</h2>
-        <div id="jeu numéro 1">
-            <img src="Images/Tetris.png" alt="Tetris">
-            <h3>NES Tetris</h3>
-            <ul>
-                <li>BoomTetrisForJeff</li>
-                <li>Maxout</li>
-                <li>Time :2h45m56s</li>
-                <li>Rank :2nd</li>
-            </ul>
-        </div>
-        <div id="jeu numéro 2">
-            <img src="Images/Trackmania.png" alt="Trackmania">
-            <h3>Trackmania</h3>
-            <ul>
-                <li>WirTol</li>
-                <li>Summer 2024 all Authors</li>
-                <li>Time :2h06m09s</li>
-                <li>Rank :2nd</li>
-            </ul>
+    <h2>Derniers records</h2>
 
+    <section id="Record">
+        <div class="jeu">
+            <a href="#Jeu"><img src="Images/Tetris.png" alt="Tetris"></a>
+            <div class="infos">
+                <h3>NES Tetris</h3>
+                <ul class="desc">
+                    <li>BoomTetrisForJeff</li>
+                    <li>Maxout</li>
+                    <li>Time :2h45m56s</li>
+                    <li>Rank :2nd</li>
+                </ul>
+            </div>
+        </div>
+        <div class="jeu">
+            <a href="#Jeu"><img src="Images/Trackmania.png" alt="Trackmania"></a>
+            <div class="infos">
+                <h3>Trackmania</h3>
+                <ul class="desc">
+                    <li>WirTol</li>
+                    <li>Summer 2024 all Authors</li>
+                    <li>Time :2h06m09s</li>
+                    <li>Rank :2nd</li>
+                </ul>
+            </div>
         </div>
     </section>
+
+    <h2>Dernières Actus</h2>
+
     <section id="Actus">
-        <h2>Dernières Actus</h2>
         <ul>
-            <li><a href="#article">
+            <li class="left"><a href="#article">
                     <h3>Lag strat on level 5</h3>
                 </a>
                 <p>Tetris (NES)</p>
                 <p>By BoomTetrisForJeff</p>
             </li>
-            <li><a href="#article">
+            <li class="right"><a href="#article">
                     <h3>Going for another category</h3>
                 </a>
                 <p>Call Of Duty</p>
                 <p>By BigFatSweatyGamer</p>
             </li>
-            <li><a href="#article">
+            <li class="left"><a href="#article">
                     <h3>New seed for slowrun</h3>
                 </a>
                 <p>Minecraft Java edition</p>
                 <p>By jeb_</p>
             </li>
-            <li><a href="#article">
+            <li class="right"><a href="#article">
                     <h3>rule suggestion</h3>
                 </a>
                 <p>Cuphead</p>
@@ -110,4 +119,5 @@
         </ul>
     </section>
 </body>
+
 </html>
