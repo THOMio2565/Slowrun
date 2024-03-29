@@ -24,3 +24,36 @@ header {
     color: white;
     text-decoration: none;
   }
+
+  /*Mise en forme section recherche*/
+  #recherche {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #recherche form input {
+    background-color: blue;
+  }
+
+  /*Mise en forme des jeux*/
+
+  #Jeux img {
+    width: 100%;
+    aspect-ratio: 4/6;
+    object-fit: cover;
+ 
+  }
+  
+  #Jeux a{
+    width: 22%;
+  }
+
+  #Jeux {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 150px
+  } 
+
+  
