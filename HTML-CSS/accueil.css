@@ -55,15 +55,15 @@ header a {
 
 #jeux div {
   display: flex;
-  margin: 50px 250px;
+  margin: 50px 50px;
 }
 
 #jeux .right {
-  margin-left: 100px;
+  display: flex;
 }
 
 #jeux .left {
-  margin-right: 100px;
+  display: flex;
 }
 
 #jeux ul {
@@ -125,7 +125,7 @@ header a {
 #Actus ul li {
   height: 259px;
   width: 350px;
-  margin: 50px 250px;
+  margin: 50px 50px;
   text-align: center;
   display: flex;
   flex-direction: column;

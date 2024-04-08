@@ -1,0 +1,139 @@
+/* Mise en forme générale*/
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+h2 {
+  width: 250px;
+  text-align: center;
+  margin: 0px 500px;
+  margin-top: 50px;
+  background-color: blue;
+  color: white;
+  padding: 50px 100px;
+}
+
+/** mise en forme header **/
+header {
+    background-color: blue;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  header ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    gap: 1em;
+    align-items: center;
+    margin-right: 50px;
+  }
+  
+  header img {
+    width: 150px;
+    height: 100px;
+    aspect-ratio: 4/3;
+  }
+  
+  header a {
+    color: white;
+    text-decoration: none;
+  }
+
+  /**mise en forme section news**/
+  
+  #news ul {
+    display: flex;
+    flex-flow: row, nowrap;
+    list-style: none;
+    justify-content: space-evenly;
+  }
+
+  #news ul li {
+    height: 259px;
+    width: 350px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: blue;
+    color: white;
+    border-radius: 50px;
+  }
+
+  #news a {
+    color: white;
+  }
+
+   /**mise en forme section infos**/
+   
+   #Infos {
+    padding: 50px, 50px;
+    margin-top: 25px;
+    margin-left: 250px;
+    margin-right: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: blue;
+   }
+
+   #Infos #Noms h2 {
+    padding: 0;
+   }
+  #Infos #Noms {
+    display: flex;
+    flex-direction: column;
+  }
+ 
+  #Infos ul{
+    color: white;
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    padding-right: 250px;
+    padding-left: 250px;
+   }
+  
+   #Infos ul li {
+    display: flex;
+    justify-content: space-evenly;
+    
+   }
+
+   #Infos h2 {
+    display: flex;
+   }
+
+   /**mise en forme section catégorie**/
+   #Category {
+    margin-top: 25px;
+    background-color: blue;
+    color: white;
+    display: flex;
+   }
+   
+   #Category ul {
+    list-style: none;
+    display: flex;
+   }
+
+   #Category ul li {
+    display: flex;
+    justify-content: space-evenly;
+    padding-right: 75px;
+   }
+
+   /**Mise en forme du tableau des classements**/
+
+   #rank table {
+    margin-top: 50px;
+    width: 1000px;
+    border-collapse: collapse;
+}
+
+  #rank td, th {
+    border: 1px solid black;
+    padding: 20px;
+}
