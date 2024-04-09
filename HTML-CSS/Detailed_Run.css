@@ -4,6 +4,10 @@ html {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+a {
+  color: white;
+}
+
 /** mise en forme header **/
 header {
     background-color: blue;

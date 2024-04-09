@@ -30,3 +30,67 @@ header {
     color: white;
     text-decoration: none;
   }
+
+  /** mise en forme userinfos **/
+
+ #user {
+  background-color: blue;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 150px;
+  margin-top: 50px;
+  margin-bottom: 75px;
+ }
+ #username {
+  margin-left: 150px;
+ }
+ 
+ #userinfos {
+  margin-right: 150px;
+ }
+
+  /** mise en forme tabs **/
+
+  #tabs {
+  display: flex;
+  justify-content: space-evenly ;
+  }
+
+  #tabs .title {
+    background-color: blue;
+    color: white;
+    padding: 30px
+  }
+
+  /** mise en forme content **/
+
+  #content .slow {
+    display: flex;
+    margin: 50px;
+    margin-right: 0;
+  }
+
+  #content .slow .run {
+    height: 175px;
+    width: 500px;
+    background-color: blue;
+    color: white;
+    margin-left: 50px;
+    margin-top: 125px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #content .slow .run ul {
+    list-style: none;
+    padding-right: 20px;
+  }
+
+  #content .slow .run ul li {
+    display: flex;
+    justify-content: space-evenly;
+  }
