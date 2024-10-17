@@ -25,38 +25,16 @@
     <h2>Jeux les plus populaires</h2>
 
     <section id="jeux">
-        <div id="Trackmania" class="left">
-            <a href="#Jeu"><img src="../static/Images/Trackmania.png" alt="Trackmania"></a>
-            <ul class="infos">
-                <li>Trackmania</li>
-                <li>420 actifs</li>
-                <li>Depuis 2020</li>
+        {%for game in games%}
+        <div>
+            <a href=""></a>
+            <ul>
+                <li>{{game.name}}</li>
+                <li>{{game.count}}</li>
+                <li>{{game.date}}</li>
             </ul>
         </div>
-        <div id="Tetris" class="right">
-            <a href="rank_tetris.html"><img src="../static/Images/Tetris.png" alt="Tetris"></a>
-            <ul class="infos">
-                <li>Tetris</li>
-                <li>690 actifs</li>
-                <li>Depuis 1989</li>
-            </ul>
-        </div>
-        <div id="Minecraft" class="left">
-            <a href="#Jeu"><img src="../static/Images/Minecraft.png" alt="Minecraft"></a>
-            <ul class="infos">
-                <li>Minecraft</li>
-                <li>850 actifs</li>
-                <li>Depuis 2020</li>
-            </ul>
-        </div>
-        <div id="Call Of Duty" class="right">
-            <a href="#Jeu"><img src="../static/Images/COD.png" alt="Call Of Duty"></a>
-            <ul class="infos">
-                <li>Call of Duty</li>
-                <li>350 actifs</li>
-                <li>Depuis 2015</li>
-            </ul>
-        </div>
+        {%endfor%}
     </section>
 
     <h2>Derniers records</h2>
