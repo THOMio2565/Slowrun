@@ -1,0 +1,149 @@
+/* Mise en forme générale*/
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+h2 {
+  text-align: center;
+  margin: 0px 500px;
+  margin-top: 50px;
+  background-color: blue;
+  color: white;
+  padding: 50px 100px;
+}
+
+img {
+  height: 259px;
+  width: 194px;
+}
+
+/** Mise en forme header **/
+header {
+  background-color: blue;
+  display: flex;
+  justify-content: space-between;
+}
+
+header ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 1em;
+  align-items: center;
+  margin-right: 50px;
+}
+
+header img {
+  width: 150px;
+  height: 100px;
+  aspect-ratio: 4/3;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+/*Mise en forme section Jeux*/
+
+#jeux {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#jeux div {
+  display: flex;
+  margin: 50px 50px;
+}
+
+#jeux .right {
+  display: flex;
+  margin-right: 200px;
+}
+
+#jeux .left {
+  display: flex;
+}
+
+#jeux ul {
+  height: 259px;
+  width: 194px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: blue;
+  color: white;
+  margin-left: 100px;
+  margin-top: 0px;
+  text-align: center;
+  padding-left: 0;
+}
+
+/*Mise en forme section Record*/
+
+#Record {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+#Record .jeu {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 50px 100px;
+}
+
+#Record .desc {
+  height: 172px;
+  width: 250px;
+  list-style: none;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+#Record .infos {
+  display: flex;
+  flex-direction: column;
+  margin-left: 75px;
+  text-align: center;
+  background-color: blue;
+  color: white;
+}
+
+/*Mise en forme section Actus*/
+
+#Actus ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  justify-content: space-between;
+}
+
+#Actus ul li {
+  height: 259px;
+  width: 350px;
+  margin: 50px 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: blue;
+  color: white;
+  border-radius: 50px;
+}
+
+#Actus ul .left {
+  margin-right: 250px;
+}
+
+#Actus ul .right {
+  margin-left: 250px;
+}
+
+#Actus a {
+  color: white;
+}
