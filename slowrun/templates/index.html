@@ -40,30 +40,17 @@
     <h2>Derniers records</h2>
 
     <section id="Record">
+        {%for run in runs%}
         <div class="jeu">
-            <a href="Detailed_Run.html"><img src="../static/Images/Tetris.png" alt="Tetris"></a>
-            <div class="infos">
-                <h3>NES Tetris</h3>
-                <ul class="desc">
-                    <li>BoomTetrisForJeff</li>
-                    <li>Maxout</li>
-                    <li>Time :2h45m56s</li>
-                    <li>Rank :2nd</li>
-                </ul>
-            </div>
+            <a href=""></a>
+            <ul>
+                <li>{{slowrun.game_id}}</li>
+                <li>{{slowrun.user_id}}</li>
+                <li>{{slowrun.date}}</li>
+                <li>{{slowrun.time}}</li>
+            </ul>
         </div>
-        <div class="jeu">
-            <a href="#Jeu"><img src="../static/Images/Trackmania.png" alt="Trackmania"></a>
-            <div class="infos">
-                <h3>Trackmania</h3>
-                <ul class="desc">
-                    <li>WirTol</li>
-                    <li>Summer 2024 all Authors</li>
-                    <li>Time :2h06m09s</li>
-                    <li>Rank :2nd</li>
-                </ul>
-            </div>
-        </div>
+        {%endfor%}
     </section>
 
     <h2>Dernières Actus</h2>

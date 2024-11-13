@@ -24,9 +24,17 @@ def index_render():
             SELECT *
             FROM game
         ''').fetchall()
-    return fl.render_template('index.html', games=games)
+    runs = cursor.execute('''
+            SELECT *
+            FROM slowrun
+            INNER JOIN register ON slowrun.game_id = register.game_id
+            INNER JOIN register ON slowrun.user_id = register.user_id
+            INNER JOIN game ON register.game_id = game.id
+            INNER JOIN user ON register.user_id = user.id
+            
+''')
+    return fl.render_template('index.html', games=games, runs=runs)
 
 @app.route("/rankings")
 def rankings_render():
     return fl.render_template('rank_tetris.html')
-

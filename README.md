@@ -2,7 +2,7 @@
 
 - Open cmd
 
-- Change directory to where you installed the repository : `cd [YOUR PATH HERE]
+- Change directory to where you installed the repository : `cd [YOUR PATH HERE]`
 
 - Create a venv by typing: `python -m venv .venv`
 
