@@ -10,4 +10,4 @@
 
 - Install the dependencies with `pip install -r requirements.txt`
 
-- Finally, to run the website, type `flask run`
+- Finally, to run the website, type `flask --app slowrun run`
