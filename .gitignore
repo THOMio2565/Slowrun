@@ -1,3 +1,4 @@
 .venv
 slowrun/__pycache__
 slowrun.db
+__pycache__

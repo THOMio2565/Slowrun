@@ -26,3 +26,10 @@ CREATE TABLE register (
     game_id INTEGER NOT NULL REFERENCES game (id),
     user_id INTEGER NOT NULL REFERENCES user (id)
 );
+
+CREATE TABLE news (
+    id INTEGER PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    game_id INTEGER NOT NULL REFERENCES game (id),
+    user_id INTEGER NOT NULL REFERENCES user (id)
+);
