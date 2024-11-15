@@ -25,8 +25,17 @@ def index_render():
             FROM game
         ''').fetchall()
     runs = cursor.execute('''
-            SELECT *
+            SELECT slowrun.time, game.name AS game, game.categories, user.name AS user
+
             FROM slowrun
+
+            JOIN register ON slowrun.register_id = register.id
+            JOIN game ON register.game_id = game.id
+            JOIN user ON register.user_id = user.id
+
+            ORDER BY slowrun.time DESC
+
+            LIMIT 2
         ''').fetchall()
     return fl.render_template('index.html', games=games, runs=runs)
 
