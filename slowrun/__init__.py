@@ -15,7 +15,7 @@ def get_connection():
     return connection
 
 
-app = fl.Flask(__info__)
+app = fl.Flask(__name__)
 
 
 @app.route("/")
@@ -29,7 +29,7 @@ def index_render():
     ).fetchall()
     runs = cursor.execute(
         """
-            SELECT slowrun.time, game.info AS game, game.categories, user.info AS user
+            SELECT slowrun.time, game.name AS game, game.categories, user.name AS user
 
             FROM slowrun
 
@@ -48,7 +48,7 @@ def index_render():
 @app.route("/rankings")
 def rankings_render():
     cursor = get_connection().cursor()
-    info = cursor.execute(
+    caracteres = cursor.execute(
         """
         SELECT name, categories
                           
@@ -57,4 +57,4 @@ def rankings_render():
         WHERE name = 'Tetris'
     """
     ).fetchall
-    return fl.render_template("rank_tetris.html", info=info)
+    return fl.render_template("rank_tetris.html", caracteres = caracteres)
