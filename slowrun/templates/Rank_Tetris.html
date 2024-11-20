@@ -26,18 +26,18 @@
     <section id="Infos">
         <img src="../static/Images/Tetris.png" alt="NES Tetris">
         <div id="Noms">
-            <h2>NES Tetris</h2>
+            <h2>{{info.name}}</h2>
             <ul id="tags">
                 <li>#NES</li>
                 <li>#Retro</li>
             </ul>
         </div>
     </section>
-    
+
     <section id="Category">
         <p>Catégories :</p>
         <ul>
-            <li>40L</li>
+            <li>{{info.categories}}</li>
             <li>Maxout</li>
             <li>Rollover</li>
             <li>Voir plus : <select name="Voir plus" id="Misc"></select></li>
@@ -46,7 +46,6 @@
 
     <section id="rank">
         <table>
-            <caption>Rollover</caption>
             <tr>
                 <th>Place</th>
                 <th>Utilisateur</th>

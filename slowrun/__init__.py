@@ -2,7 +2,7 @@ import flask as fl
 import sqlite3
 from pathlib import Path
 
-db = Path(__file__).parents[1] / 'slowrun.db'
+db = Path(__file__).parents[1] / "slowrun.db"
 
 
 def get_connection():
@@ -10,22 +10,26 @@ def get_connection():
     connection = sqlite3.connect(db, detect_types=sqlite3.PARSE_DECLTYPES)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
-    cursor.execute('PRAGMA foreign_keys')
+    cursor.execute("PRAGMA foreign_keys")
     cursor.close()
     return connection
 
-app = fl.Flask(__name__)
+
+app = fl.Flask(__info__)
 
 
 @app.route("/")
 def index_render():
     cursor = get_connection().cursor()
-    games = cursor.execute('''
+    games = cursor.execute(
+        """
             SELECT *
             FROM game
-        ''').fetchall()
-    runs = cursor.execute('''
-            SELECT slowrun.time, game.name AS game, game.categories, user.name AS user
+        """
+    ).fetchall()
+    runs = cursor.execute(
+        """
+            SELECT slowrun.time, game.info AS game, game.categories, user.info AS user
 
             FROM slowrun
 
@@ -36,9 +40,21 @@ def index_render():
             ORDER BY slowrun.time DESC
 
             LIMIT 2
-        ''').fetchall()
-    return fl.render_template('index.html', games=games, runs=runs)
+        """
+    ).fetchall()
+    return fl.render_template("index.html", games=games, runs=runs)
+
 
 @app.route("/rankings")
 def rankings_render():
-    return fl.render_template('rank_tetris.html')
+    cursor = get_connection().cursor()
+    info = cursor.execute(
+        """
+        SELECT name, categories
+                          
+        FROM game
+                          
+        WHERE name = 'Tetris'
+    """
+    ).fetchall
+    return fl.render_template("rank_tetris.html", info=info)
