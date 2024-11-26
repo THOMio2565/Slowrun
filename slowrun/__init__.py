@@ -48,13 +48,13 @@ def index_render():
 @app.route("/rankings")
 def rankings_render():
     cursor = get_connection().cursor()
-    caracteres = cursor.execute(
+    title = cursor.execute(
         """
-        SELECT name, categories
+        SELECT name
                           
         FROM game
                           
         WHERE name = 'Tetris'
     """
-    ).fetchall
-    return fl.render_template("rank_tetris.html", caracteres = caracteres)
+    ).fetchall()
+    return fl.render_template("Rank_Tetris.html", title=title)
