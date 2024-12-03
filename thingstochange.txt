@@ -1,0 +1,8 @@
+Accueil :
+
+Section jeux populaires => Image + Nom, actifs, date
+
+Section dernières run => Image jeu + user, date, rank, time
+
+Section actus => Titre actu, user, date création
+

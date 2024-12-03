@@ -1,0 +1,40 @@
+CREATE TABLE game(
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    count INTEGER,
+    date DATE NOT NULL
+);
+
+CREATE TABLE user (
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    date DATE NOT NULL
+);
+
+
+CREATE TABLE slowrun (
+    id INTEGER PRIMARY KEY NOT NULL,
+    time INTEGER NOT NULL,
+    date DATE NOT NULL,
+    register_id INTEGER NOT NULL REFERENCES register (id)
+);
+
+
+CREATE TABLE register (
+    id INTEGER PRIMARY KEY NOT NULL,
+    game_id INTEGER NOT NULL REFERENCES game (id),
+    user_id INTEGER NOT NULL REFERENCES user (id)
+);
+
+CREATE TABLE news (
+    id INTEGER PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    game_id INTEGER NOT NULL REFERENCES game (id),
+    user_id INTEGER NOT NULL REFERENCES user (id)
+);
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    game_id INTEGER NOT NULL REFERENCES game (id)
+);
