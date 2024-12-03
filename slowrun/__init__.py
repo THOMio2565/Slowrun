@@ -24,7 +24,12 @@ def index_render():
     games = cursor.execute(
         """
             SELECT *
+
             FROM game
+
+            ORDER BY count DESC
+            
+            LIMIT 4
         """
     ).fetchall()
     runs = cursor.execute(
@@ -42,7 +47,21 @@ def index_render():
             LIMIT 2
         """
     ).fetchall()
-    return fl.render_template("index.html", games=games, runs=runs)
+    articles = cursor.execute(
+        """
+            SELECT news.title, game.name AS game, user.name AS user
+
+            FROM news
+
+            JOIN game ON news.game_id = game.id
+            JOIN user ON news.user_id = user.id
+
+            ORDER BY news.id DESC
+
+            LIMIT 4
+        """
+    ).fetchall()
+    return fl.render_template("index.html", games=games, runs=runs, articles = articles)
 
 
 @app.route("/rankings/<id>")
@@ -50,7 +69,7 @@ def rankings_render(id):
     cursor = get_connection().cursor()
     game = cursor.execute(
         """
-        SELECT name
+        SELECT name, categories
                           
         FROM game
                           

@@ -28,4 +28,5 @@ INSERT INTO news (title, game_id, user_id)
 VALUES
 ("Lag strat on level 5", 1, 2),
 ("Going for another category mid-run", 5, 3),
-("New seed for a slowrun", 2, 1);
+("New seed for a slowrun", 2, 1),
+("Test-icule", 1, 1);
