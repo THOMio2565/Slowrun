@@ -14,7 +14,7 @@
     <header>
         <img src="../static/Images/Logo.png" alt="Logo Slowrun">
         <ul>
-            <li><a href="accueil.html">Home</a></li>
+            <li><a href="{{url_for('index_render')}}">Home</a></li>
             <li><a href="games_list.html">Jeux</a></li>
             <li><a href="#Actus">Actus</a></li>
             <li><a href="#Connexion">Connexion</a></li>
@@ -29,7 +29,7 @@
         <div>
             <a href=""></a>
             <ul>
-                <li>{{game.name}}</li>
+                <a href="{{url_for('rankings_render', id = game.id)}}"><li>{{game.name}}</li></a>
                 <li>{{game.count}}</li>
                 <li>{{game.date}}</li>
             </ul>
@@ -46,7 +46,6 @@
             <ul>
                 <li>{{run.game}}</li>
                 <li>{{run.user}}</li>
-                <li>{{run.categories}}</li>
                 <li>{{run.time}}</li>
             </ul>
         </div>

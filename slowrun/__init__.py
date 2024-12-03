@@ -34,7 +34,7 @@ def index_render():
     ).fetchall()
     runs = cursor.execute(
         """
-            SELECT slowrun.time, game.name AS game, game.categories, user.name AS user
+            SELECT slowrun.time, game.name AS game, user.name AS user
 
             FROM slowrun
 
@@ -69,11 +69,53 @@ def rankings_render(id):
     cursor = get_connection().cursor()
     game = cursor.execute(
         """
-        SELECT name, categories
+        SELECT name
                           
         FROM game
                           
         WHERE id = ?
     """, [id]
     ).fetchone()
-    return fl.render_template("Rank_Tetris.html", game=game)
+    runs = cursor.execute(
+        """
+            SELECT slowrun.time, slowrun.date, user.name AS user
+
+            FROM slowrun
+
+            JOIN register ON slowrun.register_id = register.id
+            JOIN user ON register.user_id = user.id
+            JOIN game ON register.game_id = game.id 
+
+            WHERE game.id = ?
+
+            ORDER BY slowrun.time DESC
+    """, [id]
+    ).fetchall()
+    articles = cursor.execute(
+        """
+            SELECT news.title, game.name AS game, user.name AS user
+
+            FROM news
+
+            JOIN game ON news.game_id = game.id
+            JOIN user ON news.user_id = user.id
+
+            WHERE game.id = ?
+
+            ORDER BY news.id DESC
+
+            LIMIT 4
+        """, [id]
+    ).fetchall()
+    categories = cursor.execute(
+        """
+            SELECT categories.name, game.id 
+            
+            FROM categories
+
+            JOIN game ON categories.game_id = game.id
+            
+            WHERE game.id = ? 
+        """, [id]
+    )
+    return fl.render_template("Rank_Tetris.html", game=game, runs=runs, articles=articles, categories=categories)

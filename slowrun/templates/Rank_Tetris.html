@@ -15,7 +15,7 @@
     <header>
         <img src="../static/Images/Logo.png" alt="Logo Slowrun">
         <ul>
-            <li><a href="accueil.html">Home</a></li>
+            <li><a href="{{url_for('index_render')}}">Home</a></li>
             <li><a href="games_list.html">Jeux</a></li>
             <li><a href="#Actus">Actus</a></li>
             <li><a href="#Connexion">Connexion</a></li>
@@ -37,9 +37,9 @@
     <section id="Category">
         <p>Catégories :</p>
         <ul>
-            <li>{{game.categories}}</li>
-            <li>Maxout</li>
-            <li>Rollover</li>
+            {%for categorie in categories%}
+            <li>{{categorie.name}}</li>
+            {%endfor%}
             <li>Voir plus : <select name="Voir plus" id="Misc"></select></li>
         </ul>
     </section>
@@ -53,51 +53,31 @@
                 <th>Région</th>
                 <th>Date</th>
             </tr>
+            {%for run in runs%}
             <tr>
                 <td>#1</td>
-                <td><a href="#Profile">Utilisateur 1</a></td>
-                <td><a href="#Run">5h20m</a></td>
+                <td><a href="#Profile">{{run.user}}</a></td>
+                <td><a href="#Run">{{run.time}}</a></td>
                 <td>PAL</td>
-                <td>il y a 30 ans</td>
+                <td>{{run.date}}</td>
             </tr>
-            <tr>
-                <td>#2</td>
-                <td><a href="User.html">BoomTetrisForJeff</a></td>
-                <td><a href="Detailed_Run.html">2h45m36s690ms</a></td>
-                <td>NTSC</td>
-                <td>Il y a 5 ans</td>
-            </tr>
-            <tr>
-                <td>#3</td>
-                <td><a href="#Profile">Utilisateur 3</a></td>
-                <td><a href="#Run">1h50m</a></td>
-                <td>SECAM</td>
-                <td>Hier</td>
-            </tr>
+            {%endfor%}
         </table>
     </section>
 
     <h2>Actus de la communauté du jeu</h2>
     <section id="news">
         <ul>
+            {%for article in articles%}
             <li><a href="#article">
-                    <h3>Lag strat on level 5</h3>
+                    <h3>{{article.title}}</h3>
                 </a>
-                <p>NES Tetris</p>
-                <p>By BoomTetrisForJeff</p>
+                <p>{{article.game}}</p>
+                <p>By {{article.user}}</p>
             </li>
-            <li><a href="#article">
-                    <h3>Crash avoiding techniques</h3>
-                </a>
-                <p>NES Tetris</p>
-                <p>By Cheez_E</p>
-            </li>
+            {%endfor%}
         </ul>
-    </section>
-
-    <section id="Video">
-        <h2>Vidéo en Vedette</h2>
-        <p>Work In Progress</p>
+        
     </section>
 </body>
 

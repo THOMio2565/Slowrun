@@ -1,10 +1,10 @@
-INSERT INTO game (name, count, date, categories)
+INSERT INTO game (name, count, date)
 VALUES
-("NES Tetris", 4, "1989-05-06", "Rebirth"),
-("Minecraft", 3, "2011-11-18", "Any%"),
-("Trackmania 2020", 2, "2020-07-01", "Summer 2024 All Authors"),
-("Brawl Stars", 1, "2018-12-12", "MAX Tier"),
-("Call Of Duty: Black Ops 6", 0, "2024-10-25", "Tutorial%");
+("NES Tetris", 4, "1989-05-06"),
+("Minecraft", 3, "2011-11-18"),
+("Trackmania 2020", 2, "2020-07-01"),
+("Brawl Stars", 1, "2018-12-12"),
+("Call Of Duty: Black Ops 6", 0, "2024-10-25");
 
 INSERT INTO user (name, date)
 VALUES
@@ -30,3 +30,12 @@ VALUES
 ("Going for another category mid-run", 5, 3),
 ("New seed for a slowrun", 2, 1),
 ("Test-icule", 1, 1);
+
+INSERT INTO categories (name, game_id)
+VALUES
+("Rebirth", 1),
+("Maxout", 1),
+("Rollover", 1),
+("Any%", 2),
+("All advancement", 2),
+("how did we get here", 2);
