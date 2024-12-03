@@ -1,4 +1,4 @@
-# How to properly install the website:
+# How to install the website:
 
 - Open cmd
 
