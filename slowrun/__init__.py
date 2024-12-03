@@ -45,16 +45,16 @@ def index_render():
     return fl.render_template("index.html", games=games, runs=runs)
 
 
-@app.route("/rankings")
-def rankings_render():
+@app.route("/rankings/<id>")
+def rankings_render(id):
     cursor = get_connection().cursor()
-    title = cursor.execute(
+    game = cursor.execute(
         """
         SELECT name
                           
         FROM game
                           
-        WHERE name = 'Tetris'
-    """
-    ).fetchall()
-    return fl.render_template("Rank_Tetris.html", title=title)
+        WHERE id = ?
+    """, [id]
+    ).fetchone()
+    return fl.render_template("Rank_Tetris.html", game=game)
