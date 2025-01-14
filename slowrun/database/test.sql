@@ -72,7 +72,7 @@ VALUES
 ("Lag strat on level 5", 1, 2),
 ("Going for another category mid-run", 5, 3),
 ("New seed for a slowrun", 2, 1),
-("Test-icule", 1, 1);
+("Test en carton", 1, 1);
 
 INSERT INTO categories (name, game_id)
 VALUES
