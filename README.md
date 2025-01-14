@@ -10,6 +10,6 @@
 
 - Install the dependencies with `pip install -r requirements.txt`
 
-- Create the database with `python createdb.py` (if you already have a file named `slowrun.db`, manually delete it first in order to refresh it)
+- Create or reset the database with `python createdb.py` 
 
 - Finally, to run the website, type `flask --app slowrun run`

@@ -2,7 +2,7 @@ import flask as fl
 import sqlite3
 from pathlib import Path
 
-db = Path(__file__).parents[1] / "slowrun.db"
+db = Path(__file__).parents[1] / "test.db"
 
 
 def get_connection():
