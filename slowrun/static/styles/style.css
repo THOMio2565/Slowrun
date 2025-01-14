@@ -1,307 +1,78 @@
-/** Mise en forme header **/
-header {
-  background-color: blue;
-  display: flex;
-  justify-content: space-between;
+body{
+  margin: 0;
+  font-family: sans-serif;
+  background-image: linear-gradient(to bottom right, #fb3e8e, #ffaa00);
+  color: white;
+}
+ul{
+  list-style: none;
 }
 
-header ul {
+header{
+  background-color: #0DA4BF;
   display: flex;
-  flex-direction: row;
-  list-style: none;
-  gap: 1em;
   align-items: center;
-  margin-right: 50px;
-}
-
-header img {
-  width: 150px;
-  height: 100px;
-  aspect-ratio: 4/3;
-}
-
-header a {
   color: white;
-  text-decoration: none;
+  font-size: 1.2em;
+  padding: 0 10em;
 }
 
-
-/**********Detailed_Run**********/
-
-  /** mise en forme section run **/
-
-  #run img {
-    margin-top: 25px;
-    margin-left: 300px;
-  }
-
-  #infos {
-    height: 150px;
-    background-color: blue;
-    color: white;
-    text-align: center;
-  }
-
-#infos ul {
+header ul{
+  display: flex;
   list-style: none;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-right: 250px;
-  padding-left: 250px;
+  gap: 2em;
 }
 
-#infos ul li {
-  padding-right: 250px;
-  margin-left: 150px;
+header img{
+  height: 4em;
 }
 
-/**Mise en forme du form**/
-
-form {
-  margin-top: 25px;
-  display: flex;
-  justify-content: space-around;
+header a{
+  color: inherit;
+  text-decoration: inherit;
 }
 
-form input{
-  background-color: blue;
-  width: 850px;
-  height: 42.66px;
-}
-
-#commentaire form button {
-
-  font-weight: bold;
-  color: white;
-  border-radius: 2rem;
-  cursor: pointer;
-  width: 95.02px;
-  height: 42.66px;
-  border: none;
-  background-color: blue;
+.background{
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5em;
 }
 
-button .span-mother {
+#runs{
+  background-color: #402957;
   display: flex;
-  overflow: hidden;
-}
-
-#commentaire .comm {
-  background-color: blue;
-  color: white;
-  width: 69%;
-}
-
-/**********games_list**********/
-/*Mise en forme section recherche*/
-#recherche {
-  display: flex;
-  justify-content: space-between;
-}
-
-#recherche #Liste {
-  margin-right: 700px;
-}
-
-#recherche form {
-  margin-top: 15px;
-}
-#recherche form input {
-  background-color: blue;
-}
-
-/*Mise en forme des jeux*/
-
-#Jeux img {
-  width: 100%;
-  aspect-ratio: 4/6;
-  object-fit: cover;
-}
-
-#Jeux a{
-  width: 22%;
-}
-
-#Jeux {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  row-gap: 150px
+  border-radius: 15px;
 } 
-
-
-/**********Rank_Tetris**********/
-
-/**mise en forme section news**/
-  
-#news ul {
-  display: flex;
-  flex-flow: row, nowrap;
-  list-style: none;
-  justify-content: space-evenly;
-}
-
-#news ul li {
-  height: 259px;
-  width: 350px;
-  text-align: center;
+#container{
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  background-color: blue;
-  color: white;
-  border-radius: 50px;
-}
-
-#news a {
-  color: white;
-}
-
- /**mise en forme section infos**/
- 
- #Infos {
-  padding: 50px, 50px;
-  margin-top: 25px;
-  margin-left: 250px;
-  margin-right: 250px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background-color: blue;
- }
-
- #Infos #Noms h2 {
-  padding: 0;
- }
-#Infos #Noms {
-  display: flex;
-  flex-direction: column;
-}
-
-#Infos ul{
-  color: white;
-  list-style: none;
-  display: flex;
-  justify-content: space-evenly;
-  padding-right: 250px;
-  padding-left: 250px;
- }
-
- #Infos ul li {
-  display: flex;
-  justify-content: space-evenly;
+  gap: 3em;
   
- }
-
- #Infos h2 {
-  display: flex;
- }
-
- /**mise en forme section catégorie**/
- #Category {
-  margin-top: 25px;
-  background-color: blue;
-  color: white;
-  display: flex;
- }
- 
- #Category ul {
-  list-style: none;
-  display: flex;
- }
-
- #Category ul li {
-  display: flex;
-  justify-content: space-evenly;
-  padding-right: 75px;
- }
-
- /**Mise en forme du tableau des classements**/
-
- #rank table {
-  margin-top: 50px;
-  width: 1000px;
-  border-collapse: collapse;
 }
 
-#rank td, th {
-  border: 1px solid black;
-  padding: 20px;
+#news{
+  background-color: #402957;
+  display: flex;
+  border-radius: 15px;
 }
 
-/**********User**********/
+#popular_games{
+  background-color: #402957;
+  display: flex;
+  border-radius: 15px;
+}
 
- /** mise en forme userinfos **/
-
- #user {
-  background-color: blue;
+footer{
+  background-color: #55dcf3;
+  display: flex;
+  align-items: center;
   color: white;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 150px;
-  margin-top: 50px;
-  margin-bottom: 75px;
- }
- #username {
-  margin-left: 150px;
- }
- 
- #userinfos {
-  margin-right: 150px;
- }
+  font-size: 1.2em;
+  padding: 0 10em;
+  gap: 3em;
+}
 
-  /** mise en forme tabs **/
-
-  #tabs {
-  display: flex;
-  justify-content: space-evenly ;
-  }
-
-  #tabs .title {
-    background-color: blue;
-    color: white;
-    padding: 30px
-  }
-
-  /** mise en forme content **/
-
-  #content .slow {
-    display: flex;
-    margin: 50px;
-    margin-right: 0;
-  }
-
-  #content .slow .run {
-    height: 175px;
-    width: 500px;
-    background-color: blue;
-    color: white;
-    margin-left: 50px;
-    margin-top: 100px;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #content .slow a img {
-    height: 275px;
-    width: 192px;
-  }
-
-
-  #content .slow .run ul {
-    list-style: none;
-    padding-right: 20px;
-  }
-
-  #content .slow .run ul li {
-    display: flex;
-    justify-content: space-evenly;
-  }
+footer img{
+  height: 6em;
+}
