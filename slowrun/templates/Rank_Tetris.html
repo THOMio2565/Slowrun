@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NES Tetris</title>
-    <link rel="stylesheet" href="{{url_for('static', filename = 'styles/Rank_Tetris.css')}}">
-    <link rel="stylesheet"
-        href="https://fonts.google.com/share?selection.family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900">
-</head>
-</head>
-
-<body>
-    <header>
-        <img src="../static/Images/Logo.png" alt="Logo Slowrun">
-        <ul>
-            <li><a href="{{url_for('index_render')}}">Home</a></li>
-            <li><a href="games_list.html">Jeux</a></li>
-            <li><a href="#Actus">Actus</a></li>
-            <li><a href="#Connexion">Connexion</a></li>
-            <li><a href="#Inscription">Inscription</a></li>
-        </ul>
-    </header>
-
+{% extends 'base.html' %}
+{% block content %}
     <section id="Infos">
         <img src="../static/Images/Tetris.png" alt="NES Tetris">
         <div id="Noms">
@@ -79,6 +56,4 @@
         </ul>
         
     </section>
-</body>
-
-</html>
+{% endblock content %}
