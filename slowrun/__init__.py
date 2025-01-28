@@ -119,3 +119,7 @@ def rankings_render(id):
         """, [id]
     )
     return fl.render_template("Rank_Tetris.html", game=game, runs=runs, articles=articles, categories=categories)
+
+@app.route("/login")
+def login_render():
+    return fl.render_template("Login.html")
