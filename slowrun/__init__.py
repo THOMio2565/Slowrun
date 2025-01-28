@@ -1,6 +1,7 @@
 import flask as fl
 import sqlite3
 from pathlib import Path
+from flask import request
 
 db = Path(__file__).parents[1] / "test.db"
 
@@ -120,6 +121,17 @@ def rankings_render(id):
     )
     return fl.render_template("Rank_Tetris.html", game=game, runs=runs, articles=articles, categories=categories)
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login_render():
-    return fl.render_template("Login.html")
+    error = None
+    cursor = get_connection().cursor()
+    if request.method == 'POST':
+        user = cursor.execute("""
+        SELECT * FROM user
+        WHERE name = ? AND  password = ?
+        """, [request.form['username'], request.form['password']]).fetchone()
+        if user:
+            print(user)
+        else:
+            error = 'Invalid username/password'
+    return fl.render_template('login.html', error=error)

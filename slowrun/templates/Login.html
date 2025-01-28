@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     <form action="{{url_for('login_render')}}" method="post">
-        <label for="first">Nom d'utilisateur :</label> 
-        <input type="text" id="first" name="first" 
+        <label for="username">Nom d'utilisateur :</label> 
+        <input type="text" id="username" name="username" 
             placeholder="Entrez votre nom d'utilisateur" required> 
 
         <label for="password">Mot de passe :</label> 
