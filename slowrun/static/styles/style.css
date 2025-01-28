@@ -1,15 +1,15 @@
-body{
+body {
   margin: 0;
   font-family: sans-serif;
   background-image: linear-gradient(to bottom right, #fb3e8e, #ffaa00);
   color: white;
 }
-ul{
+ul {
   list-style: none;
 }
 
-header{
-  background-color: #0DA4BF;
+header {
+  background-color: #0da4bf;
   display: flex;
   align-items: center;
   color: white;
@@ -17,53 +17,59 @@ header{
   padding: 0 10em;
 }
 
-header ul{
+header ul {
   display: flex;
   list-style: none;
   gap: 2em;
 }
 
-header img{
+header img {
   height: 4em;
 }
 
-header a{
+header a {
   color: inherit;
   text-decoration: inherit;
 }
 
-.background{
+.background {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5em;
 }
 
-#runs{
+#runs {
   background-color: #402957;
   display: flex;
   border-radius: 15px;
-} 
-#container{
+  width: 50%;
+  padding: 3em;
+  gap: 2em;
+}
+#container {
   display: flex;
   flex-direction: column;
   gap: 3em;
-  
 }
 
-#news{
+#news {
   background-color: #402957;
   display: flex;
   border-radius: 15px;
+  width: 20em;
+  padding: 3em;
+  box-sizing: 20rem;
 }
 
-#popular_games{
+#popular_games {
   background-color: #402957;
   display: flex;
   border-radius: 15px;
+  padding: 3em;
 }
 
-footer{
+footer {
   background-color: #55dcf3;
   display: flex;
   align-items: center;
@@ -73,6 +79,6 @@ footer{
   gap: 3em;
 }
 
-footer img{
+footer img {
   height: 6em;
 }
