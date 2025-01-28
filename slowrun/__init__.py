@@ -63,6 +63,9 @@ def index_render():
         """
     ).fetchall()
     return fl.render_template("index.html", games=games, runs=runs, articles = articles)
+    resp = make_response(fl.render_template("index.html"))
+    resp.set_cookie('username', request.form.get("username"))
+    return resp
 
 
 @app.route("/rankings/<id>")
