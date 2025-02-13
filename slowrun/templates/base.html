@@ -15,10 +15,10 @@
         <img src="/static/images/Logo.png" alt="Logo slowrun">
         <ul>
             <li><a href="{{url_for('index_render')}}">Home</a></li>
-            <li><a href="games_list.html">Jeux</a></li>
+            <li><a href="{{url_for('search_render')}}">Jeux</a></li>
             <li><a href="#Actus">Actus</a></li>
-            <li><a href="#Connexion">Connexion</a></li>
-            <li><a href="#Inscription">Inscription</a></li>
+            <li><a href="{{url_for('login_render')}}">Connexion</a></li>
+            <li><a href="{{url_for('login_render')}}">Inscription</a></li>
         </ul>
     </header> 
     

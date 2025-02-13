@@ -157,3 +157,7 @@ def login_render():
 @app.route("/run")
 def run_render():
     return fl.render_template("Detailed_Run.html")
+
+@app.route("/search")
+def search_render():
+    return fl.render_template("games_list.html")

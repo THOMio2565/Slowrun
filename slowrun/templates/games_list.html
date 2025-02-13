@@ -9,14 +9,14 @@
     </section>
 
     <section id="Jeux">
-        <a href="#NomDuJeu"><img src="Images/Trackmania.png" alt="Trackmania"></a>
-        <a href="#NomDuJeu"><img src="Images/COD.png" alt="CallOfDuty"></a>
-        <a href="#NomDuJeu"><img src="Images/Minecraft.png" alt="Minecraft"></a>
-        <a href="Rank_Tetris.html"><img src="Images/Tetris.png" alt="Tetris"></a>
-        <a href="#NomDuJeu"><img src="Images/smb.png" alt="Super Mario Bros."></a>
-        <a href="#NomDuJeu"><img src="Images/super mario 64.jpg" alt="Super Mario 64"></a>
-        <a href="#NomDuJeu"><img src="Images/cuphead.jpg" alt="Cuphead"></a>
-        <a href="#NomDuJeu"><img src="Images/lethal company.png" alt="Lethal Company"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Trackmania.png')}}" alt="Trackmania"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/COD.png')}}" alt="CallOfDuty"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft"></a>
+        <a href="{{url_for('rankings_render', id=1)}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="Tetris"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/smb.png')}}" alt="Super Mario Bros."></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/super mario 64.jpg')}}" alt="Super Mario 64"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/cuphead.jpg')}}" alt="Cuphead"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/lethal company.png')}}" alt="Lethal Company"></a>
     </section>
     <h1>More Games Incoming 👀</h1>
 {% endblock content %}
