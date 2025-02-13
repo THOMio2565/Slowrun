@@ -62,9 +62,9 @@ def index_render():
             LIMIT 4
         """
     ).fetchall()
-    return fl.render_template("index.html", games=games, runs=runs, articles = articles)
+    return fl.render_template("index.html", games=games, runs=runs, articles=articles)
     resp = make_response(fl.render_template("index.html"))
-    resp.set_cookie('username', request.form.get("username"))
+    resp.set_cookie("username", request.form.get("username"))
     return resp
 
 
@@ -78,7 +78,8 @@ def rankings_render(id):
         FROM game
                           
         WHERE id = ?
-    """, [id]
+    """,
+        [id],
     ).fetchone()
     runs = cursor.execute(
         """
@@ -93,7 +94,8 @@ def rankings_render(id):
             WHERE game.id = ?
 
             ORDER BY slowrun.time DESC
-    """, [id]
+    """,
+        [id],
     ).fetchall()
     articles = cursor.execute(
         """
@@ -109,7 +111,8 @@ def rankings_render(id):
             ORDER BY news.id DESC
 
             LIMIT 4
-        """, [id]
+        """,
+        [id],
     ).fetchall()
     categories = cursor.execute(
         """
@@ -120,24 +123,36 @@ def rankings_render(id):
             JOIN game ON categories.game_id = game.id
             
             WHERE game.id = ? 
-        """, [id]
+        """,
+        [id],
     )
-    return fl.render_template("Rank_Tetris.html", game=game, runs=runs, articles=articles, categories=categories)
+    return fl.render_template(
+        "Rank_Tetris.html",
+        game=game,
+        runs=runs,
+        articles=articles,
+        categories=categories,
+    )
 
-@app.route("/login", methods=['GET', 'POST'])
+
+@app.route("/login", methods=["GET", "POST"])
 def login_render():
     error = None
     cursor = get_connection().cursor()
-    if request.method == 'POST':
-        user = cursor.execute("""
+    if request.method == "POST":
+        user = cursor.execute(
+            """
         SELECT * FROM user
         WHERE name = ? AND  password = ?
-        """, [request.form['username'], request.form['password']]).fetchone()
+        """,
+            [request.form["username"], request.form["password"]],
+        ).fetchone()
         if user:
             print(user)
         else:
-            error = 'Invalid username/password'
-    return fl.render_template('login.html', error=error)
+            error = "Invalid username/password"
+    return fl.render_template("login.html", error=error)
+
 
 @app.route("/run")
 def run_render():
