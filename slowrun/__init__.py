@@ -138,3 +138,7 @@ def login_render():
         else:
             error = 'Invalid username/password'
     return fl.render_template('login.html', error=error)
+
+@app.route("/run")
+def run_render():
+    return fl.render_template("Detailed_Run.html")

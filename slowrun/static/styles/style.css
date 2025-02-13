@@ -1,84 +1,411 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background-image: linear-gradient(to bottom right, #fb3e8e, #ffaa00);
-  color: white;
-}
-ul {
-  list-style: none;
+/* Palette de couleurs Retrowave */
+:root {
+  --primary-color: #e60073; /* Rose foncé */
+  --secondary-color: #0099cc; /* Bleu cyan */
+  --background-color: #1a1a2e; /* Bleu nuit */
+  --accent-color: #ffaa00; /* Orange */
+  --text-color: #f5f5f5; /* Blanc cassé */
+  --dark-gray: #14213d; /* Gris foncé */
+  --light-gray: #d6d6d6; /* Gris clair */
 }
 
+/* Reset */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Header */
 header {
-  background-color: #0da4bf;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  padding: 20px;
   display: flex;
   align-items: center;
-  color: white;
-  font-size: 1.2em;
-  padding: 0 10em;
-}
-
-header ul {
-  display: flex;
-  list-style: none;
-  gap: 2em;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 header img {
-  height: 4em;
+  height: 60px;
 }
 
-header a {
-  color: inherit;
-  text-decoration: inherit;
+/* Navigation */
+header ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
 }
 
+header ul li {
+  margin: 0 15px;
+}
+
+header ul li a {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.2s;
+  display: inline-block;
+}
+
+header ul li a:hover {
+  background-color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+/* Main */
+main {
+  padding: 40px;
+}
+
+/* Background principal */
 .background {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5em;
-}
-
-#runs {
-  background-color: #402957;
-  display: flex;
-  border-radius: 15px;
-  width: 50%;
-  padding: 3em;
-  gap: 2em;
-}
-#container {
+  background-color: var(--background-color);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 3em;
+  align-items: center;
+}
+
+/* Section Runs */
+#runs {
+  width: 80%;
+  background: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+#runs ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+#runs li {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
+/* Conteneur des news et jeux populaires */
+#container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  gap: 20px;
+}
+
+#news, #popular_games {
+  flex: 1;
+  background: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--accent-color);
+  text-align: center;
+}
+
+#news ul, #popular_games ul {
+  list-style: none;
+  padding: 0;
+}
+
+#news li, #popular_games li {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
+/* Style du formulaire */
+form {
+  background-color: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0px 0px 10px var(--secondary-color);
+}
+
+label {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  font-size: 1rem;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Section Infos */
+#Infos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--secondary-color);
+}
+
+#Infos img {
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
+}
+
+#Noms h2 {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+}
+
+#tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+#tags li {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+/* Section Catégories */
+#Category {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+#Category p {
+  font-size: 1.3rem;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+#Category ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#Category li {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Classement */
+#rank {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: var(--dark-gray);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+th {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-size: 1.2rem;
+}
+
+td a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+/* Actus */
+h2 {
+  text-align: center;
+  color: var(--accent-color);
+  margin-top: 30px;
 }
 
 #news {
-  background-color: #402957;
-  display: flex;
-  border-radius: 15px;
-  width: 20em;
-  padding: 3em;
-  box-sizing: 20rem;
+  background-color: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--secondary-color);
 }
 
-#popular_games {
-  background-color: #402957;
-  display: flex;
-  border-radius: 15px;
-  padding: 3em;
+#news ul {
+  list-style: none;
+  padding: 0;
 }
 
-footer {
-  background-color: #55dcf3;
+#news li {
+  background-color: var(--background-color);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+#news li a {
+  text-decoration: none;
+  color: var(--accent-color);
+  font-size: 1.2rem;
+}
+
+#news p {
+  color: var(--light-gray);
+  font-size: 0.9rem;
+}
+
+
+/* SECTION RUN */
+#run {
   display: flex;
   align-items: center;
-  color: white;
-  font-size: 1.2em;
-  padding: 0 10em;
-  gap: 3em;
+  gap: 20px;
+  background-color: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--secondary-color);
+  margin-top: 20px;
+}
+
+#run img {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+}
+
+#infos h2 {
+  color: var(--accent-color);
+  font-size: 1.8rem;
+}
+
+#infos h2 a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+#infos ul {
+  list-style: none;
+  padding: 0;
+}
+
+#infos ul li {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+/* SECTION COMMENTAIRES */
+#commentaire {
+  margin-top: 20px;
+  background-color: var(--dark-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+#commentaire form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#commentaire input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+#commentaire button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comm {
+  background-color: var(--background-color);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comm p {
+  margin: 5px 0;
+  color: var(--light-gray);
+}
+
+.comm p:first-child {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-gray);
+  padding: 20px;
+  margin-top: 20px;
 }
 
 footer img {
-  height: 6em;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+footer p {
+  font-size: 0.8rem;
+  color: var(--light-gray);
 }
