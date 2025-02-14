@@ -407,6 +407,12 @@ h2 {
   object-fit: cover;
 }
 
+.slow img {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+}
+
 /* Footer */
 footer {
   background-color: var(--dark-gray);

@@ -140,17 +140,36 @@ def login_render():
     error = None
     cursor = get_connection().cursor()
     if request.method == "POST":
-        user = cursor.execute(
-            """
-        SELECT * FROM user
-        WHERE name = ? AND  password = ?
-        """,
-            [request.form["username"], request.form["password"]],
-        ).fetchone()
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Vérifier si l'utilisateur existe
+        cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
+        user = cursor.fetchone()
+
         if user:
-            print(user)
+            # Vérifier le mot de passe
+            if user["password"] == password:
+                fl.session["user_id"] = user["id"]
+                fl.session["username"] = user["name"]
+                return fl.redirect(fl.url_for('user_render', id=user["id"]))
+            else:
+                error = "Mot de passe incorrect !"
         else:
-            error = "Invalid username/password"
+            # Si l'utilisateur n'existe pas, on l'ajoute
+            cursor.execute("INSERT INTO user (name, date, password) VALUES (?, DATE('now'), ?)", 
+                           (username, password))
+            cursor.commit()
+            cursor.close()
+
+            # Récupérer l'utilisateur après l'insertion
+            user = cursor.execute("SELECT * FROM user WHERE name = ?", (username,)).fetchone()
+
+            # Création de la session
+            fl.session["user_id"] = user["id"]
+            fl.session["username"] = user["name"]
+            return fl.redirect(fl.url_for('user_render', id=user["id"]))
+
     return fl.render_template("login.html", error=error)
 
 @app.route("/run", methods=["GET", "POST"])
@@ -165,7 +184,7 @@ def run_render():
         cursor.commit()
         cursor.close()
 
-        return redirect("/")  # Recharge la page après soumission
+        return fl.redirect("/")  # Recharge la page après soumission
 
     # Récupérer les commentaires de la base
     commentaires = cursor.execute("SELECT * FROM commentaires ORDER BY id DESC").fetchall()
@@ -175,3 +194,7 @@ def run_render():
 @app.route("/search")
 def search_render():
     return fl.render_template("games_list.html")
+
+@app.route("/user/<id>")
+def user_render(id):
+    return fl.render_template("user.html")
