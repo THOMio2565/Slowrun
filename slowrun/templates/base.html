@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slowrun - Accueil</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+    <link rel="stylesheet"
+        href="https://fonts.google.com/share?selection.family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900">
+</head>
+
+<body>
+    <header>
+        <img src="/static/images/Logo.png" alt="Logo slowrun">
+        <ul>
+            <li><a href="{{url_for('index_render')}}">Home</a></li>
+            <li><a href="{{url_for('search_render')}}">Jeux</a></li>
+            <li><a href="#Actus">Actus</a></li>
+            <li><a href="{{url_for('login_render')}}">Connexion</a></li>
+            <li><a href="{{url_for('login_render')}}">Inscription</a></li>
+        </ul>
+    </header> 
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <img src="/static/Images/Logo.png" alt="">
+        <p>© THOMio, Toinoufu, Dkolo - 2025</p>
+    </footer>
+</body>
+
+</html>

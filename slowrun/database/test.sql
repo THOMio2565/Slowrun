@@ -8,7 +8,8 @@ CREATE TABLE game(
 CREATE TABLE user (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    password TEXT NOT NULL
 );
 
 
@@ -39,6 +40,11 @@ CREATE TABLE categories (
     game_id INTEGER NOT NULL REFERENCES game (id)
 );
 
+CREATE TABLE commentaires (
+    id INTEGER PRIMARY KEY NOT NULL,
+    commentaire TEXT NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES user (id)
+);
 -- Initiating db contents
 
 INSERT INTO game (name, count, date)
@@ -49,11 +55,11 @@ VALUES
 ("Brawl Stars", 1, "2018-12-12"),
 ("Call Of Duty: Black Ops 6", 0, "2024-10-25");
 
-INSERT INTO user (name, date)
+INSERT INTO user (name, date, password)
 VALUES
-("Toinoufu", "2023-06-10"),
-("THOMio", "2023-07-05"),
-("Dianakolo", "2023-12-03");
+("Toinoufu", "2023-06-10", "password"),
+("THOMio", "2023-07-05", "password"),
+("Dianakolo", "2023-12-03", "password");
 
 INSERT INTO slowrun (time, date, register_id)
 VALUES
@@ -72,7 +78,7 @@ VALUES
 ("Lag strat on level 5", 1, 2),
 ("Going for another category mid-run", 5, 3),
 ("New seed for a slowrun", 2, 1),
-("Test-icule", 1, 1);
+("Test en carton", 1, 1);
 
 INSERT INTO categories (name, game_id)
 VALUES

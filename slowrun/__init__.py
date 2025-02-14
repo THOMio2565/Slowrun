@@ -1,6 +1,7 @@
 import flask as fl
 import sqlite3
 from pathlib import Path
+from flask import request
 
 db = Path(__file__).parents[1] / "test.db"
 
@@ -61,7 +62,10 @@ def index_render():
             LIMIT 4
         """
     ).fetchall()
-    return fl.render_template("index.html", games=games, runs=runs, articles = articles)
+    return fl.render_template("index.html", games=games, runs=runs, articles=articles)
+    resp = make_response(fl.render_template("index.html"))
+    resp.set_cookie("username", request.form.get("username"))
+    return resp
 
 
 @app.route("/rankings/<id>")
@@ -74,7 +78,8 @@ def rankings_render(id):
         FROM game
                           
         WHERE id = ?
-    """, [id]
+    """,
+        [id],
     ).fetchone()
     runs = cursor.execute(
         """
@@ -89,7 +94,8 @@ def rankings_render(id):
             WHERE game.id = ?
 
             ORDER BY slowrun.time DESC
-    """, [id]
+    """,
+        [id],
     ).fetchall()
     articles = cursor.execute(
         """
@@ -105,7 +111,8 @@ def rankings_render(id):
             ORDER BY news.id DESC
 
             LIMIT 4
-        """, [id]
+        """,
+        [id],
     ).fetchall()
     categories = cursor.execute(
         """
@@ -116,6 +123,55 @@ def rankings_render(id):
             JOIN game ON categories.game_id = game.id
             
             WHERE game.id = ? 
-        """, [id]
+        """,
+        [id],
     )
-    return fl.render_template("Rank_Tetris.html", game=game, runs=runs, articles=articles, categories=categories)
+    return fl.render_template(
+        "Rank_Tetris.html",
+        game=game,
+        runs=runs,
+        articles=articles,
+        categories=categories,
+    )
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login_render():
+    error = None
+    cursor = get_connection().cursor()
+    if request.method == "POST":
+        user = cursor.execute(
+            """
+        SELECT * FROM user
+        WHERE name = ? AND  password = ?
+        """,
+            [request.form["username"], request.form["password"]],
+        ).fetchone()
+        if user:
+            print(user)
+        else:
+            error = "Invalid username/password"
+    return fl.render_template("login.html", error=error)
+
+@app.route("/run", methods=["GET", "POST"])
+def run_render():
+    cursor = get_connection().cursor()
+    if request.method == "POST":
+        commentaire = request.form["commentaire"]
+        user_id = 1  # À adapter selon ton système d'authentification
+
+        # Insérer le commentaire dans la base de données
+        cursor.execute("INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)", (commentaire, user_id))
+        cursor.commit()
+        cursor.close()
+
+        return redirect("/")  # Recharge la page après soumission
+
+    # Récupérer les commentaires de la base
+    commentaires = cursor.execute("SELECT * FROM commentaires ORDER BY id DESC").fetchall()
+    cursor.close()
+    return fl.render_template("Detailed_Run.html", commentaires=commentaires)
+
+@app.route("/search")
+def search_render():
+    return fl.render_template("games_list.html")
