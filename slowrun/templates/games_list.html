@@ -1,30 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-    <title>Liste des jeux</title>
-    <link rel="stylesheet" href="games_list.css">
-    <link rel="stylesheet"
-        href="https://fonts.google.com/share?selection.family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900">
-</head>
-
-</head>
-
-<body>
-    <header>
-        <img src="Images/Logo.png" alt="Logo Slowrun">
-        <ul>
-            <li><a href="accueil.html">Home</a></li>
-            <li><a href="games_list.html">Jeux</a></li>
-            <li><a href="#Actus">Actus</a></li>
-            <li><a href="#Connexion">Connexion</a></li>
-            <li><a href="#Inscription">Inscription</a></li>
-        </ul>
-        
-    </header>
-    
+{% extends 'base.html' %}
+{% block content %}
     <section id="recherche">
         <h3 id="Liste">Liste des jeux</h3> 
         <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
@@ -34,16 +9,14 @@
     </section>
 
     <section id="Jeux">
-        <a href="#NomDuJeu"><img src="Images/Trackmania.png" alt="Trackmania"></a>
-        <a href="#NomDuJeu"><img src="Images/COD.png" alt="CallOfDuty"></a>
-        <a href="#NomDuJeu"><img src="Images/Minecraft.png" alt="Minecraft"></a>
-        <a href="Rank_Tetris.html"><img src="Images/Tetris.png" alt="Tetris"></a>
-        <a href="#NomDuJeu"><img src="Images/smb.png" alt="Super Mario Bros."></a>
-        <a href="#NomDuJeu"><img src="Images/super mario 64.jpg" alt="Super Mario 64"></a>
-        <a href="#NomDuJeu"><img src="Images/cuphead.jpg" alt="Cuphead"></a>
-        <a href="#NomDuJeu"><img src="Images/lethal company.png" alt="Lethal Company"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Trackmania.png')}}" alt="Trackmania"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/COD.png')}}" alt="CallOfDuty"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft"></a>
+        <a href="{{url_for('rankings_render', id=1)}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="Tetris"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/smb.png')}}" alt="Super Mario Bros."></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/super mario 64.jpg')}}" alt="Super Mario 64"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/cuphead.jpg')}}" alt="Cuphead"></a>
+        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/lethal company.png')}}" alt="Lethal Company"></a>
     </section>
     <h1>More Games Incoming 👀</h1>
-</body>
-
-</html>
+{% endblock content %}
