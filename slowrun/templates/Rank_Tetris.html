@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <section id="Infos">
-        <img src="../static/Images/Tetris.png" alt="NES Tetris">
+        <img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="NES Tetris">
         <div id="Noms">
             <h2>{{game.name}}</h2>
             <ul id="tags">
@@ -34,7 +34,7 @@
             <tr>
                 <td>#{{run.id}}</td>
                 <td><a href="#Profile">{{run.user}}</a></td>
-                <td><a href="#Run">{{run.time}}</a></td>
+                <td><a href="{{url_for('run_render')}}">{{run.time}}</a></td>
                 <td>PAL</td>
                 <td>{{run.date}}</td>
             </tr>

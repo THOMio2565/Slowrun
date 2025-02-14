@@ -153,10 +153,24 @@ def login_render():
             error = "Invalid username/password"
     return fl.render_template("login.html", error=error)
 
-
-@app.route("/run")
+@app.route("/run", methods=["GET", "POST"])
 def run_render():
-    return fl.render_template("Detailed_Run.html")
+    cursor = get_connection().cursor()
+    if request.method == "POST":
+        commentaire = request.form["commentaire"]
+        user_id = 1  # À adapter selon ton système d'authentification
+
+        # Insérer le commentaire dans la base de données
+        cursor.execute("INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)", (commentaire, user_id))
+        cursor.commit()
+        cursor.close()
+
+        return redirect("/")  # Recharge la page après soumission
+
+    # Récupérer les commentaires de la base
+    commentaires = cursor.execute("SELECT * FROM commentaires ORDER BY id DESC").fetchall()
+    cursor.close()
+    return fl.render_template("Detailed_Run.html", commentaires=commentaires)
 
 @app.route("/search")
 def search_render():

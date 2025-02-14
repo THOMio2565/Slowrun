@@ -38,3 +38,9 @@ CREATE TABLE categories (
     name TEXT NOT NULL,
     game_id INTEGER NOT NULL REFERENCES game (id)
 );
+
+CREATE TABLE commentaires (
+    id INTEGER PRIMARY KEY NOT NULL,
+    commentaire TEXT NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES user (id)
+);
