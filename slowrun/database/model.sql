@@ -8,7 +8,8 @@ CREATE TABLE game(
 CREATE TABLE user (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    password TEXT NOT NULL
 );
 
 
