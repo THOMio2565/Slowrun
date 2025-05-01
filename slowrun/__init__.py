@@ -152,48 +152,92 @@ def login_render():
             if user["password"] == password:
                 fl.session["user_id"] = user["id"]
                 fl.session["username"] = user["name"]
-                return fl.redirect(fl.url_for('user_render', id=user["id"]))
+                return fl.redirect(fl.url_for("user_render", id=user["id"]))
             else:
                 error = "Mot de passe incorrect !"
         else:
             # Si l'utilisateur n'existe pas, on l'ajoute
-            cursor.execute("INSERT INTO user (name, date, password) VALUES (?, DATE('now'), ?)", 
-                           (username, password))
+            cursor.execute(
+                "INSERT INTO user (name, date, password) VALUES (?, DATE('now'), ?)",
+                (username, password),
+            )
             cursor.commit()
             cursor.close()
 
             # Récupérer l'utilisateur après l'insertion
-            user = cursor.execute("SELECT * FROM user WHERE name = ?", (username,)).fetchone()
+            user = cursor.execute(
+                "SELECT * FROM user WHERE name = ?", (username,)
+            ).fetchone()
 
             # Création de la session
             fl.session["user_id"] = user["id"]
             fl.session["username"] = user["name"]
-            return fl.redirect(fl.url_for('user_render', id=user["id"]))
+            return fl.redirect(fl.url_for("user_render", id=user["id"]))
 
     return fl.render_template("login.html", error=error)
+
+
+@app.route("/inscription", methods=["GET", "POST"])
+def inscription_render():
+    error = None
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        cursor = get_connection().cursor()
+
+        # vérifier si le nom d'utilisateur ou email existe déjà
+        existing_user = cursor.execute(
+            "SELECT * FROM user WHERE name = ? OR email = ?", (username, email)
+        ).fetchone()
+
+        if existing_user:
+            error = "Le nom d'utilisateur ou mail est déja utilisé !"
+        else:
+            # créer un compte utilisateur
+            cursor.execute(
+                "INSERT INTO user (username, email, password) VALUES (?, DATE('now'), ?)",
+                (username, email, password),
+            )
+            cursor.commit()
+            cursor.close()
+
+        # redirige vers la connexion après l'inscription
+        return fl.redirect(fl.url_for("user_render"))
+
+    return fl.render_template("inscription.html", error=error)
+
 
 @app.route("/run", methods=["GET", "POST"])
 def run_render():
     cursor = get_connection().cursor()
     if request.method == "POST":
         commentaire = request.form["commentaire"]
-        user_id = 1  # À adapter selon ton système d'authentification
+        user_id = 1  # À adapter selon ton système d'authentification ou mettre session["user_id"] pour mettre en dur
 
         # Insérer le commentaire dans la base de données
-        cursor.execute("INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)", (commentaire, user_id))
+        cursor.execute(
+            "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
+            (commentaire, user_id),
+        )
         cursor.commit()
         cursor.close()
 
         return fl.redirect("/")  # Recharge la page après soumission
 
     # Récupérer les commentaires de la base
-    commentaires = cursor.execute("SELECT * FROM commentaires ORDER BY id DESC").fetchall()
+    commentaires = cursor.execute(
+        "SELECT * FROM commentaires ORDER BY id DESC"
+    ).fetchall()
     cursor.close()
     return fl.render_template("Detailed_Run.html", commentaires=commentaires)
+
 
 @app.route("/search")
 def search_render():
     return fl.render_template("games_list.html")
+
 
 @app.route("/user/<id>")
 def user_render(id):

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="{{url_for('inscription_render')}}" method="post">
+    <label for="username">Nom d'utilisateur :</label>
+    <input type="text" name="Username" id="username" placeholder="Entrez votre nom d'utilisateur" required>
+
+    <label for="email">Email :</label>
+    <input type="email" name="email" id="email" placeholder="Entrez votre addresse mail" required>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+    <button type="submit">S'inscrire</button>
+</form>
+{% endblock content %}
