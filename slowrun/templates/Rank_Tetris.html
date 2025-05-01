@@ -33,7 +33,7 @@
             {%for run in runs%}
             <tr>
                 <td>#{{run.id}}</td>
-                <td><a href="#Profile">{{run.user}}</a></td>
+                <td><a href="{{url_for('user_render', id=1)}}">{{run.user}}</a></td>
                 <td><a href="{{url_for('run_render')}}">{{run.time}}</a></td>
                 <td>PAL</td>
                 <td>{{run.date}}</td>

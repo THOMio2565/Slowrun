@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section id="recherche">
-        <h3 id="Liste">Liste des jeux</h3> 
-        <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
-        <p>Filtre</p>
+<section id="recherche">
+    <h3 id="Liste">Liste des jeux</h3>
+    <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
+    <p>Filtre</p>
+</section>
 
-        
-    </section>
-
-    <section id="Jeux">
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Trackmania.png')}}" alt="Trackmania"></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/COD.png')}}" alt="CallOfDuty"></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft"></a>
-        <a href="{{url_for('rankings_render', id=1)}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="Tetris"></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/smb.png')}}" alt="Super Mario Bros."></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/super mario 64.jpg')}}" alt="Super Mario 64"></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/cuphead.jpg')}}" alt="Cuphead"></a>
-        <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/lethal company.png')}}" alt="Lethal Company"></a>
-    </section>
-    <h1>More Games Incoming 👀</h1>
+<section id="Jeux">
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Trackmania.png')}}" alt="Trackmania"></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/COD.png')}}" alt="CallOfDuty"></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft"></a>
+    <a href="{{url_for('rankings_render', id=1)}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}"
+            alt="Tetris"></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/smb.png')}}" alt="Super Mario Bros."></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/super mario 64.jpg')}}" alt="Super Mario 64"></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/cuphead.jpg')}}" alt="Cuphead"></a>
+    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/lethal company.png')}}" alt="Lethal Company"></a>
+</section>
+<h1>More Games Incoming 👀</h1>
 {% endblock content %}
