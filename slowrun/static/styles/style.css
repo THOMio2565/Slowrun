@@ -11,7 +11,7 @@
 
 /* Reset */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;
@@ -21,7 +21,11 @@ body {
 
 /* Header */
 header {
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
   padding: 20px;
   display: flex;
   align-items: center;
@@ -60,6 +64,25 @@ header ul li a:hover {
   transform: scale(1.1);
 }
 
+#recherche-accueil {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#recherche-accueil form {
+  margin-right: 20px;
+}
+
+#recherche-accueil ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#recherche-accueil ul li {
+  margin-left: 15px;
+}
 /* Main */
 main {
   padding: 40px;
@@ -107,7 +130,8 @@ main {
   gap: 20px;
 }
 
-#news, #popular_games {
+#news,
+#popular_games {
   flex: 1;
   background: var(--dark-gray);
   padding: 20px;
@@ -116,12 +140,14 @@ main {
   text-align: center;
 }
 
-#news ul, #popular_games ul {
+#news ul,
+#popular_games ul {
   list-style: none;
   padding: 0;
 }
 
-#news li, #popular_games li {
+#news li,
+#popular_games li {
   background-color: var(--secondary-color);
   color: var(--text-color);
   padding: 10px;
@@ -150,7 +176,6 @@ label {
 }
 
 input {
-  width: 100%;
   padding: 10px;
   border: none;
   border-radius: 5px;
@@ -250,7 +275,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: center;
   border-bottom: 1px solid var(--light-gray);
@@ -303,7 +329,6 @@ h2 {
   color: var(--light-gray);
   font-size: 0.9rem;
 }
-
 
 /* SECTION RUN */
 #run {

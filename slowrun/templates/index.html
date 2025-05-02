@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="background">
-        <div id="runs">
-            {%for run in runs%}
-            <ul>
-                <li>{{run.game}}</li>
-                <li>{{run.user}}</li>
-                <li>{{run.time}}</li> 
-            </ul>
-            {%endfor%}
-        </div>
-        <div id="container">
-            <div id="news">
+<div class="background">
+    <div id="runs">
+        {%for run in runs%}
+        <ul>
+            <li>{{run.game}}</li>
+            <li>{{run.user}}</li>
+            <li>{{run.time}}</li>
+        </ul>
+        {%endfor%}
+    </div>
+    <div id="container">
+        <div id="news">
 
-                <ul>
-                    <li>ba</li>
-                    <li>ka</li>
-                    <li>mitai</li>
-                </ul>
-            </div>
-            <div id="popular_games">
-                <ul>
-                    <li>hon</li>
-                    <li>hon</li>
-                    <li>hon</li>
-                </ul>
-            </div>
+            <ul>
+                <li>ba</li>
+                <li>ka</li>
+                <li>mitai</li>
+            </ul>
+        </div>
+        <div id="popular_games">
+            <ul>
+                <li>hon</li>
+                <li>hon</li>
+                <li>hon</li>
+            </ul>
         </div>
     </div>
+</div>
 {% endblock content %}
- 
