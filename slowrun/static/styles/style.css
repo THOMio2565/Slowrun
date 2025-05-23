@@ -158,7 +158,6 @@ main {
 
 /* Style du formulaire */
 form {
-  background-color: var(--dark-gray);
   padding: 20px;
   border-radius: 10px;
   width: 40%;
@@ -166,7 +165,6 @@ form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  box-shadow: 0px 0px 10px var(--secondary-color);
 }
 
 label {
