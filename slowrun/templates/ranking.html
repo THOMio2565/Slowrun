@@ -7,12 +7,11 @@
         <a href="#" class="close">&times;</a>
         <h2>Poster une run</h2>
         <form method="POST" action="{{ url_for('poster_run') }}">
-            <input type="text" name="nom_jeu" placeholder="Nom du jeu" required>
-            <input type="text" name="plateforme" placeholder="Plateforme" required>
-            <input type="text" name="temps" placeholder="Temps" required>
+            <input type="text" name="game" placeholder="Game" required>
+            <input type="text" name="register" placeholder="Register" required>
+            <input type="text" name="time" placeholder="Time" required>
             <button type="submit">Envoyer</button>
         </form>
     </div>
 </div>
-
 {% endblock %}
