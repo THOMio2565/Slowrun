@@ -234,6 +234,20 @@ def run_render():
     return fl.render_template("Detailed_Run.html", commentaires=commentaires)
 
 
+@app.route("/poster_run", methods=["POST"])
+def poster_run():
+    cursor = get_connection().cursor()
+    if request.method == "POST":
+        game = request.form["game"]
+        register = request.form["register"]
+        time = request.form["time"]
+        cursor.execute("SELECT game, register, time FROM user", (game, register, time))
+        cursor.commit()
+        cursor.close()
+
+        return fl.redirect("/")
+
+
 @app.route("/search")
 def search_render():
     return fl.render_template("games_list.html")
