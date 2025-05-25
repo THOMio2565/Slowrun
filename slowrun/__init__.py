@@ -242,3 +242,13 @@ def search_render():
 @app.route("/user/<id>")
 def user_render(id):
     return fl.render_template("user.html")
+
+
+@app.route("/Actus")
+def actus_render():
+    return fl.render_template("Actus.html")
+
+
+@app.route("/cookies")
+def index():
+    username = request.cookies.get("user")
