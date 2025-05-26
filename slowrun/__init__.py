@@ -245,7 +245,7 @@ def poster_run():
         cursor.commit()
         cursor.close()
 
-        return fl.redirect("/")
+        return fl.render_template("index.html")
 
 
 @app.route("/search")
