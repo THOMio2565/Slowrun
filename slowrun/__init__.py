@@ -236,16 +236,31 @@ def run_render():
 
 @app.route("/poster_run", methods=["POST"])
 def poster_run():
-    cursor = get_connection().cursor()
-    if request.method == "POST":
-        game = request.form["game"]
-        register = request.form["register"]
-        time = request.form["time"]
-        cursor.execute("SELECT game, register, time FROM user", (game, register, time))
-        cursor.commit()
-        cursor.close()
+    con = get_connection()
+    cursor = con.cursor()
 
-        return fl.render_template("index.html")
+    game_name = request.form["game"]
+    register_name = request.form["register"]
+    time = request.form["time"]
+    # récupére les id au nom
+    game_id = cursor.execute(
+        "SELECT id FROM game WHERE name = ?", (game_name,)
+    ).fetchone()
+    register_id = cursor.execute(
+        "SELECT id FROM register WHERE name = ?", (register_name)
+    ).fetchone()
+
+    if game_id and register_id:
+        cursor.execute(
+            "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
+            (register_id["id"], time),
+        )
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return fl.redirect(fl.url_for(index_render))
 
 
 @app.route("/search")
