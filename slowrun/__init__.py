@@ -255,10 +255,10 @@ def poster_run():
             "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
             (register_id["id"], time),
         )
-        conn.commit()
+        con.commit()
 
         cursor.close()
-        conn.close()
+        con.close()
 
         return fl.redirect(fl.url_for(index_render))
 
