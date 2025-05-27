@@ -4,8 +4,8 @@
     <div id="runs">
         {%for run in runs%}
         <ul>
-            <li>{{run.game}}</li>
             <img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft">
+            <li>{{run.game}}</li>
             <li>{{run.user}}</li>
             <li>{{run.time}}</li>
         </ul>
