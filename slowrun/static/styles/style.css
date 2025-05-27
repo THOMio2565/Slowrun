@@ -123,12 +123,86 @@ main {
   font-size: 1.2rem;
 }
 
+/*Run Image*/
+.runs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.run-card {
+  background-color: var(--dark-gray);
+  border-radius: 10px;
+  box-shadow: 0 0 8px var(--secondary-color);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.run-card:hover {
+  transform: scale(1.03);
+}
+
+.run-card-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.run-card-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.run-game {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.run-user,
+.run-time {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
 /* Conteneur des news et jeux populaires */
 #container {
   display: flex;
-  justify-content: space-between;
-  width: 80%;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.panel {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  width: 30%;
+  min-width: 300px;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.panel h2 {
+  margin-top: 0;
+  border-bottom: 1px solid #00ffe1;
+  padding-bottom: 10px;
+  color: #00ffe1;
+}
+
+.panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.panel li {
+  margin-bottom: 15px;
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 #news,
