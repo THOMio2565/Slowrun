@@ -174,7 +174,7 @@ def login_render():
             fl.session["username"] = user["name"]
             return fl.redirect(fl.url_for("user_render", id=user["id"]))
 
-    return fl.render_template("login.html", error=error)
+    return fl.render_template("Login.html", error=error)
 
 
 @app.route("/inscription", methods=["GET", "POST"])
