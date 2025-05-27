@@ -160,7 +160,6 @@ main {
 /* Style du formulaire */
 form {
   background-color: var(--dark-gray);
-  padding: 20px;
   border-radius: 10px;
   width: 40%;
   margin: auto;
