@@ -71,6 +71,8 @@ header ul li a:hover {
 }
 #recherche-accueil form {
   margin-right: 20px;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 #recherche-accueil ul {
