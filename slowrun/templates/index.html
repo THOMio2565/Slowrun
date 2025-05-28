@@ -21,7 +21,7 @@
 
             <li>
                 <strong>{{article.title}}</strong><br>
-                <small>Par {{ article.user }} – jeu : {{ article.game }}</small>
+                <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
             </li>
             {% endfor %}
         </ul>
@@ -31,7 +31,7 @@
         <h2>Jeux Populaires</h2>
         <ul>
             {% for game in games %}
-            <li><strong>{{ game.name }}</strong> — {{ game.count }} joueurs</li>
+            <li><strong>{{ game.name }}</strong> - {{ game.count }} joueurs</li>
             {%endfor%}
         </ul>
     </div>
