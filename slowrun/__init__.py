@@ -281,3 +281,8 @@ def actus_render():
 @app.route("/cookies")
 def index():
     username = request.cookies.get("user")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return fl.render_template("404.html"), 404
