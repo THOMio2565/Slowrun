@@ -263,17 +263,6 @@ def poster_run():
         return fl.redirect(fl.url_for(index_render))
 
 
-@app.route("/<int:id>/delete", methods=("POST",))
-def delete(id):
-    post = get_post(id)
-    conn = get_db_connexion()
-    conn.execute("DELETE FROM posts WHERE id = ?", (id,))
-    conn.commit()
-    conn.close()
-    flash('"{}" a été supprimé avec succès!'.format(post["title"]))
-    return redirect(url_for("index.html"))
-
-
 @app.route("/search")
 def search_render():
     return fl.render_template("games_list.html")
