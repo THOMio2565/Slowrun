@@ -244,7 +244,7 @@ def poster_run():
     time = request.form["time"]
     # récupére les id au nom
     game_id = cursor.execute(
-        "SELECT id FROM game WHERE name = ?", (game_name,)
+        "SELECT id FROM game WHERE name = ?", (game_name)
     ).fetchone()
     register_id = cursor.execute(
         "SELECT id FROM register WHERE name = ?", (register_name)
@@ -256,9 +256,7 @@ def poster_run():
             (register_id["id"], time),
         )
         con.commit()
-
         cursor.close()
-        con.close()
 
         return fl.redirect(fl.url_for(index_render))
 
