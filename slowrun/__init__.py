@@ -181,7 +181,7 @@ def login_render():
 def inscription_render():
     error = None
     if request.method == "POST":
-        username = request.form["username"]
+        name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
 
@@ -189,7 +189,7 @@ def inscription_render():
 
         # vérifier si le nom d'utilisateur ou email existe déjà
         existing_user = cursor.execute(
-            "SELECT * FROM user WHERE name = ? OR email = ?", (username, email)
+            "SELECT * FROM user WHERE name = ? OR email = ?", (name, email)
         ).fetchone()
 
         if existing_user:
@@ -197,8 +197,8 @@ def inscription_render():
         else:
             # créer un compte utilisateur
             cursor.execute(
-                "INSERT INTO user (username, email, password) VALUES (?, DATE('now'), ?)",
-                (username, email, password),
+                "INSERT INTO user (name, email, password) VALUES (?, DATE('now'), ?)",
+                (name, email, password),
             )
             cursor.commit()
             cursor.close()
