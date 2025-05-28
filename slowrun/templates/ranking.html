@@ -1,0 +1,17 @@
+{% extends'base.html' %}
+{% block content %}
+<a href="#popup-run" class="btn-poster-run">Poster une run</a>
+
+<div id="popup-run" class="popup">
+    <div class="popup-content">
+        <a href="#" class="close">&times;</a>
+        <h2>Poster une run</h2>
+        <form method="POST" action="{{ url_for('poster_run') }}">
+            <input type="text" name="game" placeholder="Game" required>
+            <input type="text" name="register" placeholder="Register" required>
+            <input type="text" name="time" placeholder="Time" required>
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
