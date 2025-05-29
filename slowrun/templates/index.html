@@ -31,14 +31,16 @@
         <h2>Jeux Populaires</h2>
         <ul>
             {% for game in games %}
-            <li><strong>{{ game.name }}</strong> - {{ game.count }} joueurs</li>
+            <li><strong>{{ game.name }} <img src="{{url_for('static', filename='images/Tetris.jpg')}}" id="jeux"
+                        alt="Tetris"></strong>
+                - {{ game.count }} joueurs</li>
             {%endfor%}
         </ul>
     </div>
 
     <!--Derniers slowruns-->
     <div id="recents-run" class="panel">
-        <h2>Derniers Slowruns</h2>
+        <h2>Derniers runs</h2>
         <ul>
             {% for run in runs %}
             <li>

@@ -692,6 +692,10 @@ button.lire:hover {
   color: var(--text-color);
 }
 
+#jeux {
+  width: 50px;
+}
+
 /* Footer */
 footer {
   background-color: var(--dark-gray);
