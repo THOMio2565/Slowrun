@@ -1,32 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="background">
-        <div id="runs">
-            {%for run in runs%}
-            <ul>
-                <li>{{run.game}}</li>
-                <li>{{run.user}}</li>
-                <li>{{run.time}}</li> 
-            </ul>
-            {%endfor%}
-        </div>
-        <div id="container">
-            <div id="news">
-
-                <ul>
-                    <li>ba</li>
-                    <li>ka</li>
-                    <li>mitai</li>
-                </ul>
-            </div>
-            <div id="popular_games">
-                <ul>
-                    <li>hon</li>
-                    <li>hon</li>
-                    <li>hon</li>
-                </ul>
-            </div>
+<div class="runs-grid">
+    {% for run in runs %}
+    <div class="run-card">
+        <img src="{{ url_for('static', filename='Images/Minecraft.png') }}" alt="{{ run.game }}" class="run-card-img">
+        <div class="run-card-info">
+            <h3 class="run-game">{{ run.game }}</h3>
+            <p class="run-user">{{ run.user }}</p>
+            <p class="run-time">{{ run.time }}</p>
         </div>
     </div>
+    {% endfor %}
+</div>
+<div id="container">
+    <!--Actus-->
+    <div id="news" class="panel">
+        <h2>Actualités</h2>
+        <ul>
+            {% for article in articles %}
+
+            <li>
+                <strong>{{article.title}}</strong><br>
+                <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!--Jeux populaires-->
+    <div id="popular_games" class="panel">
+        <h2>Jeux Populaires</h2>
+        <ul>
+            {% for game in games %}
+            <li><strong>{{ game.name }}</strong> - {{ game.count }} joueurs</li>
+            {%endfor%}
+        </ul>
+    </div>
+
+    <!--Derniers slowruns-->
+    <div id="recents-run" class="panel">
+        <h2>Derniers Slowruns</h2>
+        <ul>
+            {% for run in runs %}
+            <li>
+                <strong>{{run.user}}</strong> a joué à <em>{{run.game}}</em><br>
+                Temps : {{run.time}} s
+            </li>
+            {%endfor%}
+        </ul>
+
+    </div>
+</div>
 {% endblock content %}
- 
