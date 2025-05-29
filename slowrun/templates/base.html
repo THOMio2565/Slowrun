@@ -13,13 +13,16 @@
 <body>
     <header>
         <img src="/static/images/Logo.png" alt="Logo slowrun">
-        <ul>
-            <li><a href="{{url_for('index_render')}}">Home</a></li>
-            <li><a href="{{url_for('search_render')}}">Jeux</a></li>
-            <li><a href="#Actus">Actus</a></li>
-            <li><a href="{{url_for('login_render')}}">Connexion</a></li>
-            <li><a href="{{url_for('inscription_render')}}">Inscription</a></li>
-        </ul>
+        <section id="recherche-accueil">
+            <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
+            <ul>
+                <li><a href="{{url_for('index_render')}}">Home</a></li>
+                <li><a href="{{url_for('search_render')}}">Jeux</a></li>
+                <li><a href="{{url_for('actus_render')}}">Actus</a></li>
+                <li><a href="{{url_for('login_render')}}">Connexion</a></li>
+                <li><a href="{{url_for('inscription_render')}}">Inscription</a></li>
+            </ul>
+        </section>
     </header>
 
     <main>
