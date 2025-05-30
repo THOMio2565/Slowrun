@@ -83,7 +83,7 @@ def rankings_render(id):
     ).fetchone()
     runs = cursor.execute(
         """
-            SELECT slowrun.time, slowrun.date, user.name AS user
+            SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
 
             FROM slowrun
 
