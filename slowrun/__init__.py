@@ -17,7 +17,23 @@ def get_connection():
     return connection
 
 
+def format_seconds(seconds):
+    seconds = int(seconds)
+    h = seconds // 3600
+    m = (seconds % 3600) // 60
+    s = seconds % 60
+
+    parts = []
+    if h > 0:
+        parts.append(f"{h} h")
+    if m > 0 or h > 0:
+        parts.append(f"{m}min")
+    parts.append(f"{s}s")
+    return " ".join(parts)
+
+
 app = fl.Flask(__name__)
+app.jinja_env.filters["format_seconds"] = format_seconds
 
 
 @app.route("/")
@@ -260,22 +276,6 @@ def poster_run():
         cursor.close()
 
         return fl.redirect(fl.url_for(index_render))
-
-
-@app.route("/")
-def convertTime(totalMinutes):
-    seconds = int(seconds)
-    h = seconds // 3600
-    m = (seconds % 3600) // 60
-    s = seconds % 60
-
-    parts = []
-    if h > 0:
-        parts.append(f"{h} h")
-    if m > 0 or h > 0:
-        parts.append(f"{m}min")
-    parts.append(f"{s}s")
-    return " ".join(parts)
 
 
 @app.route("/search")
