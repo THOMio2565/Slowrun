@@ -18,7 +18,6 @@
         <h2>Actualités</h2>
         <ul>
             {% for article in articles %}
-
             <li>
                 <strong>{{article.title}}</strong><br>
                 <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
@@ -31,23 +30,29 @@
         <h2>Jeux Populaires</h2>
         <ul>
             {% for game in games %}
-            <li><strong>{{ game.name }}</strong> - {{ game.count }} joueurs</li>
+            <li><strong>{{ game.name }}
+                    <img src="{{ url_for('static', filename='Images/' ~ game.name|replace(' ', '') ~ '.png' ) }}"
+                        alt="{{ game.name }}" id="jeux"></strong>
+                - {{ game.count }} joueurs - {{game.date}}</li>
             {%endfor%}
         </ul>
     </div>
 
     <!--Derniers slowruns-->
     <div id="recents-run" class="panel">
-        <h2>Derniers Slowruns</h2>
-        <ul>
+        <h2>Derniers runs</h2>
+        <div class="runs-grid">
             {% for run in runs %}
-            <li>
-                <strong>{{run.user}}</strong> a joué à <em>{{run.game}}</em><br>
-                Temps : {{run.time}} s
-            </li>
-            {%endfor%}
-        </ul>
-
+            <div class="run-card">
+                <div class="run-card-info">
+                    <h3>{{run.user}}</h3>
+                    <img src="{{url_for('static', filename='Images/Trackmania.png')}}" alt="jeux" class="last-run">
+                    <strong>{{run.user}} </strong>
+                    <p><strong>Temps : {{run.time | format_seconds}} </strong></p>
+                </div>
+                {%endfor%}
+            </div>
+            <button id="toggle-button" onclick="toggleRuns()">Voir plus</button>
+        </div>
     </div>
-</div>
-{% endblock content %}
+    {% endblock content %}

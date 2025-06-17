@@ -1,59 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section id="Infos">
-        <img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="NES Tetris">
-        <div id="Noms">
-            <h2>{{game.name}}</h2>
-            <ul id="tags">
-                <li>#NES</li>
-                <li>#Retro</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="Category">
-        <p>Catégories :</p>
-        <ul>
-            {%for categorie in categories%}
-            <li>{{categorie.name}}</li>
-            {%endfor%}
-            <li>Voir plus : <select name="Voir plus" id="Misc"></select></li>
+<section id="Infos">
+    <img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt="NES Tetris">
+    <div id="Noms">
+        <h2>{{game.name}}</h2>
+        <ul id="tags">
+            <li>#NES</li>
+            <li>#Retro</li>
         </ul>
-    </section>
+    </div>
+</section>
 
-    <section id="rank">
-        <table>
-            <tr>
-                <th>Place</th>
-                <th>Utilisateur</th>
-                <th>Temps</th>
-                <th>Région</th>
-                <th>Date</th>
-            </tr>
-            {%for run in runs%}
-            <tr>
-                <td>#{{run.id}}</td>
-                <td><a href="{{url_for('user_render', id=1)}}">{{run.user}}</a></td>
-                <td><a href="{{url_for('run_render')}}">{{run.time}}</a></td>
-                <td>PAL</td>
-                <td>{{run.date}}</td>
-            </tr>
-            {%endfor%}
-        </table>
-    </section>
+<section id="Category">
+    <p>Catégories :</p>
+    <ul>
+        {%for categorie in categories%}
+        <li>{{categorie.name}}</li>
+        {%endfor%}
+        <li>Voir plus : <select name="Voir plus" id="Misc"></select></li>
+    </ul>
+</section>
 
-    <h2>Actus de la communauté du jeu</h2>
-    <section id="news">
-        <ul>
-            {%for article in articles%}
-            <li><a href="#article">
-                    <h3>{{article.title}}</h3>
-                </a>
-                <p>{{article.game}}</p>
-                <p>By {{article.user}}</p>
-            </li>
-            {%endfor%}
-        </ul>
-        
-    </section>
+<section id="rank">
+    <table>
+        <tr>
+            <th>Place</th>
+            <th>Utilisateur</th>
+            <th>Temps</th>
+            <th>Région</th>
+            <th>Date</th>
+        </tr>
+        {%for run in runs%}
+        <tr>
+            <td>{{run.id}}</td>
+            <td><a href="{{url_for('user_render', id=1)}}">{{run.user}}</a></td>
+            <td><a href="{{url_for('run_render')}}">{{run.time}}</a></td>
+            <td>PAL</td>
+            <td>{{run.date}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+</section>
+
+<h2>Actus de la communauté du jeu</h2>
+<section id="news">
+    <ul>
+        {%for article in articles%}
+        <li><a href="#article">
+                <h3>{{article.title}}</h3>
+            </a>
+            <p>{{article.game}}</p>
+            <p>By {{article.user}}</p>
+        </li>
+        {%endfor%}
+    </ul>
+
+</section>
+
 {% endblock content %}
