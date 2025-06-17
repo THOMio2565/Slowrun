@@ -147,6 +147,8 @@ main {
 
 .run-card-img {
   width: 100%;
+  height: 140px;
+
   object-fit: cover;
 }
 
@@ -175,6 +177,7 @@ main {
   gap: 20px;
   justify-content: space-around;
   margin: 20px;
+
 }
 
 .panel {
@@ -690,6 +693,7 @@ button.lire:hover {
   font-size: 24px;
   color: var(--text-color);
 }
+
 
 #jeux {
   width: 50px;

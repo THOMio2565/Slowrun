@@ -1,32 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section id="user">
-        <div id="username">
-            <h2>Toinoufu</h2>
-        </div>
-        <div id="userinfos">
-            <p>rejoint le : 07/03/2024</p>
-            <p>Nombre de Slowruns : 1</p>
-        </div>
-    </section>
+<section id="user">
+    <div id="username">
+        <h2>Toinoufu</h2>
+    </div>
+    <div id="userinfos">
+        <p>rejoint le : 07/03/2024</p>
+        <p>Nombre de Slowruns : 1</p>
+    </div>
+</section>
 
-    <section id="tabs">
-        <h3 class="title">Latest Slowruns</h3>
-        <h3 class="title">Games ran</h3>
-        <h3 class="title">Articles posted</h3>
-    </section>
+<section id="tabs">
+    <h3 class="title">Latest Slowruns</h3>
+    <h3 class="title">Games ran</h3>
+    <h3 class="title">Articles posted</h3>
+</section>
 
-    <section id="content">
-        <div class="slow">
-            <a href="{{url_for('run_render')}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt=""></a>
-            <div class="run">
-                <h3>NES Tetris</h3>
-                <ul>
-                    <li>Maxout</li>
-                    <li>Time : 2h45m36s690ms</li>
-                    <li>Rank : 1st</li>
-                </ul>
-            </div>
+<section id="content">
+    <div class="slow">
+        <a href="{{url_for('run_render')}}"><img src="{{url_for('static', filename='images/Tetris.jpg')}}" alt=""></a>
+        <div class="run">
+            <h3>NES Tetris</h3>
+            <p>Catégories : Maxout</p>
+            <p>Temps : 2h45m36s690ms</p>
+            <p>Classement : 1er</p>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock content %}

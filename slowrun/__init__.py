@@ -253,8 +253,7 @@ def run_render():
 
 @app.route("/poster_run", methods=["POST"])
 def poster_run():
-    con = get_connection()
-    cursor = con.cursor()
+    cursor = get_connection().cursor()
 
     game_name = request.form["game"]
     register_name = request.form["register"]
@@ -272,11 +271,10 @@ def poster_run():
             "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
             (register_id["id"], time),
         )
-        con.commit()
+        cursor.commit()
         cursor.close()
 
         return fl.redirect(fl.url_for(index_render))
-
 
 @app.route("/search")
 def search_render():
@@ -297,7 +295,7 @@ def actus_render():
 def index():
     username = request.cookies.get("user")
 
-
 @app.errorhandler(404)
 def page_not_found(e):
     return fl.render_template("404.html"), 404
+
