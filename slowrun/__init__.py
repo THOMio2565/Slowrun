@@ -3,6 +3,7 @@ import sqlite3
 from pathlib import Path
 from flask import request
 
+
 db = Path(__file__).parents[1] / "test.db"
 
 
@@ -16,7 +17,23 @@ def get_connection():
     return connection
 
 
+def format_seconds(seconds):
+    seconds = int(seconds)
+    h = seconds // 3600
+    m = (seconds % 3600) // 60
+    s = seconds % 60
+
+    parts = []
+    if h > 0:
+        parts.append(f"{h} h")
+    if m > 0 or h > 0:
+        parts.append(f"{m}min")
+    parts.append(f"{s}s")
+    return " ".join(parts)
+
+
 app = fl.Flask(__name__)
+app.jinja_env.filters["format_seconds"] = format_seconds
 
 
 @app.route("/")
@@ -83,7 +100,7 @@ def rankings_render(id):
     ).fetchone()
     runs = cursor.execute(
         """
-            SELECT slowrun.time, slowrun.date, user.name AS user
+            SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
 
             FROM slowrun
 
@@ -236,8 +253,7 @@ def run_render():
 
 @app.route("/poster_run", methods=["POST"])
 def poster_run():
-    con = get_connection()
-    cursor = con.cursor()
+    cursor = get_connection().cursor()
 
     game_name = request.form["game"]
     register_name = request.form["register"]
@@ -255,11 +271,10 @@ def poster_run():
             "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
             (register_id["id"], time),
         )
-        con.commit()
+        cursor.commit()
         cursor.close()
 
         return fl.redirect(fl.url_for(index_render))
-
 
 @app.route("/search")
 def search_render():
@@ -280,7 +295,7 @@ def actus_render():
 def index():
     username = request.cookies.get("user")
 
-
 @app.errorhandler(404)
 def page_not_found(e):
     return fl.render_template("404.html"), 404
+

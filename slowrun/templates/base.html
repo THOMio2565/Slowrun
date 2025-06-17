@@ -13,13 +13,16 @@
 <body>
     <header>
         <img src="/static/images/Logo.png" alt="Logo slowrun">
-        <ul>
-            <li><a href="{{url_for('index_render')}}">Home</a></li>
-            <li><a href="{{url_for('search_render')}}">Jeux</a></li>
-            <li><a href="#Actus">Actus</a></li>
-            <li><a href="{{url_for('login_render')}}">Connexion</a></li>
-            <li><a href="{{url_for('inscription_render')}}">Inscription</a></li>
-        </ul>
+        <section id="recherche-accueil">
+            <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
+            <ul>
+                <li><a href="{{url_for('index_render')}}">Home</a></li>
+                <li><a href="{{url_for('search_render')}}">Jeux</a></li>
+                <li><a href="{{url_for('actus_render')}}">Actus</a></li>
+                <li><a href="{{url_for('login_render')}}">Connexion</a></li>
+                <li><a href="{{url_for('inscription_render')}}">Inscription</a></li>
+            </ul>
+        </section>
     </header>
 
     <main>
@@ -27,9 +30,30 @@
     </main>
 
     <footer>
-        <img src="/static/Images/Logo.png" alt="">
+        <img src="/static/Images/Logo.png" alt="logo">
         <p>© THOMio, Toinoufu, Dkolo - 2025</p>
     </footer>
+    <script>
+        function toggleRuns() {
+            const hiddenRuns = document.querySelectorAll(".run-item-hidden"); //pour cacher avc voir moin bouton
+            const button = document.getElementById("toggle-button");
+            button.addEventListener("click", toggleRuns);
+            const allRuns = document.querySelectorAll(".run-item");
+
+            if (hiddenRuns.length > 0) {
+                hiddenRuns.forEach(run => run.classList.remove("hidden"));//affiche tt les runs caché en supp la classe hidden
+                button.textContent = "Voir moins";
+            } else {
+                allRuns.forEach((run, index) => {
+                    if (index > 3) {
+                        run.classList.add("hidden");
+                    }
+                });
+                button.textContent = "Voir plus";
+                console.log("ccc")
+            }
+        }
+    </script>
 </body>
 
 </html>
