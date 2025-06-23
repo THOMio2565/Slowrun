@@ -2,7 +2,7 @@ import flask as fl
 import sqlite3
 from pathlib import Path
 from flask import request
-
+from flask import session, flash
 
 db = Path(__file__).parents[1] / "test.db"
 
@@ -33,6 +33,7 @@ def format_seconds(seconds):
 
 
 app = fl.Flask(__name__)
+app.secret_key = 'votre_cle_secrete_tres_longue_et_complexe_123456789'
 app.jinja_env.filters["format_seconds"] = format_seconds
 
 
@@ -155,10 +156,12 @@ def rankings_render(id):
 @app.route("/login", methods=["GET", "POST"])
 def login_render():
     error = None
-    cursor = get_connection().cursor()
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+
+        conn = get_connection()
+        cursor = conn.cursor()
 
         # Vérifier si l'utilisateur existe
         cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
@@ -167,29 +170,17 @@ def login_render():
         if user:
             # Vérifier le mot de passe
             if user["password"] == password:
+                # Connexion réussie - créer la session
                 fl.session["user_id"] = user["id"]
                 fl.session["username"] = user["name"]
+                cursor.close()
                 return fl.redirect(fl.url_for("user_render", id=user["id"]))
             else:
                 error = "Mot de passe incorrect !"
         else:
-            # Si l'utilisateur n'existe pas, on l'ajoute
-            cursor.execute(
-                "INSERT INTO user (name, date, password) VALUES (?, DATE('now'), ?)",
-                (username, password),
-            )
-            cursor.commit()
-            cursor.close()
+            error = "Nom d'utilisateur introuvable !"
 
-            # Récupérer l'utilisateur après l'insertion
-            user = cursor.execute(
-                "SELECT * FROM user WHERE name = ?", (username,)
-            ).fetchone()
-
-            # Création de la session
-            fl.session["user_id"] = user["id"]
-            fl.session["username"] = user["name"]
-            return fl.redirect(fl.url_for("user_render", id=user["id"]))
+        cursor.close()
 
     return fl.render_template("Login.html", error=error)
 
@@ -231,9 +222,8 @@ def run_render():
     cursor = get_connection().cursor()
     if request.method == "POST":
         commentaire = request.form["commentaire"]
-        user_id = 1  # À adapter selon ton système d'authentification ou mettre session["user_id"] pour mettre en dur
+        user_id = 1
 
-        # Insérer le commentaire dans la base de données
         cursor.execute(
             "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
             (commentaire, user_id),
@@ -255,29 +245,71 @@ def run_render():
 def poster_run():
     cursor = get_connection().cursor()
 
-    game_name = request.form["game"]
-    time = request.form["time"]
-    date = request.form["date"]
+    try:
+        game_name = request.form["game"]
+        time = request.form["time"]
+        date = request.form["date"]
 
-    game_id = cursor.execute(
-        """SELECT id FROM game WHERE name = ?""", (game_name)
-    ).fetchone()
-    register_id = cursor.execute(
-        """
-        SELECT id FROM register
-        WHERE game_id = ?
-        """, (game_id)
-    ).fetchone()
+        current_user_id = session.get('user_id')
 
-    if game_id and register_id:
+        if not current_user_id:
+            flash("Vous devez être connecté pour poster une run", "error")
+            return fl.redirect(fl.url_for("index_render"))
+
+        game_result = cursor.execute(
+            """SELECT id
+               FROM game
+               WHERE name = ?""",
+            (game_name,)
+        ).fetchone()
+
+        if not game_result:
+            flash(f"Le jeu '{game_name}' n'existe pas", "error")
+            return fl.redirect(fl.url_for("index_render"))
+
+        game_id = game_result["id"]
+
+        register_result = cursor.execute(
+            """
+            SELECT id
+            FROM register
+            WHERE game_id = ?
+              AND user_id = ?
+            """,
+            (game_id, current_user_id)
+        ).fetchone()
+
+        if not register_result:
+            cursor.execute(
+                """INSERT INTO register (game_id, user_id)
+                   VALUES (?, ?)""",
+                (game_id, current_user_id)
+            )
+            register_id = cursor.lastrowid
+
+        else:
+            register_id = register_result["id"]
+
         cursor.execute(
-            """INSERT INTO slowrun (register_id, time) VALUES (?, ?)""",
-            (register_id["id"], time),
+            """INSERT INTO slowrun (register_id, time, date)
+               VALUES (?, ?, ?)""",
+            (register_id, time_seconds, date)
         )
-        cursor.commit()
+
+        get_connection().commit()
+
+        flash("Run enregistrée avec succès!", "success")
+
+    except ValueError as e:
+        flash(f"Erreur de format: {str(e)}", "error")
+        get_connection().rollback()
+    except Exception as e:
+        flash(f"Erreur lors de l'enregistrement: {str(e)}", "error")
+        get_connection().rollback()
+    finally:
         cursor.close()
 
-        return fl.redirect(fl.url_for("index_render"))
+    return fl.redirect(fl.url_for("index_render"))
 
 @app.route("/search")
 def search_render():
