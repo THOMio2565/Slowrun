@@ -13,8 +13,11 @@
 <body>
     <header>
         <img src="/static/images/Logo.png" alt="Logo slowrun">
-        <section id="recherche-accueil">
-            <form action=""><input type="search" id="search" placeholder="🔎 Search"></form>
+        <section id="home-search">
+            <form action="{{ url_for('search_render') }}" method="GET">
+                <input type="search" placeholder="🔎 Search" name="query" value="{{ query if query else '' }}">
+                <button type="submit">Search</button>
+            </form>
             <ul>
                 <li><a href="{{url_for('index_render')}}">Home</a></li>
                 <li><a href="{{url_for('search_render')}}">Jeux</a></li>
