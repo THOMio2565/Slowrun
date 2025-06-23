@@ -1,4 +1,5 @@
 .venv
 slowrun/__pycache__
 slowrun.db
+test.db
 __pycache__
