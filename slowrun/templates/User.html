@@ -2,10 +2,10 @@
 {% block content %}
 <section id="user">
     <div id="username">
-        <h2>Toinoufu</h2>
+        <h2>{{ user.name }}</h2>
     </div>
     <div id="userinfos">
-        <p>rejoint le : 07/03/2024</p>
+        <p>rejoint le : {{ user.date }}</p>
         <p>Nombre de Slowruns : 1</p>
     </div>
 </section>
@@ -18,13 +18,15 @@
 
 <section id="content">
     <div class="slow">
-        <a href="{{url_for('run_render')}}"><img src="{{url_for('static', filename='images/NESTetris.png')}}" alt=""></a>
+        {% for run in runs %}
+        <a href="{{url_for('run_render', id=run.id)}}"><img src="{{url_for('static', filename='images/' ~ run.game|replace(' ', '') ~ '.png' )}}" alt=""></a>
         <div class="run">
-            <h3>NES Tetris</h3>
+            <h3>{{ run.game }}</h3>
             <p>Catégories : Maxout</p>
-            <p>Temps : 2h45m36s690ms</p>
+            <p>{{ run.time | format_seconds}}</p>
             <p>Classement : 1er</p>
         </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock content %}
