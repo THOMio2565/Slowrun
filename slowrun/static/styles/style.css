@@ -329,6 +329,7 @@ button {
 
 /* Section Catégories */
 #Category {
+  display: flex;
   background-color: var(--background-color);
   padding: 20px;
   border-radius: 10px;
@@ -339,6 +340,7 @@ button {
   font-size: 1.3rem;
   color: var(--text-color);
   font-weight: bold;
+  margin-right: 75px;
 }
 
 #Category ul {
@@ -424,6 +426,22 @@ h2 {
 #news p {
   color: var(--light-gray);
   font-size: 0.9rem;
+}
+
+.container2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.container2 .left {
+  width: 70%;
+}
+
+.container2 .right {
+  width: 20%;
 }
 
 /* SECTION RUN */
