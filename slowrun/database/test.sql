@@ -54,7 +54,7 @@ VALUES
 ("Minecraft", 3, "2011-11-18"),
 ("Trackmania 2020", 2, "2020-07-01"),
 ("Brawl Stars", 1, "2018-12-12"),
-("Call Of Duty: Black Ops 6", 0, "2024-10-25");
+("Call Of Duty", 0, "2024-10-25");
 
 INSERT INTO user (name, email, date, password)
 VALUES
