@@ -278,7 +278,33 @@ def poster_run():
 
 @app.route("/search")
 def search_render():
-    return fl.render_template("games_list.html")
+    query = request.args.get('query', '').strip()
+    games = []
+
+    if query:
+        cursor = get_connection().cursor()
+
+        games = cursor.execute(
+            """
+            SELECT id, name FROM game
+            WHERE name LIKE ?
+            ORDER BY name
+            """,
+            (f'%{query}%',)
+        ).fetchall()
+
+        cursor.close()
+    else:
+        cursor = get_connection().cursor()
+        games = cursor.execute(
+            """
+            SELECT id, name FROM game
+            ORDER BY name
+            """
+        ).fetchall()
+        cursor.close()
+
+    return fl.render_template("games_list.html", games=games, query=query)
 
 
 @app.route("/user/<id>")

@@ -2,21 +2,40 @@
 {% block content %}
 <section id="recherche">
     <h3 id="Liste">Liste des jeux</h3>
-    <form action=""><input type="text" placeholder="🔎 Rechercher"></form>
+    <form action="{{ url_for('search_render') }}" method="GET">
+        <input type="search" placeholder="🔎 Search" name="query" value="{{ query if query else '' }}">
+        <button type="submit">Rechercher</button>
+    </form>
     <p>Filtre</p>
 </section>
 
-<section id="Jeux">
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Trackmania2020.png')}}" alt="Trackmania"></a>
-    <a href="{{url_for('rankings_render', id=2)}}"><img src="{{url_for('static', filename='images/COD.png')}}"
-            alt="CallOfDuty"></a>
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/Minecraft.png')}}" alt="Minecraft"></a>
-    <a href="{{url_for('rankings_render', id=1)}}"><img src="{{url_for('static', filename='images/NESTetris.png')}}"
-            alt="Tetris"></a>
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/smb.png')}}" alt="Super Mario Bros."></a>
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/super mario 64.jpg')}}" alt="Super Mario 64"></a>
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/cuphead.jpg')}}" alt="Cuphead"></a>
-    <a href="#NomDuJeu"><img src="{{url_for('static', filename='images/lethal company.png')}}" alt="Lethal Company"></a>
-</section>
+{% if query %}
+    <section id="resultats-recherche">
+        <h4>Résultats pour "{{ query }}"</h4>
+        {% if games %}
+            <div class="search-results">
+                {% for game in games %}
+                    <div class="game-result">
+                        <a href="{{url_for('rankings_render', id=game.id)}}">
+                            <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '')|lower ~ '.png' ) }}" alt="{{ game.name }}">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun jeu trouvé pour "{{ query }}"</p>
+            <a href="{{ url_for('search_render') }}">Voir tous les jeux</a>
+        {% endif %}
+    </section>
+{% else %}
+    <section id="Jeux">
+        {% for game in games %}
+            <a href="{{url_for('rankings_render', id=game.id)}}">
+                <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '')|lower ~ '.png' ) }}" alt="{{ game.name }}">
+            </a>
+        {% endfor %}
+    </section>
+{% endif %}
+
 <h1>More Games Incoming 👀</h1>
 {% endblock content %}
