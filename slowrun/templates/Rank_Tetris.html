@@ -22,6 +22,22 @@
 </section>
 
 <section id="rank">
+    <form action="#popup-run">
+        <button id="popup-button">Poster une run</button>
+    </form>
+
+    <div id="popup-run" class="popup">
+        <div class="popup-content">
+            <a href="#" class="close">&times;</a>
+            <h2>Poster une run</h2>
+            <form method="POST" action="{{ url_for('poster_run') }}">
+                <input type="text" name="game" placeholder="Game name" required>
+                <input type="text" name="time" placeholder="Time" required>
+                <input type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
     <table>
         <tr>
             <th>Place</th>

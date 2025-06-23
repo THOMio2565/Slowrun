@@ -202,26 +202,26 @@ def inscription_render():
         email = request.form["email"]
         password = request.form["password"]
 
-        cursor = get_connection().cursor()
+        conn = get_connection()
+        cursor = conn.cursor()
 
-        # vérifier si le nom d'utilisateur ou email existe déjà
         existing_user = cursor.execute(
-            "SELECT * FROM user WHERE name = ? OR email = ?", (name, email)
+            "SELECT name FROM user WHERE name = ? OR email = ?", (name, email)
         ).fetchone()
 
         if existing_user:
-            error = "Le nom d'utilisateur ou mail est déja utilisé !"
+            error = "Le nom d'utilisateur ou mail est déjà utilisé !"
         else:
-            # créer un compte utilisateur
             cursor.execute(
-                "INSERT INTO user (name, email, password) VALUES (?, DATE('now'), ?)",
+                "INSERT INTO user (name, email, date, password) VALUES (?, ?, DATE('now'), ?)",
                 (name, email, password),
             )
-            cursor.commit()
+            conn.commit()
+
+            user_id = cursor.lastrowid
             cursor.close()
 
-        # redirige vers la connexion après l'inscription
-        return fl.redirect(fl.url_for("user_render"))
+            return fl.redirect(fl.url_for("user_render", id=user_id))
 
     return fl.render_template("inscription.html", error=error)
 
@@ -256,25 +256,28 @@ def poster_run():
     cursor = get_connection().cursor()
 
     game_name = request.form["game"]
-    register_name = request.form["register"]
     time = request.form["time"]
-    # récupére les id au nom
+    date = request.form["date"]
+
     game_id = cursor.execute(
-        "SELECT id FROM game WHERE name = ?", (game_name)
+        """SELECT id FROM game WHERE name = ?""", (game_name)
     ).fetchone()
     register_id = cursor.execute(
-        "SELECT id FROM register WHERE name = ?", (register_name)
+        """
+        SELECT id FROM register
+        WHERE game_id = ?
+        """, (game_id)
     ).fetchone()
 
     if game_id and register_id:
         cursor.execute(
-            "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
+            """INSERT INTO slowrun (register_id, time) VALUES (?, ?)""",
             (register_id["id"], time),
         )
         cursor.commit()
         cursor.close()
 
-        return fl.redirect(fl.url_for(index_render))
+        return fl.redirect(fl.url_for("index_render"))
 
 @app.route("/search")
 def search_render():
