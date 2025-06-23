@@ -1,55 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <!--Jeux populaires-->
-    <div id="popular_games" class="panel">
-        <h2>Jeux Populaires</h2>
-        <div class="games-grid">
-            {% for game in games %}
-                <div class="game-card">
-                    <img src="{{ url_for('static', filename='Images/' ~ game.name|replace(' ', '') ~ '.png' ) }}"
-                         alt="{{ game.name }}" id="jeux">
-                    <div class="game-card-info">
-                        <h3 class="game-name">{{ game.name }}</h3>
-                        <p class="player-count">{{ game.count }}</p>
-                        <p class="game-date">{{ game.date }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
 
     <div id="container">
-
-    <!--Derniers slowruns-->
-    <div id="recents-run" class="panel">
-        <h2>Derniers runs</h2>
-        <div class="runs-grid">
-            {% for run in runs %}
-                <div class="run-card">
-                <div class="run-card-info">
-                    <h3>{{ run.user }}</h3>
-                    <img src="{{ url_for('static', filename='Images/Trackmania2020.png') }}" alt="jeux"
-                    class="last-run">
-                    <strong>{{ run.user }} </strong>
-                    <p><strong>Temps : {{ run.time | format_seconds }} </strong></p>
+        <div class="left">
+            <!--Jeux populaires-->
+            <div id="popular_games" class="panel">
+                <h2>Jeux Populaires</h2>
+                <div class="runs-grid">
+                    {% for game in games %}
+                        <div class="run-card">
+                            <img src="{{ url_for('static', filename='Images/' ~ game.name|replace(' ', '') ~ '.png' ) }}"
+                                 alt="{{ game.name }}" id="jeux">
+                            <div class="game-card-info">
+                                <h3 class="game-name">{{ game.name }}</h3>
+                                <p class="player-count">{{ game.count }} joueurs</p>
+                                <p class="game-date">{{ game.date }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
             </div>
-            <button id="toggle-button" onclick="toggleRuns()">Voir plus</button>
-        </div>
-    </div>
 
-    <!--Actus-->
-    <div id="news" class="panel">
-        <h2>Actualités</h2>
-        <ul>
-            {% for article in articles %}
-                <li>
-                    <strong>{{ article.title }}</strong><br>
-                    <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
-                </li>
-            {% endfor %}
-        </ul>
+
+            <!--Derniers slowruns-->
+            <div id="recents-run" class="panel">
+                <h2>Derniers runs</h2>
+                <div class="runs-grid">
+                    {% for run in runs %}
+                        <div class="run-card">
+                            <h3>{{ run.user }}</h3>
+                            <img src="{{ url_for('static', filename='Images/' ~ run.game|replace(' ', '') ~ '.png' ) }}">
+                            <p><strong>Temps : {{ run.time | format_seconds }} </strong></p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button id="toggle-button" onclick="toggleRuns()">Voir plus</button>
+            </div>
+        </div>
+
+        <div class="right">
+            <!--Actus-->
+            <div id="news" class="panel">
+                <h2>Actualités</h2>
+                <ul>
+                    {% for article in articles %}
+                        <li>
+                            <strong>{{ article.title }}</strong><br>
+                            <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 {% endblock content %}
