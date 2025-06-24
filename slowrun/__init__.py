@@ -197,7 +197,7 @@ def login_render():
                 if user["password"] == password:
                     session['user_id'] = user["id"]
                     session['username'] = user["name"]
-                    session.permanent = True
+                    session.permanent = False
                     cursor.close()
 
                     flash(f"Bienvenue {user['name']} !", "success")
@@ -253,7 +253,7 @@ def inscription_render():
 
                 session['user_id'] = user_id
                 session['username'] = name
-                session.permanent = True
+                session.permanent = False
 
                 cursor.close()
 

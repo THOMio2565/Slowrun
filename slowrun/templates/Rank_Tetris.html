@@ -3,43 +3,35 @@
     <div class="container2">
         <div class="left">
             <section id="Infos">
-                <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
+                <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '') ~ '.png' ) }}" alt="NES Tetris">
                 <div id="Noms">
                     <h2>{{ game.name }}</h2>
-                    <ul id="tags">
-                        <li>#NES</li>
-                        <li>#Retro</li>
-                    </ul>
                 </div>
             </section>
-
-<section id="rank">
-    <form action="#popup-run">
-        <button id="popup-button">Poster une run</button>
-    </form>
-
-    <div id="popup-run" class="popup">
-        <div class="popup-content">
-            <a href="#" class="close">&times;</a>
-            <h2>Poster une run</h2>
-            <form method="POST" action="{{ url_for('poster_run') }}">
-                <input type="text" name="game" placeholder="Game name" required>
-                <input type="text" name="time" placeholder="Time" required>
-                <input type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
-                <button type="submit">Envoyer</button>
-            </form>
-        </div>
-    </div>
-
-</section>
 
             <section id="Category">
                 <p>Catégories :</p>
                 <ul>
                     {% for categorie in categories %}
-                        <li>{{ categorie.name }}</li>
+                        <li class="category-list">{{ categorie.name }}</li>
                     {% endfor %}
                 </ul>
+                <form id="popup-button" action="#popup-run">
+                    <button>Poster une run</button>
+                </form>
+
+                <div id="popup-run" class="popup">
+                    <div class="popup-content">
+                        <a href="#" class="close">&times;</a>
+                        <h2>Poster une run</h2>
+                        <form method="POST" action="{{ url_for('poster_run') }}">
+                            <input class="popup-input" type="text" name="game" placeholder="Game name" required>
+                            <input class="popup-input" type="text" name="time" placeholder="Time" required>
+                            <input class="popup-input" type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
+                            <button type="submit">Envoyer</button>
+                        </form>
+                    </div>
+                </div>
             </section>
 
 
