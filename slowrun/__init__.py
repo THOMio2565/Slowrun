@@ -88,14 +88,13 @@ def index_render():
     runs = cursor.execute(
         """
 
-            SELECT slowrun.time, game.name AS game, user.name AS user, game.id AS link
+            SELECT slowrun.time, slowrun.date, game.name AS game, user.name AS user, slowrun.id AS link
 
             FROM slowrun
 
-            JOIN register ON slowrun.register_id = register.id
-            JOIN game ON register.game_id = game.id
-            JOIN user ON register.user_id = user.id
-        ORDER BY slowrun.time DESC
+            JOIN game ON slowrun.game_id = game.id
+            JOIN user ON slowrun.user_id = user.id
+        ORDER BY slowrun.date DESC
             LIMIT 2
         """
     ).fetchall()
@@ -131,12 +130,11 @@ def rankings_render(id):
     ).fetchone()
     runs = cursor.execute(
         """
-        SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
+        SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user, user.id as profile
         FROM slowrun
-            JOIN register
-        ON slowrun.register_id = register.id
-            JOIN user ON register.user_id = user.id
-            JOIN game ON register.game_id = game.id
+            JOIN user
+        ON slowrun.user_id = user.id
+            JOIN game ON slowrun.game_id = game.id
         WHERE game.id = ?
         ORDER BY slowrun.time ASC
         """,
@@ -275,6 +273,18 @@ def logout():
 @app.route("/run/<int:id>", methods=["GET", "POST"])
 def run_render(id):
     cursor = get_connection().cursor()
+
+    details = cursor.execute(
+        """
+        SELECT slowrun.id, slowrun.time, game.name AS game, game.id AS game_link, user.name AS user, user.id AS profile, categories.name AS category
+        FROM slowrun
+            JOIN game ON slowrun.game_id = game.id
+            JOIN user ON slowrun.user_id = user_id
+            JOIN categories ON slowrun.category_id = categories.id
+        WHERE slowrun.id = ? AND profile = 1
+        """, (id,)
+    ).fetchone()
+
     if request.method == "POST":
         commentaire = request.form.get("commentaire", "").strip()
         user_id = session['user_id']
@@ -291,7 +301,7 @@ def run_render(id):
 
         cursor.close()
         return redirect(url_for('run_render', id=id))
-    return fl.render_template("Detailed_Run.html", run=id)
+    return fl.render_template("Detailed_Run.html", run=id, details=details)
 
 @app.route("/poster_run", methods=["POST"])
 @login_required
@@ -432,12 +442,11 @@ def user_render(id):
 
     runs = cursor.execute(
         """
-        SELECT s.time, s.date, g.name as game_name, g.id as link
-        FROM slowrun s
-                 JOIN register r ON s.register_id = r.id
-                 JOIN game g ON r.game_id = g.id
-        WHERE r.user_id = ?
-        ORDER BY s.date DESC
+        SELECT slowrun.time, slowrun.date, game.name as game_name, game.id as link
+        FROM slowrun
+            JOIN game ON slowrun.game_id = game.id
+        WHERE slowrun.user_id = ?
+        ORDER BY slowrun.date DESC
         """,
         (id,)
     ).fetchall()
