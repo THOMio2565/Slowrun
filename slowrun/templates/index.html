@@ -10,8 +10,10 @@
                 <div class="runs-grid">
                     {% for game in games %}
                         <div class="run-card">
-                            <img src="{{ url_for('static', filename='Images/' ~ game.name|replace(' ', '') ~ '.png' ) }}"
+                            <a href="/rankings/{{ game.id }}">
+                                <img src="{{ url_for('static', filename='Images/' ~ game.name|replace(' ', '') ~ '.png' ) }}"
                                  alt="{{ game.name }}" id="jeux">
+                            </a>
                             <div class="game-card-info">
                                 <h3 class="game-name">{{ game.name }}</h3>
                                 <p class="player-count">{{ game.count }} joueurs</p>
@@ -30,7 +32,9 @@
                     {% for run in runs %}
                         <div class="run-card">
                             <h3>{{ run.user }}</h3>
-                            <img src="{{ url_for('static', filename='Images/' ~ run.game|replace(' ', '') ~ '.png' ) }}">
+                            <a href="/run/{{ run.link }}">
+                                <img src="{{ url_for('static', filename='Images/' ~ run.game|replace(' ', '') ~ '.png' ) }}">
+                            </a>
                             <p><strong>Temps : {{ run.time | format_seconds }} </strong></p>
                         </div>
                     {% endfor %}
@@ -47,7 +51,7 @@
                     {% for article in articles %}
                         <li>
                             <strong>{{ article.title }}</strong><br>
-                            <small>Par {{ article.user }} - jeu : {{ article.game }}</small>
+                            <small>Par {{ article.user }} - Jeu : {{ article.game }}</small>
                         </li>
                     {% endfor %}
                 </ul>

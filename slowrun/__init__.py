@@ -58,7 +58,7 @@ def format_seconds(seconds):
 
     parts = []
     if h > 0:
-        parts.append(f"{h} h")
+        parts.append(f"{h}h")
     if m > 0 or h > 0:
         parts.append(f"{m}min")
     parts.append(f"{s}s")
@@ -87,10 +87,12 @@ def index_render():
     ).fetchall()
     runs = cursor.execute(
         """
-        SELECT slowrun.time, game.name AS game, user.name AS user
-        FROM slowrun
-            JOIN register
-        ON slowrun.register_id = register.id
+
+            SELECT slowrun.time, game.name AS game, user.name AS user, game.id AS link
+
+            FROM slowrun
+
+            JOIN register ON slowrun.register_id = register.id
             JOIN game ON register.game_id = game.id
             JOIN user ON register.user_id = user.id
         ORDER BY slowrun.time DESC
@@ -109,7 +111,11 @@ def index_render():
         """
     ).fetchall()
     cursor.close()
-    return fl.render_template("index.html", games=games, runs=runs, articles=articles)
+    
+    resp = fl.make_response(fl.render_template("index.html", games=games, runs=runs, articles=articles))
+    if request.form.get("username") :
+        resp.set_cookie("username", request.form.get("username"))
+    return resp
 
 
 @app.route("/rankings/<id>")
@@ -261,7 +267,6 @@ def inscription_render():
 
     return fl.render_template("inscription.html", error=error)
 
-
 @app.route("/logout")
 def logout():
     """Déconnexion de l'utilisateur."""
@@ -294,7 +299,23 @@ def run_render():
         cursor.close()
         return redirect(url_for('run_render'))
 
-    # Récupérer les commentaires de la base
+@app.route("/run/<id>", methods=["GET", "POST"])
+def run_render(id):
+    cursor = get_connection().cursor()
+    if request.method == "POST":
+        commentaire = request.form["commentaire"]
+        user_id = 1
+
+        cursor.execute(
+            "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
+            (commentaire, user_id),
+        )
+        cursor.commit()
+        cursor.close()
+
+        return fl.redirect("/")
+
+
     commentaires = cursor.execute(
         """
         SELECT c.*, u.name as user_name
@@ -465,6 +486,28 @@ def user_render(id):
 def profile():
     """Page de profil de l'utilisateur connecté."""
     return redirect(url_for('user_render', id=session['user_id']))
+
+    user = cursor.execute(
+        """
+        SELECT user.name AS name, user.date AS date 
+        FROM user 
+        WHERE id = ?
+        """, [id]
+    ).fetchone()
+    runs = cursor.execute(
+        """
+        SELECT slowrun.id AS id, slowrun.time AS time, game.name AS game, user.id AS user
+        
+        FROM slowrun
+            
+        JOIN register ON slowrun.register_id = register.id
+        JOIN game ON register.game_id = game.id
+        JOIN user ON register.user_id = user.id
+        
+        WHERE user = ?
+        """, [id]
+    ).fetchall()
+    return fl.render_template("user.html", user=user, runs=runs)
 
 
 @app.route("/Actus")
