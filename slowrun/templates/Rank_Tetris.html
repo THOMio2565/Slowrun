@@ -13,6 +13,43 @@
                 </div>
             </section>
 
+<section id="rank">
+    <form action="#popup-run">
+        <button id="popup-button">Poster une run</button>
+    </form>
+
+    <div id="popup-run" class="popup">
+        <div class="popup-content">
+            <a href="#" class="close">&times;</a>
+            <h2>Poster une run</h2>
+            <form method="POST" action="{{ url_for('poster_run') }}">
+                <input type="text" name="game" placeholder="Game name" required>
+                <input type="text" name="time" placeholder="Time" required>
+                <input type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <th>Place</th>
+            <th>Utilisateur</th>
+            <th>Temps</th>
+            <th>Région</th>
+            <th>Date</th>
+        </tr>
+        {%for run in runs%}
+        <tr>
+            <td>{{run.id}}</td>
+            <td><a href="{{url_for('user_render', id=1)}}">{{run.user}}</a></td>
+            <td><a href="{{url_for('run_render')}}">{{run.time}}</a></td>
+            <td>PAL</td>
+            <td>{{run.date}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+</section>
+
             <section id="Category">
                 <p>Catégories :</p>
                 <ul>
@@ -21,6 +58,7 @@
                     {% endfor %}
                 </ul>
             </section>
+
 
             <section id="rank">
                 <table>

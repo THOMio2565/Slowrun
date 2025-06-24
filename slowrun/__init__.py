@@ -1,8 +1,9 @@
 import flask as fl
 import sqlite3
 from pathlib import Path
-from flask import request
-
+from flask import request, session, flash, redirect, url_for
+from functools import wraps
+import hashlib
 
 db = Path(__file__).parents[1] / "test.db"
 
@@ -12,9 +13,41 @@ def get_connection():
     connection = sqlite3.connect(db, detect_types=sqlite3.PARSE_DECLTYPES)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
-    cursor.execute("PRAGMA foreign_keys")
+    cursor.execute("PRAGMA foreign_keys = ON")
     cursor.close()
     return connection
+
+
+def hash_password(password):
+    """Hash un mot de passe avec SHA-256."""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+
+def login_required(f):
+    """Décorateur pour protéger les routes qui nécessitent une authentification."""
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Vous devez être connecté pour accéder à cette page.', 'error')
+            return redirect(url_for('login_render'))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+def get_current_user():
+    """Récupère les informations de l'utilisateur connecté."""
+    if 'user_id' not in session:
+        return None
+
+    cursor = get_connection().cursor()
+    user = cursor.execute(
+        "SELECT id, name, email FROM user WHERE id = ?",
+        (session['user_id'],)
+    ).fetchone()
+    cursor.close()
+    return user
 
 
 def format_seconds(seconds):
@@ -33,7 +66,13 @@ def format_seconds(seconds):
 
 
 app = fl.Flask(__name__)
+app.secret_key = 'votre_cle_secrete_tres_longue_et_complexe_123456789'
 app.jinja_env.filters["format_seconds"] = format_seconds
+
+
+@app.context_processor
+def inject_user():
+    return dict(current_user=get_current_user())
 
 
 @app.route("/")
@@ -41,17 +80,14 @@ def index_render():
     cursor = get_connection().cursor()
     games = cursor.execute(
         """
-            SELECT *
-
-            FROM game
-
-            ORDER BY count DESC
-            
-            LIMIT 4
+        SELECT *
+        FROM game
+        ORDER BY count DESC LIMIT 4
         """
     ).fetchall()
     runs = cursor.execute(
         """
+
             SELECT slowrun.time, game.name AS game, user.name AS user, game.id AS link
 
             FROM slowrun
@@ -59,26 +95,23 @@ def index_render():
             JOIN register ON slowrun.register_id = register.id
             JOIN game ON register.game_id = game.id
             JOIN user ON register.user_id = user.id
-
-            ORDER BY slowrun.time DESC
-
+        ORDER BY slowrun.time DESC
             LIMIT 2
         """
     ).fetchall()
     articles = cursor.execute(
         """
-            SELECT news.title, game.name AS game, user.name AS user
-
-            FROM news
-
-            JOIN game ON news.game_id = game.id
+        SELECT news.title, game.name AS game, user.name AS user
+        FROM news
+            JOIN game
+        ON news.game_id = game.id
             JOIN user ON news.user_id = user.id
-
-            ORDER BY news.id DESC
-
+        ORDER BY news.id DESC
             LIMIT 4
         """
     ).fetchall()
+    cursor.close()
+    
     resp = fl.make_response(fl.render_template("index.html", games=games, runs=runs, articles=articles))
     if request.form.get("username") :
         resp.set_cookie("username", request.form.get("username"))
@@ -91,58 +124,47 @@ def rankings_render(id):
     game = cursor.execute(
         """
         SELECT name
-                          
         FROM game
-                          
         WHERE id = ?
-    """,
+        """,
         [id],
     ).fetchone()
     runs = cursor.execute(
         """
-            SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
-
-            FROM slowrun
-
-            JOIN register ON slowrun.register_id = register.id
+        SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
+        FROM slowrun
+            JOIN register
+        ON slowrun.register_id = register.id
             JOIN user ON register.user_id = user.id
-            JOIN game ON register.game_id = game.id 
-
-            WHERE game.id = ?
-
-            ORDER BY slowrun.time DESC
-    """,
+            JOIN game ON register.game_id = game.id
+        WHERE game.id = ?
+        ORDER BY slowrun.time ASC
+        """,
         [id],
     ).fetchall()
     articles = cursor.execute(
         """
-            SELECT news.title, game.name AS game, user.name AS user
-
-            FROM news
-
-            JOIN game ON news.game_id = game.id
+        SELECT news.title, game.name AS game, user.name AS user
+        FROM news
+            JOIN game
+        ON news.game_id = game.id
             JOIN user ON news.user_id = user.id
-
-            WHERE game.id = ?
-
-            ORDER BY news.id DESC
-
+        WHERE game.id = ?
+        ORDER BY news.id DESC
             LIMIT 4
         """,
         [id],
     ).fetchall()
     categories = cursor.execute(
         """
-            SELECT categories.name, game.id 
-            
-            FROM categories
-
-            JOIN game ON categories.game_id = game.id
-            
-            WHERE game.id = ? 
+        SELECT categories.name, game.id
+        FROM categories
+                 JOIN game ON categories.game_id = game.id
+        WHERE game.id = ?
         """,
         [id],
-    )
+    ).fetchall()
+    cursor.close()
     return fl.render_template(
         "Rank_Tetris.html",
         game=game,
@@ -154,77 +176,128 @@ def rankings_render(id):
 
 @app.route("/login", methods=["GET", "POST"])
 def login_render():
+    if 'user_id' in session:
+        return redirect(url_for('index_render'))
+
     error = None
-    cursor = get_connection().cursor()
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
 
-        # Vérifier si l'utilisateur existe
-        cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
-        user = cursor.fetchone()
-
-        if user:
-            # Vérifier le mot de passe
-            if user["password"] == password:
-                fl.session["user_id"] = user["id"]
-                fl.session["username"] = user["name"]
-                return fl.redirect(fl.url_for("user_render", id=user["id"]))
-            else:
-                error = "Mot de passe incorrect !"
+        if not username or not password:
+            error = "Veuillez remplir tous les champs !"
         else:
-            # Si l'utilisateur n'existe pas, on l'ajoute
-            cursor.execute(
-                "INSERT INTO user (name, date, password) VALUES (?, DATE('now'), ?)",
-                (username, password),
-            )
-            cursor.commit()
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
+            user = cursor.fetchone()
+
+            if user:
+                if user["password"] == hash_password(password):
+                    session['user_id'] = user["id"]
+                    session['username'] = user["name"]
+                    session.permanent = True
+                    cursor.close()
+
+                    flash(f"Bienvenue {user['name']} !", "success")
+
+                    next_page = request.args.get('next')
+                    return redirect(next_page) if next_page else redirect(url_for('index_render'))
+                else:
+                    error = "Mot de passe incorrect !"
+            else:
+                error = "Nom d'utilisateur introuvable !"
+
             cursor.close()
-
-            # Récupérer l'utilisateur après l'insertion
-            user = cursor.execute(
-                "SELECT * FROM user WHERE name = ?", (username,)
-            ).fetchone()
-
-            # Création de la session
-            fl.session["user_id"] = user["id"]
-            fl.session["username"] = user["name"]
-            return fl.redirect(fl.url_for("user_render", id=user["id"]))
 
     return fl.render_template("Login.html", error=error)
 
 
 @app.route("/inscription", methods=["GET", "POST"])
 def inscription_render():
+    if 'user_id' in session:
+        return redirect(url_for('index_render'))
+
     error = None
     if request.method == "POST":
-        name = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
 
-        cursor = get_connection().cursor()
-
-        # vérifier si le nom d'utilisateur ou email existe déjà
-        existing_user = cursor.execute(
-            "SELECT * FROM user WHERE name = ? OR email = ?", (name, email)
-        ).fetchone()
-
-        if existing_user:
-            error = "Le nom d'utilisateur ou mail est déja utilisé !"
+        # Validation des données
+        if not all([name, email, password]):
+            error = "Veuillez remplir tous les champs !"
+        elif len(password) < 6:
+            error = "Le mot de passe doit contenir au moins 6 caractères !"
+        elif password != confirm_password:
+            error = "Les mots de passe ne correspondent pas !"
         else:
-            # créer un compte utilisateur
-            cursor.execute(
-                "INSERT INTO user (name, email, password) VALUES (?, DATE('now'), ?)",
-                (name, email, password),
-            )
-            cursor.commit()
-            cursor.close()
+            conn = get_connection()
+            cursor = conn.cursor()
 
-        # redirige vers la connexion après l'inscription
-        return fl.redirect(fl.url_for("user_render"))
+            existing_user = cursor.execute(
+                "SELECT name FROM user WHERE name = ? OR email = ?", (name, email)
+            ).fetchone()
+
+            if existing_user:
+                error = "Le nom d'utilisateur ou l'email est déjà utilisé !"
+            else:
+                hashed_password = hash_password(password)
+
+                cursor.execute(
+                    "INSERT INTO user (name, email, date, password) VALUES (?, ?, DATE('now'), ?)",
+                    (name, email, hashed_password)
+                )
+                conn.commit()
+
+                user_id = cursor.lastrowid
+
+                session['user_id'] = user_id
+                session['username'] = name
+                session.permanent = True
+
+                cursor.close()
+
+                flash(f"Inscription réussie ! Bienvenue {name} !", "success")
+                return redirect(url_for('index_render'))
+
+            cursor.close()
 
     return fl.render_template("inscription.html", error=error)
 
+@app.route("/logout")
+def logout():
+    """Déconnexion de l'utilisateur."""
+    username = session.get('username', 'Utilisateur')
+    session.clear()
+    flash(f"Au revoir {username} !", "info")
+    return redirect(url_for('index_render'))
+
+
+@app.route("/run", methods=["GET", "POST"])
+@login_required
+def run_render():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+        commentaire = request.form.get("commentaire", "").strip()
+        user_id = session['user_id']  # Utiliser l'ID de l'utilisateur connecté
+
+        if commentaire:
+            cursor.execute(
+                "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
+                (commentaire, user_id),
+            )
+            conn.commit()
+            flash("Commentaire ajouté avec succès !", "success")
+        else:
+            flash("Le commentaire ne peut pas être vide !", "error")
+
+        cursor.close()
+        return redirect(url_for('run_render'))
 
 @app.route("/run/<id>", methods=["GET", "POST"])
 def run_render(id):
@@ -242,72 +315,178 @@ def run_render(id):
 
         return fl.redirect("/")
 
+
     commentaires = cursor.execute(
-        "SELECT * FROM commentaires ORDER BY id DESC"
+        """
+        SELECT c.*, u.name as user_name
+        FROM commentaires c
+                 JOIN user u ON c.user_id = u.id
+        ORDER BY c.id DESC
+        """
     ).fetchall()
     cursor.close()
     return fl.render_template("Detailed_Run.html", commentaires=commentaires)
 
 
 @app.route("/poster_run", methods=["POST"])
+@login_required
 def poster_run():
-    cursor = get_connection().cursor()
+    conn = get_connection()
+    cursor = conn.cursor()
 
-    game_name = request.form["game"]
-    register_name = request.form["register"]
-    time = request.form["time"]
-    # récupére les id au nom
-    game_id = cursor.execute(
-        "SELECT id FROM game WHERE name = ?", (game_name)
-    ).fetchone()
-    register_id = cursor.execute(
-        "SELECT id FROM register WHERE name = ?", (register_name)
-    ).fetchone()
+    try:
+        game_name = request.form.get("game", "").strip()
+        time_input = request.form.get("time", "").strip()
+        date_input = request.form.get("date", "").strip()
 
-    if game_id and register_id:
+        current_user_id = session['user_id']
+
+        if not all([game_name, time_input, date_input]):
+            flash("Tous les champs sont obligatoires", "error")
+            return redirect(url_for("index_render"))
+
+        try:
+            from datetime import datetime
+            datetime.strptime(date_input, '%Y-%m-%d')
+        except ValueError:
+            flash("Format de date invalide. Utilisez YYYY-MM-DD", "error")
+            return redirect(url_for("index_render"))
+
+        try:
+            if ':' in time_input:
+                time_parts = time_input.split(':')
+                if len(time_parts) == 2:
+                    minutes, seconds = map(int, time_parts)
+                    time_seconds = minutes * 60 + seconds
+                elif len(time_parts) == 3:
+                    hours, minutes, seconds = map(int, time_parts)
+                    time_seconds = hours * 3600 + minutes * 60 + seconds
+                else:
+                    raise ValueError("Format de temps invalide")
+            else:
+                time_seconds = int(float(time_input))
+        except (ValueError, TypeError):
+            flash("Format de temps invalide. Utilisez MM:SS, HH:MM:SS ou un nombre de secondes", "error")
+            return redirect(url_for("index_render"))
+
+        if time_seconds <= 0:
+            flash("Le temps doit être positif", "error")
+            return redirect(url_for("index_render"))
+
+        game_result = cursor.execute(
+            "SELECT id, name FROM game WHERE LOWER(name) = LOWER(?)",
+            (game_name,)
+        ).fetchone()
+
+        if not game_result:
+            available_games = cursor.execute(
+                "SELECT name FROM game ORDER BY name LIMIT 10"
+            ).fetchall()
+            game_list = ", ".join([g["name"] for g in available_games])
+            flash(f"Le jeu '{game_name}' n'existe pas. Jeux disponibles : {game_list}...", "error")
+            return redirect(url_for("index_render"))
+
+        game_id = game_result["id"]
+
+        register_result = cursor.execute(
+            "SELECT id FROM register WHERE game_id = ? AND user_id = ?",
+            (game_id, current_user_id)
+        ).fetchone()
+
+        if not register_result:
+            cursor.execute(
+                "INSERT INTO register (game_id, user_id) VALUES (?, ?)",
+                (game_id, current_user_id)
+            )
+            conn.commit()
+            register_id = cursor.lastrowid
+        else:
+            register_id = register_result["id"]
+
+        # Ajouter la run
         cursor.execute(
-            "INSERT INTO slowrun (register_id, time) VALUES (?, ?)",
-            (register_id["id"], time),
+            "INSERT INTO slowrun (register_id, time, date) VALUES (?, ?, ?)",
+            (register_id, time_seconds, date_input)
         )
-        cursor.commit()
-        cursor.close()
 
-        return fl.redirect(fl.url_for(index_render))
+        conn.commit()
+
+        username = session.get('username', 'Utilisateur')
+        flash(f"Run enregistrée avec succès ! {username} - {game_result['name']} : {format_seconds(time_seconds)}",
+              "success")
+
+    except sqlite3.Error as e:
+        conn.rollback()
+        flash(f"Erreur de base de données : {str(e)}", "error")
+    except Exception as e:
+        conn.rollback()
+        flash(f"Erreur lors de l'enregistrement : {str(e)}", "error")
+    finally:
+        cursor.close()
+        conn.close()
+
+    return redirect(url_for("index_render"))
+
 
 @app.route("/search")
 def search_render():
     query = request.args.get('query', '').strip()
-    games = []
+    cursor = get_connection().cursor()
 
     if query:
-        cursor = get_connection().cursor()
-
         games = cursor.execute(
             """
-            SELECT id, name FROM game
+            SELECT id, name
+            FROM game
             WHERE name LIKE ?
             ORDER BY name
             """,
             (f'%{query}%',)
         ).fetchall()
-
-        cursor.close()
     else:
-        cursor = get_connection().cursor()
         games = cursor.execute(
-            """
-            SELECT id, name FROM game
-            ORDER BY name
-            """
+            "SELECT id, name FROM game ORDER BY name"
         ).fetchall()
-        cursor.close()
 
+    cursor.close()
     return fl.render_template("games_list.html", games=games, query=query)
 
 
-@app.route("/user/<id>")
+@app.route("/user/<int:id>")
 def user_render(id):
     cursor = get_connection().cursor()
+
+    user = cursor.execute(
+        "SELECT id, name, email, date FROM user WHERE id = ?",
+        (id,)
+    ).fetchone()
+
+    if not user:
+        flash("Utilisateur introuvable", "error")
+        return redirect(url_for('index_render'))
+
+    user_runs = cursor.execute(
+        """
+        SELECT s.time, s.date, g.name as game_name
+        FROM slowrun s
+                 JOIN register r ON s.register_id = r.id
+                 JOIN game g ON r.game_id = g.id
+        WHERE r.user_id = ?
+        ORDER BY s.date DESC
+        """,
+        (id,)
+    ).fetchall()
+
+    cursor.close()
+    return fl.render_template("user.html", user=user, runs=user_runs)
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    """Page de profil de l'utilisateur connecté."""
+    return redirect(url_for('user_render', id=session['user_id']))
+
     user = cursor.execute(
         """
         SELECT user.name AS name, user.date AS date 
@@ -336,11 +515,10 @@ def actus_render():
     return fl.render_template("Actus.html")
 
 
-@app.route("/cookies")
-def index():
-    username = request.cookies.get("user")
-
 @app.errorhandler(404)
 def page_not_found(e):
     return fl.render_template("404.html"), 404
 
+
+if __name__ == "__main__":
+    app.run(debug=True)
