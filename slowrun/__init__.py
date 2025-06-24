@@ -18,9 +18,9 @@ def get_connection():
     return connection
 
 
-def hash_password(password):
-    """Hash un mot de passe avec SHA-256."""
-    return hashlib.sha256(password.encode()).hexdigest()
+# def hash_password(password):
+#     """Hash un mot de passe avec SHA-256."""
+#     return hashlib.sha256(password.encode()).hexdigest()
 
 
 def login_required(f):
@@ -194,7 +194,7 @@ def login_render():
             user = cursor.fetchone()
 
             if user:
-                if user["password"] == hash_password(password):
+                if user["password"] == password:
                     session['user_id'] = user["id"]
                     session['username'] = user["name"]
                     session.permanent = True
@@ -276,57 +276,48 @@ def logout():
     return redirect(url_for('index_render'))
 
 
-@app.route("/run", methods=["GET", "POST"])
-@login_required
-def run_render():
-    conn = get_connection()
-    cursor = conn.cursor()
+# @app.route("/run", methods=["GET", "POST"])
+# @login_required
+# def run_render():
+#     conn = get_connection()
+#     cursor = conn.cursor()
+#
+#     if request.method == "POST":
+#         commentaire = request.form.get("commentaire", "").strip()
+#         user_id = session['user_id']  # Utiliser l'ID de l'utilisateur connecté
+#
+#         if commentaire:
+#             cursor.execute(
+#                 "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
+#                 (commentaire, user_id),
+#             )
+#             conn.commit()
+#             flash("Commentaire ajouté avec succès !", "success")
+#         else:
+#             flash("Le commentaire ne peut pas être vide !", "error")
+#
+#         cursor.close()
+#         return redirect(url_for('run_render'))
 
+@app.route("/run/<id>", methods=["GET", "POST"])
+def run_render(id):
+    cursor = get_connection().cursor()
     if request.method == "POST":
         commentaire = request.form.get("commentaire", "").strip()
-        user_id = session['user_id']  # Utiliser l'ID de l'utilisateur connecté
+        user_id = session['user_id']
 
         if commentaire:
             cursor.execute(
                 "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
                 (commentaire, user_id),
             )
-            conn.commit()
+            cursor.commit()
             flash("Commentaire ajouté avec succès !", "success")
         else:
             flash("Le commentaire ne peut pas être vide !", "error")
 
         cursor.close()
-        return redirect(url_for('run_render'))
-
-@app.route("/run/<id>", methods=["GET", "POST"])
-def run_render(id):
-    cursor = get_connection().cursor()
-    if request.method == "POST":
-        commentaire = request.form["commentaire"]
-        user_id = 1
-
-        cursor.execute(
-            "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
-            (commentaire, user_id),
-        )
-        cursor.commit()
-        cursor.close()
-
-        return fl.redirect("/")
-
-
-    commentaires = cursor.execute(
-        """
-        SELECT c.*, u.name as user_name
-        FROM commentaires c
-                 JOIN user u ON c.user_id = u.id
-        ORDER BY c.id DESC
-        """
-    ).fetchall()
-    cursor.close()
-    return fl.render_template("Detailed_Run.html", commentaires=commentaires)
-
+        return redirect(url_for('run_render', id))
 
 @app.route("/poster_run", methods=["POST"])
 @login_required
