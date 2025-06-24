@@ -54,7 +54,10 @@ VALUES
 ("Minecraft", 3, "2011-11-18"),
 ("Trackmania 2020", 2, "2020-07-01"),
 ("Brawl Stars", 1, "2018-12-12"),
-("Call Of Duty", 0, "2024-10-25");
+("Call Of Duty", 0, "2024-10-25"),
+("Super Mario Bros", 10,"1985-06-03"),
+("Super Mario 64", 7, "1996-06-23"),
+("Mario Kart World", 15, "2025-06-05");
 
 INSERT INTO user (name, email, date, password)
 VALUES
