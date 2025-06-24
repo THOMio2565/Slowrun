@@ -272,30 +272,6 @@ def logout():
     flash(f"Au revoir {username} !", "info")
     return redirect(url_for('index_render'))
 
-
-# @app.route("/run", methods=["GET", "POST"])
-# @login_required
-# def run_render():
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#
-#     if request.method == "POST":
-#         commentaire = request.form.get("commentaire", "").strip()
-#         user_id = session['user_id']  # Utiliser l'ID de l'utilisateur connecté
-#
-#         if commentaire:
-#             cursor.execute(
-#                 "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
-#                 (commentaire, user_id),
-#             )
-#             conn.commit()
-#             flash("Commentaire ajouté avec succès !", "success")
-#         else:
-#             flash("Le commentaire ne peut pas être vide !", "error")
-#
-#         cursor.close()
-#         return redirect(url_for('run_render'))
-
 @app.route("/run/<int:id>", methods=["GET", "POST"])
 def run_render(id):
     cursor = get_connection().cursor()
@@ -305,7 +281,7 @@ def run_render(id):
 
         if commentaire:
             cursor.execute(
-                "INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)",
+                """INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)""",
                 (commentaire, user_id),
             )
             cursor.commit()
