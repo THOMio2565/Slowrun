@@ -297,7 +297,7 @@ def logout():
 #         return redirect(url_for('run_render'))
 
 @app.route("/run/<int:id>", methods=["GET", "POST"])
-def run_render():
+def run_render(id):
     cursor = get_connection().cursor()
     if request.method == "POST":
         commentaire = request.form.get("commentaire", "").strip()
@@ -314,7 +314,8 @@ def run_render():
             flash("Le commentaire ne peut pas être vide !", "error")
 
         cursor.close()
-        return redirect(url_for('run_render'))
+        return redirect(url_for('run_render', id=id))
+    return fl.render_template("Detailed_Run.html", run=id)
 
 @app.route("/poster_run", methods=["POST"])
 @login_required
