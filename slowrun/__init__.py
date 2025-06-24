@@ -296,8 +296,8 @@ def logout():
 #         cursor.close()
 #         return redirect(url_for('run_render'))
 
-@app.route("/run/<id>", methods=["GET", "POST"])
-def run_render(id):
+@app.route("/run/<int:id>", methods=["GET", "POST"])
+def run_render():
     cursor = get_connection().cursor()
     if request.method == "POST":
         commentaire = request.form.get("commentaire", "").strip()
@@ -314,7 +314,7 @@ def run_render(id):
             flash("Le commentaire ne peut pas être vide !", "error")
 
         cursor.close()
-        return redirect(url_for('run_render', id))
+        return redirect(url_for('run_render'))
 
 @app.route("/poster_run", methods=["POST"])
 @login_required
@@ -453,9 +453,9 @@ def user_render(id):
         flash("Utilisateur introuvable", "error")
         return redirect(url_for('index_render'))
 
-    user_runs = cursor.execute(
+    runs = cursor.execute(
         """
-        SELECT s.time, s.date, g.name as game_name
+        SELECT s.time, s.date, g.name as game_name, g.id as link
         FROM slowrun s
                  JOIN register r ON s.register_id = r.id
                  JOIN game g ON r.game_id = g.id
@@ -466,36 +466,14 @@ def user_render(id):
     ).fetchall()
 
     cursor.close()
-    return fl.render_template("user.html", user=user, runs=user_runs)
+    return fl.render_template("user.html", user=user, runs=runs)
 
 
-@app.route("/profile")
+@app.route("/profile/<int:id>")
 @login_required
-def profile():
+def profile(id):
     """Page de profil de l'utilisateur connecté."""
     return redirect(url_for('user_render', id=session['user_id']))
-
-    user = cursor.execute(
-        """
-        SELECT user.name AS name, user.date AS date 
-        FROM user 
-        WHERE id = ?
-        """, [id]
-    ).fetchone()
-    runs = cursor.execute(
-        """
-        SELECT slowrun.id AS id, slowrun.time AS time, game.name AS game, user.id AS user
-        
-        FROM slowrun
-            
-        JOIN register ON slowrun.register_id = register.id
-        JOIN game ON register.game_id = game.id
-        JOIN user ON register.user_id = user.id
-        
-        WHERE user = ?
-        """, [id]
-    ).fetchall()
-    return fl.render_template("user.html", user=user, runs=runs)
 
 
 @app.route("/Actus")

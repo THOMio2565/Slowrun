@@ -19,7 +19,7 @@
 <section id="content">
     <div class="slow">
         {% for run in runs %}
-        <a href="{{url_for('run_render', id=run.id)}}"><img src="{{url_for('static', filename='images/' ~ run.game|replace(' ', '') ~ '.png' )}}" alt=""></a>
+        <a href="{{url_for('run_render', id=run.link)}}"><img src="{{url_for('static', filename='images/' ~ run.game_name|replace(' ', '') ~ '.png' )}}" alt=""></a>
         <div class="run">
             <h3>{{ run.game }}</h3>
             <p>Catégories : Maxout</p>
