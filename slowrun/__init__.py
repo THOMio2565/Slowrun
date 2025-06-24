@@ -224,15 +224,12 @@ def inscription_render():
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
-        confirm_password = request.form.get("confirm_password", "")
 
         # Validation des données
         if not all([name, email, password]):
             error = "Veuillez remplir tous les champs !"
         elif len(password) < 6:
             error = "Le mot de passe doit contenir au moins 6 caractères !"
-        elif password != confirm_password:
-            error = "Les mots de passe ne correspondent pas !"
         else:
             conn = get_connection()
             cursor = conn.cursor()
@@ -244,7 +241,7 @@ def inscription_render():
             if existing_user:
                 error = "Le nom d'utilisateur ou l'email est déjà utilisé !"
             else:
-                hashed_password = hash_password(password)
+                hashed_password = password
 
                 cursor.execute(
                     "INSERT INTO user (name, email, date, password) VALUES (?, ?, DATE('now'), ?)",
