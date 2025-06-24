@@ -330,6 +330,7 @@ button {
 /* Section Catégories */
 #Category {
   display: flex;
+  align-items: center;
   background-color: var(--background-color);
   padding: 20px;
   border-radius: 10px;
@@ -351,10 +352,10 @@ button {
   gap: 10px;
 }
 
-#Category li {
+.category-list {
   background-color: var(--secondary-color);
   color: var(--text-color);
-  padding: 5px 15px;
+  padding: 10px 15px;
   border-radius: 5px;
   font-size: 1rem;
 }
@@ -481,6 +482,13 @@ h2 {
   color: var(--text-color);
   font-size: 1.2rem;
   margin-bottom: 5px;
+}
+
+#Infos img {
+  width: 175px;
+  height: 250px;
+  object-fit: cover;
+  aspect-ratio: 4/3;
 }
 
 /* SECTION COMMENTAIRES */
@@ -733,6 +741,14 @@ button.read:hover {
 }
 .hidden {
   display: none;
+}
+
+#popup-button {
+  width: 200px;
+}
+
+.popup-input {
+  width: 180px;
 }
 
 /* Section game list */
