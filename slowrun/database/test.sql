@@ -39,7 +39,8 @@ CREATE TABLE categories (
 CREATE TABLE commentaires (
     id INTEGER PRIMARY KEY NOT NULL,
     commentaire TEXT NOT NULL,
-    user_id INTEGER NOT NULL REFERENCES user (id)
+    user_id INTEGER NOT NULL REFERENCES user (id),
+    game_id INTEGER NOT NULL REFERENCES game (id)
 );
 -- Initiating db contents
 

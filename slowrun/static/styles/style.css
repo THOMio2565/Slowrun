@@ -292,7 +292,7 @@ button {
 }
 
 /* Section Infos */
-#Infos {
+#News {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -302,7 +302,7 @@ button {
   box-shadow: 0px 0px 10px var(--secondary-color);
 }
 
-#Infos img {
+#News img {
   width: 150px;
   height: auto;
   border-radius: 10px;
@@ -493,7 +493,7 @@ h2 {
 }
 
 /* SECTION COMMENTAIRES */
-#commentaire {
+#comments {
   margin-top: 20px;
   background-color: var(--dark-gray);
   padding: 20px;
@@ -501,13 +501,13 @@ h2 {
   box-shadow: 0px 0px 10px var(--primary-color);
 }
 
-#commentaire form {
+#comments form {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
 }
 
-#commentaire input {
+#comments input {
   flex: 1;
   padding: 10px;
   border: none;
@@ -516,7 +516,7 @@ h2 {
   color: var(--dark-gray);
 }
 
-#commentaire button {
+#comments button {
   background-color: var(--primary-color);
   color: var(--text-color);
   border: none;
@@ -562,7 +562,7 @@ h2 {
 }
 
 /* Section Actus */
-.actus {
+.news {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -618,7 +618,7 @@ h2 {
 }
 
 /* Avis */
-.avis {
+.content {
   background-color: var(--background-color);
   padding: 20px;
   border-radius: 10px;
@@ -626,18 +626,18 @@ h2 {
   margin-top: 20px;
 }
 
-.avis h2 {
+.content h2 {
   color: var(--accent-color);
   font-size: 1.6rem;
 }
 
-.avis h3 {
+.content h3 {
   color: var(--light-gray);
   font-size: 1rem;
   margin-bottom: 15px;
 }
 
-.avis p {
+.content p {
   font-size: 0.95rem;
   color: var(--text-color);
   line-height: 1.6;
@@ -645,7 +645,7 @@ h2 {
 }
 
 /* Bouton Lire */
-button.lire {
+button.read {
   background-color: var(--accent-color);
   color: var(--dark-gray);
   border: none;
@@ -657,13 +657,13 @@ button.lire {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-button.lire:hover {
+button.read:hover {
   background-color: var(--primary-color);
   transform: scale(1.05);
 }
 
 /* Statistique Section */
-#statistique {
+#statistic {
   background-color: var(--dark-gray);
   padding: 30px;
   border-radius: 10px;
@@ -673,13 +673,13 @@ button.lire:hover {
   text-align: center;
 }
 
-#statistique h2 {
+#statistic h2 {
   color: var(--accent-color);
   margin-bottom: 20px;
   font-size: 1.5rem;
 }
 
-#statistique ul {
+#statistic ul {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -687,7 +687,7 @@ button.lire:hover {
   padding: 0;
 }
 
-#statistique li {
+#statistic li {
   background-color: var(--secondary-color);
   padding: 10px 15px;
   border-radius: 8px;

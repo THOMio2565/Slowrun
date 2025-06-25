@@ -9,14 +9,20 @@
         </div>
 
     </section>
-    <section id="commentaire">
-        <form action="">
+
+    <section id="comments">
+        <form action="{{url_for('run_render', id=2)}}">
             <input type="text" placeholder="💬 Write something">
             <button type="submit">Submit</button>
+
         </form>
         <div class="comm">
-            <p>User 1</p>
-            <p>Amazing slowrun, you're very talented and determined! LYMYMI</p>
+            {% for user in users %}
+            <p>user.name</p>
+            {% endfor %}
+            {% for commentaire in commentaires %}
+            <p>commentaires.commentaire</p>
+            {% endfor %}
         </div>
     </section>
 {% endblock content %}

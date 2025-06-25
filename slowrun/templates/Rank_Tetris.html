@@ -1,39 +1,47 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container2">
-        <div class="left">
-            <section id="Infos">
-                <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '') ~ '.png' ) }}" alt="NES Tetris">
-                <div id="Noms">
-                    <h2>{{ game.name }}</h2>
-                </div>
-            </section>
+<div class="container2">
+    <div class="left">
+        <section id="News">
+            <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
+            <div id="Noms">
+                <h2>{{ game.name }}</h2>
+            </div>
+        </section>
 
-            <section id="Category">
-                <p>Categories :</p>
-                <ul>
-                    {% for categorie in categories %}
-                        <li class="category-list">{{ categorie.name }}</li>
-                    {% endfor %}
-                </ul>
-                <form id="popup-button" action="#popup-run">
-                    <button>Submit a run</button>
-                </form>
+        <section id="Category">
+            <p>Catégories :</p>
+            <ul>
+                {% for categorie in categories %}
+                <li class="category-list">{{ categorie.name }}</li>
+                {% endfor %}
+            </ul>
+            <form id="popup-button" action="#popup-run">
+                <button>Submit a run</button>
+            </form>
+
+
 
                 <div id="popup-run" class="popup">
                     <div class="popup-content">
                         <a href="#" class="close">&times;</a>
+
                         <h2>Submit a run</h2>
-                        <form method="POST" action="{{ url_for('poster_run') }}">
-                            <input class="popup-input" type="text" name="game" placeholder="Game name" required>
+                        <form method="POST" action="{{ url_for('poster_run', id=id) }}">
+                            <input class="popup-input" name="category" list="categories" placeholder="Category" required>
+                            <datalist id="categories">
+                                {% for category in categories %}
+                                <option value="{{ category.name }}"></option>
+                                {% endfor %}
+                            </datalist>
                             <input class="popup-input" type="text" name="time" placeholder="Time" required>
-                            <input class="popup-input" type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
-                            <button type="submit">Envoyer</button>
+                            <input class="popup-input" type="date" name="date" required>
+                            <button type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
-            </section>
-
+            </div>
+        </section>
 
             <section id="rank">
                 <table>
@@ -58,6 +66,7 @@
             </section>
         </div>
 
+
         <section id="news" class="right">
             <h2>Community news</h2>
             <ul>
@@ -72,5 +81,6 @@
             </ul>
         </section>
     </div>
+
 
 {% endblock content %}
