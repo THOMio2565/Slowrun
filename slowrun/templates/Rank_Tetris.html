@@ -24,11 +24,16 @@
                     <div class="popup-content">
                         <a href="#" class="close">&times;</a>
                         <h2>Poster une run</h2>
-                        <form method="POST" action="{{ url_for('poster_run') }}">
-                            <input class="popup-input" type="text" name="game" placeholder="Game name" required>
+                        <form method="POST" action="{{ url_for('poster_run', id=id) }}">
+                            <input class="popup-input" name="category" list="categories" placeholder="Category" required>
+                            <datalist id="categories">
+                                {% for category in categories %}
+                                <option value="{{ category.name }}"></option>
+                                {% endfor %}
+                            </datalist>
                             <input class="popup-input" type="text" name="time" placeholder="Time" required>
-                            <input class="popup-input" type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
-                            <button type="submit">Envoyer</button>
+                            <input class="popup-input" type="date" name="date" required>
+                            <button type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
