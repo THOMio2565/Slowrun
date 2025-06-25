@@ -20,43 +20,50 @@
                 <button>Poster une run</button>
             </form>
 
-            <div id="popup-run" class="popup">
-                <div class="popup-content">
-                    <a href="#" class="close">&times;</a>
-                    <h2>Poster une run</h2>
-                    <form method="POST" action="{{ url_for('poster_run') }}">
-                        <input class="popup-input" type="text" name="game" placeholder="Game name" required>
-                        <input class="popup-input" type="text" name="time" placeholder="Time" required>
-                        <input class="popup-input" type="text" name="date" placeholder="Date (YYYY-MM-DD)" required>
-                        <button type="submit">Envoyer</button>
-                    </form>
+
+                <div id="popup-run" class="popup">
+                    <div class="popup-content">
+                        <a href="#" class="close">&times;</a>
+                        <h2>Poster une run</h2>
+                        <form method="POST" action="{{ url_for('poster_run', id=id) }}">
+                            <input class="popup-input" name="category" list="categories" placeholder="Category" required>
+                            <datalist id="categories">
+                                {% for category in categories %}
+                                <option value="{{ category.name }}"></option>
+                                {% endfor %}
+                            </datalist>
+                            <input class="popup-input" type="text" name="time" placeholder="Time" required>
+                            <input class="popup-input" type="date" name="date" required>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
 
+            <section id="rank">
+                <table>
+                    <tr>
+                        <th>Place</th>
+                        <th>Utilisateur</th>
+                        <th>Temps</th>
+                        <th>Région</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for run in runs %}
+                        <tr>
+                            <td>{{ run.id }}</td>
+                            <td><a href="{{ url_for('user_render', id=run.profile) }}">{{ run.user }}</a></td>
+                            <td><a href="{{ url_for('run_render', id=run.id) }}">{{ run.time | format_seconds }}</a>
+                            </td>
+                            <td>PAL</td>
+                            <td>{{ run.date }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </section>
+        </div>
 
-        <section id="rank">
-            <table>
-                <tr>
-                    <th>Place</th>
-                    <th>Utilisateur</th>
-                    <th>Temps</th>
-                    <th>Région</th>
-                    <th>Date</th>
-                </tr>
-                {% for run in runs %}
-                <tr>
-                    <td>{{ run.id }}</td>
-                    <td><a href="{{ url_for('user_render', id=1) }}">{{ run.user }}</a></td>
-                    <td><a href="{{ url_for('run_render', id=run.id) }}">{{ run.time | format_seconds }}</a>
-                    </td>
-                    <td>PAL</td>
-                    <td>{{ run.date }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </section>
-    </div>
 
     <section id="news" class="right">
         <h2>Actus de la communauté du jeu</h2>

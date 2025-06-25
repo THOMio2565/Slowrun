@@ -88,14 +88,13 @@ def index_render():
     runs = cursor.execute(
         """
 
-            SELECT slowrun.time, game.name AS game, user.name AS user, game.id AS link
+            SELECT slowrun.time, slowrun.date, game.name AS game, user.name AS user, slowrun.id AS link
 
             FROM slowrun
 
-            JOIN register ON slowrun.register_id = register.id
-            JOIN game ON register.game_id = game.id
-            JOIN user ON register.user_id = user.id
-        ORDER BY slowrun.time DESC
+            JOIN game ON slowrun.game_id = game.id
+            JOIN user ON slowrun.user_id = user.id
+        ORDER BY slowrun.date DESC
             LIMIT 2
         """
     ).fetchall()
@@ -111,7 +110,7 @@ def index_render():
         """
     ).fetchall()
     cursor.close()
-    
+
     resp = fl.make_response(fl.render_template("index.html", games=games, runs=runs, articles=articles))
     if request.form.get("username") :
         resp.set_cookie("username", request.form.get("username"))
@@ -123,7 +122,7 @@ def rankings_render(id):
     cursor = get_connection().cursor()
     game = cursor.execute(
         """
-        SELECT name
+        SELECT name, id
         FROM game
         WHERE id = ?
         """,
@@ -131,12 +130,11 @@ def rankings_render(id):
     ).fetchone()
     runs = cursor.execute(
         """
-        SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user
+        SELECT slowrun.id, slowrun.time, slowrun.date, user.name AS user, user.id as profile
         FROM slowrun
-            JOIN register
-        ON slowrun.register_id = register.id
-            JOIN user ON register.user_id = user.id
-            JOIN game ON register.game_id = game.id
+            JOIN user
+        ON slowrun.user_id = user.id
+            JOIN game ON slowrun.game_id = game.id
         WHERE game.id = ?
         ORDER BY slowrun.time ASC
         """,
@@ -171,6 +169,7 @@ def rankings_render(id):
         runs=runs,
         articles=articles,
         categories=categories,
+        id=id
     )
 
 
@@ -197,7 +196,6 @@ def login_render():
                 if user["password"] == password:
                     session['user_id'] = user["id"]
                     session['username'] = user["name"]
-                    session.permanent = False
                     cursor.close()
 
                     flash(f"Bienvenue {user['name']} !", "success")
@@ -253,7 +251,6 @@ def inscription_render():
 
                 session['user_id'] = user_id
                 session['username'] = name
-                session.permanent = False
 
                 cursor.close()
 
@@ -275,6 +272,18 @@ def logout():
 @app.route("/run/<int:id>", methods=["GET", "POST"])
 def run_render(id):
     cursor = get_connection().cursor()
+
+    details = cursor.execute(
+        """
+        SELECT slowrun.id, slowrun.time, game.name AS game, game.id AS game_link, user.name AS user, user.id AS profile, categories.name AS category
+        FROM slowrun
+            JOIN game ON slowrun.game_id = game.id
+            JOIN user ON slowrun.user_id = user_id
+            JOIN categories ON slowrun.category_id = categories.id
+        WHERE slowrun.id = ? AND profile = 1
+        """, (id,)
+    ).fetchone()
+
     if request.method == "POST":
         commentaire = request.form.get("commentaire", "").strip()
         user_id = session['user_id']
@@ -291,31 +300,32 @@ def run_render(id):
 
         cursor.close()
         return redirect(url_for('run_render', id=id))
-    return fl.render_template("Detailed_Run.html", run=id)
+    return fl.render_template("Detailed_Run.html", run=id, details=details)
 
-@app.route("/poster_run", methods=["POST"])
+@app.route("/rankings/<int:id>", methods=["POST"])
 @login_required
-def poster_run():
+def poster_run(id):
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
-        game_name = request.form.get("game", "").strip()
+        game_name = id
         time_input = request.form.get("time", "").strip()
         date_input = request.form.get("date", "").strip()
+        category_input = request.form.get("category", "").strip()
 
-        current_user_id = session['user_id']
+        user_id = session['user_id']
 
         if not all([game_name, time_input, date_input]):
             flash("Tous les champs sont obligatoires", "error")
-            return redirect(url_for("index_render"))
+            return redirect(url_for("rankings_render", id=id))
 
         try:
             from datetime import datetime
             datetime.strptime(date_input, '%Y-%m-%d')
         except ValueError:
             flash("Format de date invalide. Utilisez YYYY-MM-DD", "error")
-            return redirect(url_for("index_render"))
+            return redirect(url_for("rankings_render", id=id))
 
         try:
             if ':' in time_input:
@@ -332,14 +342,14 @@ def poster_run():
                 time_seconds = int(float(time_input))
         except (ValueError, TypeError):
             flash("Format de temps invalide. Utilisez MM:SS, HH:MM:SS ou un nombre de secondes", "error")
-            return redirect(url_for("index_render"))
+            return redirect(url_for("rankings_render", id=id))
 
         if time_seconds <= 0:
             flash("Le temps doit être positif", "error")
-            return redirect(url_for("index_render"))
+            return redirect(url_for("rankings_render", id=id))
 
         game_result = cursor.execute(
-            "SELECT id, name FROM game WHERE LOWER(name) = LOWER(?)",
+            "SELECT id, name FROM game WHERE id = ?",
             (game_name,)
         ).fetchone()
 
@@ -349,29 +359,38 @@ def poster_run():
             ).fetchall()
             game_list = ", ".join([g["name"] for g in available_games])
             flash(f"Le jeu '{game_name}' n'existe pas. Jeux disponibles : {game_list}...", "error")
-            return redirect(url_for("index_render"))
+            return redirect(url_for("rankings_render", id=id))
 
         game_id = game_result["id"]
 
-        register_result = cursor.execute(
-            "SELECT id FROM register WHERE game_id = ? AND user_id = ?",
-            (game_id, current_user_id)
+        category_result = cursor.execute(
+            "SELECT id, name FROM categories WHERE LOWER(name) = LOWER(?)",
+            (category_input,)
         ).fetchone()
 
-        if not register_result:
-            cursor.execute(
-                "INSERT INTO register (game_id, user_id) VALUES (?, ?)",
-                (game_id, current_user_id)
-            )
-            conn.commit()
-            register_id = cursor.lastrowid
-        else:
-            register_id = register_result["id"]
+        if not category_result:
+            available_categories = cursor.execute(
+                """
+                SELECT name FROM categories 
+                    WHERE game_id = ?
+                """, (game_id,)
+            ).fetchall()
+            categories_list = ", ".join([g["name"] for g in available_categories])
+            flash(f"La catégorie '{category_input}' n'existe pas pour ce jeu. Catégories disponibles : {categories_list}...", "error")
+            return redirect(url_for("rankings_render", id=id))
+
+        category_id = category_result["id"]
 
         # Ajouter la run
+        app.logger.info(
+            "Requête SQL : INSERT INTO slowrun (time, date, user_id, game_id, category_id) "
+            "VALUES (%s, %s, %s, %s, %s)",
+            (time_seconds, date_input, user_id, game_id, category_id)
+        )
+
         cursor.execute(
-            "INSERT INTO slowrun (register_id, time, date) VALUES (?, ?, ?)",
-            (register_id, time_seconds, date_input)
+            "INSERT INTO slowrun (time, date, user_id, game_id, category_id) VALUES (?, ?, ?, ?, ?)",
+            (time_seconds, date_input, user_id, game_id, category_id)
         )
 
         conn.commit()
@@ -379,7 +398,6 @@ def poster_run():
         username = session.get('username', 'Utilisateur')
         flash(f"Run enregistrée avec succès ! {username} - {game_result['name']} : {format_seconds(time_seconds)}",
               "success")
-
     except sqlite3.Error as e:
         conn.rollback()
         flash(f"Erreur de base de données : {str(e)}", "error")
@@ -390,7 +408,7 @@ def poster_run():
         cursor.close()
         conn.close()
 
-    return redirect(url_for("index_render"))
+    return redirect(url_for("rankings_render", id=id))
 
 
 @app.route("/search")
@@ -432,12 +450,11 @@ def user_render(id):
 
     runs = cursor.execute(
         """
-        SELECT s.time, s.date, g.name as game_name, g.id as link
-        FROM slowrun s
-                 JOIN register r ON s.register_id = r.id
-                 JOIN game g ON r.game_id = g.id
-        WHERE r.user_id = ?
-        ORDER BY s.date DESC
+        SELECT slowrun.time, slowrun.date, game.name as game_name, game.id as link
+        FROM slowrun
+            JOIN game ON slowrun.game_id = game.id
+        WHERE slowrun.user_id = ?
+        ORDER BY slowrun.date DESC
         """,
         (id,)
     ).fetchall()

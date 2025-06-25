@@ -18,14 +18,9 @@ CREATE TABLE slowrun (
     id INTEGER PRIMARY KEY NOT NULL,
     time INTEGER NOT NULL,
     date DATE NOT NULL,
-    register_id INTEGER NOT NULL REFERENCES register (id)
-);
-
-
-CREATE TABLE register (
-    id INTEGER PRIMARY KEY NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES user (id),
     game_id INTEGER NOT NULL REFERENCES game (id),
-    user_id INTEGER NOT NULL REFERENCES user (id)
+    category_id INTEGER NOT NULL REFERENCES categories (id)
 );
 
 CREATE TABLE news (
@@ -44,7 +39,8 @@ CREATE TABLE categories (
 CREATE TABLE commentaires (
     id INTEGER PRIMARY KEY NOT NULL,
     commentaire TEXT NOT NULL,
-    user_id INTEGER NOT NULL REFERENCES user (id)
+    user_id INTEGER NOT NULL REFERENCES user (id),
+    game_id INTEGER NOT NULL REFERENCES game (id)
 );
 -- Initiating db contents
 
@@ -65,17 +61,11 @@ VALUES
 ("THOMio", "thomio@gmail.com","2023-07-05", "password"),
 ("Dianakolo", "dianakolo@gmail.com","2023-12-03", "password");
 
-INSERT INTO slowrun (time, date, register_id)
+INSERT INTO slowrun (time, date, user_id, game_id, category_id)
 VALUES
-(4600,"2024-02-02", 1),
-(7200, "2024-03-25", 2),
-(10800, "2024-04-29", 3);
-
-INSERT INTO register (game_id, user_id)
-VALUES
-(5, 3),
-(1, 2),
-(2, 1);
+(4600,"2024-02-02", 3, 5, 5),
+(7200, "2024-03-25", 2, 1, 1),
+(10800, "2024-04-29", 1, 2, 4);
 
 INSERT INTO news (title, game_id, user_id)
 VALUES
@@ -91,4 +81,5 @@ VALUES
 ("Rollover", 1),
 ("Any%", 2),
 ("All advancement", 2),
-("how did we get here", 2);
+("how did we get here", 2),
+("Great ? block ruins", 8);
