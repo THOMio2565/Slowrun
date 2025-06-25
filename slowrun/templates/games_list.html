@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <section id="recherche">
-    <h3 id="Liste">Liste des jeux</h3>
+    <h3 id="Liste">Games List</h3>
     <form action="{{ url_for('search_render') }}" method="GET">
         <input type="search" placeholder="🔎 Search" name="query" value="{{ query if query else '' }}">
         <button type="submit">Search</button>
@@ -10,7 +10,7 @@
 
 {% if query %}
     <section id="search-result">
-        <h4>Résultats pour "{{ query }}"</h4>
+        <h4>Results for "{{ query }}"</h4>
         {% if games %}
             <div class="search-results">
                 {% for game in games %}

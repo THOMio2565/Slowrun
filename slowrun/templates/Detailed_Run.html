@@ -5,14 +5,14 @@
         <div id="infos">
             <h2>{{ details.category}}</h2>
             <h2> <a href="{{url_for('user_render', id=1)}}"> By {{ details.user }} </a> </h2>
-            <p>Temps : {{ details.time|format_seconds}}</p>
+            <p>Time : {{ details.time|format_seconds}}</p>
         </div>
 
     </section>
     <section id="commentaire">
         <form action="">
-            <input type="text" placeholder="💬 Écrivez un commentaire...">
-            <button>Envoyer</button>
+            <input type="text" placeholder="💬 Write something">
+            <button type="submit">Submit</button>
         </form>
         <div class="comm">
             <p>User 1</p>

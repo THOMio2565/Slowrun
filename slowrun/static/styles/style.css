@@ -57,6 +57,7 @@ header ul li a {
   border-radius: 20px;
   transition: background-color 0.3s, transform 0.2s;
   display: inline-block;
+  width: 50px;
 }
 
 header ul li a:hover {

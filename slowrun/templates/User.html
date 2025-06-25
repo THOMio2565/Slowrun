@@ -5,8 +5,8 @@
         <h2>{{ user.name }}</h2>
     </div>
     <div id="userinfos">
-        <p>rejoint le : {{ user.date }}</p>
-        <p>Nombre de Slowruns : 1</p>
+        <p>Joined on : {{ user.date }}</p>
+        <p>Number of Slowruns : 1</p>
     </div>
 </section>
 
@@ -22,9 +22,9 @@
         <a href="{{url_for('run_render', id=run.link)}}"><img src="{{url_for('static', filename='images/' ~ run.game_name|replace(' ', '') ~ '.png' )}}" alt=""></a>
         <div class="run">
             <h3>{{ run.game }}</h3>
-            <p>Catégories : Maxout</p>
+            <p>Categories : Maxout</p>
             <p>{{ run.time | format_seconds}}</p>
-            <p>Classement : 1er</p>
+            <p>Place : 1st</p>
         </div>
         {% endfor %}
     </div>

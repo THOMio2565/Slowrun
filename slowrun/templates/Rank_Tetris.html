@@ -10,20 +10,20 @@
             </section>
 
             <section id="Category">
-                <p>Catégories :</p>
+                <p>Categories :</p>
                 <ul>
                     {% for categorie in categories %}
                         <li class="category-list">{{ categorie.name }}</li>
                     {% endfor %}
                 </ul>
                 <form id="popup-button" action="#popup-run">
-                    <button>Poster une run</button>
+                    <button>Submit a run</button>
                 </form>
 
                 <div id="popup-run" class="popup">
                     <div class="popup-content">
                         <a href="#" class="close">&times;</a>
-                        <h2>Poster une run</h2>
+                        <h2>Submit a run</h2>
                         <form method="POST" action="{{ url_for('poster_run') }}">
                             <input class="popup-input" type="text" name="game" placeholder="Game name" required>
                             <input class="popup-input" type="text" name="time" placeholder="Time" required>
@@ -39,9 +39,9 @@
                 <table>
                     <tr>
                         <th>Place</th>
-                        <th>Utilisateur</th>
-                        <th>Temps</th>
-                        <th>Région</th>
+                        <th>User</th>
+                        <th>Time</th>
+                        <th>Region</th>
                         <th>Date</th>
                     </tr>
                     {% for run in runs %}
@@ -59,7 +59,7 @@
         </div>
 
         <section id="news" class="right">
-            <h2>Actus de la communauté du jeu</h2>
+            <h2>Community news</h2>
             <ul>
                 {% for article in articles %}
                     <li><a href="#article">

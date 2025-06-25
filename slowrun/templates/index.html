@@ -6,7 +6,7 @@
         <div class="left">
             <!--Jeux populaires-->
             <div id="popular_games" class="panel">
-                <h2>Jeux Populaires</h2>
+                <h2>Popular Games</h2>
                 <div class="runs-grid">
                     {% for game in games %}
                         <div class="run-card">
@@ -16,7 +16,7 @@
                             </a>
                             <div class="game-card-info">
                                 <h3 class="game-name">{{ game.name }}</h3>
-                                <p class="player-count">{{ game.count }} joueurs</p>
+                                <p class="player-count">{{ game.count }} players</p>
                                 <p class="game-date">{{ game.date }}</p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
 
             <!--Derniers slowruns-->
             <div id="recents-run" class="panel">
-                <h2>Derniers runs</h2>
+                <h2>Latest runs</h2>
                 <div class="runs-grid">
                     {% for run in runs %}
                         <div class="run-card">
@@ -35,18 +35,17 @@
                             <a href="/run/{{ run.link }}">
                                 <img src="{{ url_for('static', filename='Images/' ~ run.game|replace(' ', '') ~ '.png' ) }}">
                             </a>
-                            <p><strong>Temps : {{ run.time | format_seconds }} </strong></p>
+                            <p><strong>Time : {{ run.time | format_seconds }} </strong></p>
                         </div>
                     {% endfor %}
                 </div>
-                <button id="toggle-button" onclick="toggleRuns()">Voir plus</button>
             </div>
         </div>
 
         <div class="right">
             <!--Actus-->
             <div id="news" class="panel">
-                <h2>Actualités</h2>
+                <h2>News</h2>
                 <ul>
                     {% for article in articles %}
                         <li>
