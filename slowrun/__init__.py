@@ -284,23 +284,31 @@ def run_render(id):
         """, (id,)
     ).fetchone()
 
-    if request.method == "POST":
-        commentaire = request.form.get("commentaire", "").strip()
-        user_id = session['user_id']
-
-        if commentaire:
-            cursor.execute(
-                """INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)""",
-                (commentaire, user_id),
-            )
-            cursor.commit()
-            flash("Commentaire ajouté avec succès !", "success")
-        else:
-            flash("Le commentaire ne peut pas être vide !", "error")
-
-        cursor.close()
-        return redirect(url_for('run_render', id=id))
     return fl.render_template("Detailed_Run.html", run=id, details=details)
+
+@app.route("/comments/<int:id>", methods=["POST"])
+def comments(id):  # id = game_id
+    if 'user_id' not in session:
+        return redirect(url_for('login_render'))
+
+    commentaire = request.form.get("commentaire", "").strip()
+    user_id = session['user_id']
+    run_id = request.form.get("run_id")  # On récupère le slowrun.id ici
+
+    if commentaire:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO commentaires (commentaire, user_id, game_id) VALUES (?, ?, ?)",
+            (commentaire, user_id, id)
+        )
+        conn.commit()
+        cursor.close()
+        flash("Commentaire ajouté avec succès !", "success")
+    else:
+        flash("Le commentaire ne peut pas être vide !", "error")
+
+    return redirect(url_for('run_render', id=run_id))
 
 @app.route("/rankings/<int:id>", methods=["POST"])
 @login_required
