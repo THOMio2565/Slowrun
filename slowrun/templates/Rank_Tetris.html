@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container2">
-    <div class="left">
-        <section id="News">
-            <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
-            <div id="Noms">
-                <h2>{{ game.name }}</h2>
-            </div>
-        </section>
+    <div class="container2">
+        <div class="left">
+            <section id="News">
+                <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
+                <div id="Noms">
+                    <h2>{{ game.name }}</h2>
+                </div>
+            </section>
 
-        <section id="Category">
-            <p>Catégories :</p>
-            <ul>
-                {% for categorie in categories %}
-                <li class="category-list">{{ categorie.name }}</li>
-                {% endfor %}
-            </ul>
-            <form id="popup-button" action="#popup-run">
-                <button>Submit a run</button>
-            </form>
-
+            <section id="Category">
+                <p>Catégories :</p>
+                <ul>
+                    {% for categorie in categories %}
+                        <li class="category-list">{{ categorie.name }}</li>
+                    {% endfor %}
+                </ul>
+                <form id="popup-button" action="#popup-run">
+                    <button>Submit a run</button>
+                </form>
 
 
                 <div id="popup-run" class="popup">
@@ -28,10 +27,11 @@
 
                         <h2>Submit a run</h2>
                         <form method="POST" action="{{ url_for('poster_run', id=id) }}">
-                            <input class="popup-input" name="category" list="categories" placeholder="Category" required>
+                            <input class="popup-input" name="category" list="categories" placeholder="Category"
+                                   required>
                             <datalist id="categories">
                                 {% for category in categories %}
-                                <option value="{{ category.name }}"></option>
+                                    <option value="{{ category.name }}"></option>
                                 {% endfor %}
                             </datalist>
                             <input class="popup-input" type="text" name="time" placeholder="Time" required>
@@ -40,8 +40,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
             <section id="rank">
                 <table>
