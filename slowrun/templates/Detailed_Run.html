@@ -5,16 +5,16 @@
         <div id="infos">
             <h2>{{ details.category}}</h2>
             <h2> <a href="{{url_for('user_render', id=1)}}"> By {{ details.user }} </a> </h2>
-            <p>Temps : {{ details.time|format_seconds}}</p>
+            <p>Time : {{ details.time|format_seconds}}</p>
         </div>
 
     </section>
 
     <section id="comments">
         <form action="{{url_for('run_render', id=2)}}">
+            <input type="text" placeholder="💬 Write something">
+            <button type="submit">Submit</button>
 
-            <input type="text" placeholder="💬 Écrivez un commentaire...">
-            <button>Envoyer</button>
         </form>
         <div class="comm">
             {% for user in users %}
