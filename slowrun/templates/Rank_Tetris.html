@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container2">
-        <div class="left">
-            <section id="Infos">
-                <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '') ~ '.png' ) }}" alt="NES Tetris">
-                <div id="Noms">
-                    <h2>{{ game.name }}</h2>
-                </div>
-            </section>
+<div class="container2">
+    <div class="left">
+        <section id="News">
+            <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
+            <div id="Noms">
+                <h2>{{ game.name }}</h2>
+            </div>
+        </section>
 
-            <section id="Category">
-                <p>Catégories :</p>
-                <ul>
-                    {% for categorie in categories %}
-                        <li class="category-list">{{ categorie.name }}</li>
-                    {% endfor %}
-                </ul>
-                <form id="popup-button" action="#popup-run">
-                    <button>Poster une run</button>
-                </form>
+        <section id="Category">
+            <p>Catégories :</p>
+            <ul>
+                {% for categorie in categories %}
+                <li class="category-list">{{ categorie.name }}</li>
+                {% endfor %}
+            </ul>
+            <form id="popup-button" action="#popup-run">
+                <button>Poster une run</button>
+            </form>
+
 
                 <div id="popup-run" class="popup">
                     <div class="popup-content">
@@ -37,8 +38,8 @@
                         </form>
                     </div>
                 </div>
-            </section>
-
+            </div>
+        </section>
 
             <section id="rank">
                 <table>
@@ -63,19 +64,20 @@
             </section>
         </div>
 
-        <section id="news" class="right">
-            <h2>Actus de la communauté du jeu</h2>
-            <ul>
-                {% for article in articles %}
-                    <li><a href="#article">
-                        <h3>{{ article.title }}</h3>
-                    </a>
-                        <p>{{ article.game }}</p>
-                        <p>By {{ article.user }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </section>
-    </div>
+
+    <section id="news" class="right">
+        <h2>Actus de la communauté du jeu</h2>
+        <ul>
+            {% for article in articles %}
+            <li><a href="#article">
+                    <h3>{{ article.title }}</h3>
+                </a>
+                <p>{{ article.game }}</p>
+                <p>By {{ article.user }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+</div>
 
 {% endblock content %}
