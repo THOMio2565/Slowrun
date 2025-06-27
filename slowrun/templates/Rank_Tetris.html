@@ -53,7 +53,18 @@
                     </tr>
                     {% for run in runs %}
                         <tr>
-                            <td>{{ run.id }}</td>
+                            {% set suffix = ['th','st','nd','rd'] %}
+                              <td>
+                              {{
+                                loop.index ~ (
+                                  'th' if loop.index % 100 in [11,12,13]
+                                  else 'st' if loop.index % 10 == 1
+                                  else 'nd' if loop.index % 10 == 2
+                                  else 'rd' if loop.index % 10 == 3
+                                  else 'th'
+                                )
+                              }}
+                            </td>
                             <td><a href="{{ url_for('user_render', id=run.profile) }}">{{ run.user }}</a></td>
                             <td><a href="{{ url_for('run_render', id=run.id) }}">{{ run.time | format_seconds }}</a>
                             </td>

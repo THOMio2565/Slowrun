@@ -134,7 +134,7 @@ def rankings_render(id):
         ON slowrun.user_id = user.id
             JOIN game ON slowrun.game_id = game.id
         WHERE game.id = ?
-        ORDER BY slowrun.time ASC
+        ORDER BY slowrun.time DESC
         """,
         [id],
     ).fetchall()

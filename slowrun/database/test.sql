@@ -82,4 +82,9 @@ VALUES
 ("Any%", 2),
 ("All advancement", 2),
 ("how did we get here", 2),
+("All Authors", 3),
+("Max Rank", 4),
+("Tea Bag%", 5),
+("any%", 6),
+("0 Stars", 7),
 ("Great ? block ruins", 8);
