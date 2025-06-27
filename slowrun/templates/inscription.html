@@ -2,13 +2,13 @@
 {% block content %}
 <form action="{{url_for('inscription_render')}}" method="POST">
     <label for="username">Username :</label>
-    <input type="text" name="name" id="username" placeholder="Enter your username" required>
+    <input class="sign-in" type="text" name="name" id="username" placeholder="Enter your username" required>
 
     <label for="email">Email :</label>
-    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+    <input class="sign-in" type="email" name="email" id="email" placeholder="Enter your email" required>
 
     <label for="password">Password :</label>
-    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <input class="sign-in" type="password" id="password" name="password" placeholder="Enter your password" required>
     <button type="submit">Sign-in</button>
 </form>
 {% endblock content %}

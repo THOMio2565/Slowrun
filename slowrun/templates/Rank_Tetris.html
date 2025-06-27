@@ -2,8 +2,8 @@
 {% block content %}
     <div class="container2">
         <div class="left">
-            <section id="News">
-                <img src="{{ url_for('static', filename='images/NESTetris.png') }}" alt="NES Tetris">
+            <section id="GameRank">
+                <img src="{{ url_for('static', filename='images/' ~ game.name|replace(' ', '') ~ '.png' ) }}" alt="NES Tetris">
                 <div id="Noms">
                     <h2>{{ game.name }}</h2>
                 </div>

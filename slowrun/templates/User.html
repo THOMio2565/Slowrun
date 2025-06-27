@@ -13,20 +13,20 @@
 
 <section id="tabs">
     <h3 class="title">Latest Slowruns</h3>
-    <h3 class="title">Games ran</h3>
-    <h3 class="title">Articles posted</h3>
 </section>
 
 <section id="content">
     <div class="slow">
         {% for run in runs %}
-        <a href="{{url_for('run_render', id=run.link)}}"><img src="{{url_for('static', filename='images/' ~ run.game_name|replace(' ', '') ~ '.png' )}}" alt=""></a>
-        <div class="run">
-            <h3>{{ run.game }}</h3>
-            <p>Categories : Maxout</p>
-            <p>{{ run.time | format_seconds}}</p>
-            <p>Place : 1st</p>
-        </div>
+            <a href="{{ url_for('run_render', id=run.slowrun_id) }}">
+                <img src="{{ url_for('static', filename='images/' ~ run.game_name|replace(' ', '') ~ '.png' ) }}"
+                     alt="">
+            </a>
+            <div class="run">
+                <h3>{{ run.game_name }}</h3>
+                <p>Catégorie : {{ run.category_name if run.category_name else 'Non spécifiée' }}</p>
+                <p>{{ run.time | format_seconds }}</p>
+            </div>
         {% endfor %}
     </div>
 </section>

@@ -269,38 +269,67 @@ def logout():
     flash(f"Au revoir {username} !", "info")
     return redirect(url_for('index_render'))
 
+
 @app.route("/run/<int:id>", methods=["GET", "POST"])
 def run_render(id):
     cursor = get_connection().cursor()
 
     details = cursor.execute(
         """
-        SELECT slowrun.id, slowrun.time, game.name AS game, game.id AS game_link, user.name AS user, user.id AS profile, categories.name AS category
+        SELECT slowrun.id,
+               slowrun.time,
+               game.name AS game,
+               game.id   AS game_link,
+               user.name AS user, user.id AS profile, categories.name AS category
         FROM slowrun
-            JOIN game ON slowrun.game_id = game.id
-            JOIN user ON slowrun.user_id = user_id
+            JOIN game
+        ON slowrun.game_id = game.id
+            JOIN user ON slowrun.user_id = user.id
             JOIN categories ON slowrun.category_id = categories.id
-        WHERE slowrun.id = ? AND profile = 1
+        WHERE slowrun.id = ? AND user.id = 1
         """, (id,)
     ).fetchone()
 
-    if request.method == "POST":
-        commentaire = request.form.get("commentaire", "").strip()
-        user_id = session['user_id']
+    if not details:
+        flash("Run non trouvé", "error")
+        return redirect(url_for('index_render'))
 
-        if commentaire:
-            cursor.execute(
-                """INSERT INTO commentaires (commentaire, user_id) VALUES (?, ?)""",
-                (commentaire, user_id),
-            )
-            cursor.commit()
-            flash("Commentaire ajouté avec succès !", "success")
-        else:
-            flash("Le commentaire ne peut pas être vide !", "error")
+    commentaires = cursor.execute("""
+                                  SELECT c.commentaire, u.name as user_name, c.id as comment_id
+                                  FROM commentaires c
+                                           JOIN user u ON c.user_id = u.id
+                                  WHERE c.game_id = ?
+                                  ORDER BY c.id DESC
+                                  """, (details['game_link'],)).fetchall()
 
+    cursor.close()
+
+    return fl.render_template("Detailed_Run.html", run=id, details=details, commentaires=commentaires)
+
+@app.route("/comments/<int:id>", methods=["POST"])
+def comments(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login_render'))
+
+    commentaire = request.form.get("commentaire", "").strip()
+    user_id = session['user_id']
+    run_id = request.form.get("run_id")
+
+    if commentaire:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO commentaires (commentaire, user_id, game_id) VALUES (?, ?, ?)",
+            (commentaire, user_id, id)
+        )
+        conn.commit()
         cursor.close()
-        return redirect(url_for('run_render', id=id))
-    return fl.render_template("Detailed_Run.html", run=id, details=details)
+        conn.close()
+        flash("Commentaire ajouté avec succès !", "success")
+    else:
+        flash("Le commentaire ne peut pas être vide !", "error")
+
+    return redirect(url_for('run_render', id=run_id))
 
 @app.route("/rankings/<int:id>", methods=["POST"])
 @login_required
@@ -450,9 +479,10 @@ def user_render(id):
 
     runs = cursor.execute(
         """
-        SELECT slowrun.time, slowrun.date, game.name as game_name, game.id as link
+        SELECT slowrun.id as slowrun_id, slowrun.time, slowrun.date, game.name as game_name, game.id as link, categories.name as category_name
         FROM slowrun
-            JOIN game ON slowrun.game_id = game.id
+                 JOIN game ON slowrun.game_id = game.id
+                 LEFT JOIN categories ON slowrun.category_id = categories.id
         WHERE slowrun.user_id = ?
         ORDER BY slowrun.date DESC
         """,
