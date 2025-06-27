@@ -11,8 +11,7 @@
     </section>
 
     <section id="comments">
-        <form method="POST" action="{{ url_for('comments', id=details['game_link']) }}">
-            <input type="hidden" name="run_id" value="{{ run }}">
+        <form method="POST" action="{{ url_for('comments', run_id=run) }}">
             <input type="text" name="commentaire" placeholder="💬 Write something" required>
             <button type="submit">Submit</button>
         </form>
@@ -24,4 +23,5 @@
             {% endfor %}
         </div>
     </section>
+
 {% endblock content %}

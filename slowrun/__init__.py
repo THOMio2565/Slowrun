@@ -37,18 +37,16 @@ def login_required(f):
 
 
 def get_current_user():
-    """Récupère les informations de l'utilisateur connecté."""
     if 'user_id' not in session:
         return None
 
-    cursor = get_connection().cursor()
-    user = cursor.execute(
-        "SELECT id, name, email FROM user WHERE id = ?",
-        (session['user_id'],)
-    ).fetchone()
-    cursor.close()
-    return user
-
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        user = cursor.execute(
+            "SELECT id, name, email FROM user WHERE id = ?",
+            (session['user_id'],)
+        ).fetchone()
+        return user
 
 def format_seconds(seconds):
     seconds = int(seconds)
@@ -306,21 +304,20 @@ def run_render(id):
 
     return fl.render_template("Detailed_Run.html", run=id, details=details, commentaires=commentaires)
 
-@app.route("/comments/<int:id>", methods=["POST"])
-def comments(id):
+@app.route("/comments/<int:run_id>", methods=["POST"])
+def comments(run_id):
     if 'user_id' not in session:
         return redirect(url_for('login_render'))
 
     commentaire = request.form.get("commentaire", "").strip()
     user_id = session['user_id']
-    run_id = request.form.get("run_id")
 
     if commentaire:
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO commentaires (commentaire, user_id, game_id) VALUES (?, ?, ?)",
-            (commentaire, user_id, id)
+            """INSERT INTO commentaires (commentaire, user_id, run_id) VALUES (?, ?, ?)""",
+            (commentaire, user_id, run_id)
         )
         conn.commit()
         cursor.close()
