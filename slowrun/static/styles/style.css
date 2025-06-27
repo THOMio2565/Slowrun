@@ -801,6 +801,10 @@ button.read:hover {
   align-items: center;
 }
 
+#allgames {
+  width: 200px;
+}
+
 /* Section sign-in */
 
 .sign-in {

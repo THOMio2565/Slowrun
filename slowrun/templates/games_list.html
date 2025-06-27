@@ -24,7 +24,9 @@
             </div>
         {% else %}
             <p>Aucun jeu trouvé pour "{{ query }}"</p>
-            <a href="{{ url_for('search_render') }}">Voir tous les jeux</a>
+            <form id="allgames" action="{{ url_for('search_render') }}">
+                <button>Voir tous les jeux</button>
+            </form>
         {% endif %}
     </section>
 {% else %}
