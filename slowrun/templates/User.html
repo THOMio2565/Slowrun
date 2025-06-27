@@ -6,8 +6,8 @@
     </div>
 
     <div id="usernews">
-        <p>rejoint le : {{ user.date }}</p>
-        <p>Nombre de Slowruns : 1</p>
+        <p>Joined on : {{ user.date }}</p>
+        <p>Number of Slowruns : 1</p>
     </div>
 </section>
 
@@ -24,7 +24,7 @@
             </a>
             <div class="run">
                 <h3>{{ run.game_name }}</h3>
-                <p>Catégorie : {{ run.category_name if run.category_name else 'Non spécifiée' }}</p>
+                <p>Category : {{ run.category_name if run.category_name else 'Not specified' }}</p>
                 <p>{{ run.time | format_seconds }}</p>
             </div>
         {% endfor %}

@@ -178,7 +178,7 @@ def login_render():
     if 'user_id' in session:
         return redirect(url_for('index_render'))
 
-    error = None
+    error = ""
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
@@ -192,24 +192,22 @@ def login_render():
             cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
             user = cursor.fetchone()
 
-            if user:
-                if user["password"] == password:
-                    session['user_id'] = user["id"]
-                    session['username'] = user["name"]
-                    cursor.close()
+            if user and user["password"] == password:
+                session['user_id'] = user["id"]
+                session['username'] = user["name"]
+                cursor.close()
 
-                    flash(f"Bienvenue {user['name']} !", "success")
+                flash(f"Bienvenue {user['name']} !", "success")
 
-                    next_page = request.args.get('next')
-                    return redirect(next_page) if next_page else redirect(url_for('index_render'))
-                else:
-                    error = "Mot de passe incorrect !"
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('index_render'))
             else:
-                error = "Nom d'utilisateur introuvable !"
+                error = "Nom d'utilisateur ou mot de passe incorrect !"
 
             cursor.close()
 
     return fl.render_template("Login.html", error=error)
+
 
 
 @app.route("/inscription", methods=["GET", "POST"])
@@ -280,13 +278,14 @@ def run_render(id):
                slowrun.time,
                game.name AS game,
                game.id   AS game_link,
-               user.name AS user, user.id AS profile, categories.name AS category
+               user.name AS user, 
+               user.id AS profile, 
+               categories.name AS category
         FROM slowrun
-            JOIN game
-        ON slowrun.game_id = game.id
+            JOIN game ON slowrun.game_id = game.id
             JOIN user ON slowrun.user_id = user.id
             JOIN categories ON slowrun.category_id = categories.id
-        WHERE slowrun.id = ? AND user.id = 1
+        WHERE slowrun.id = ?
         """, (id,)
     ).fetchone()
 
