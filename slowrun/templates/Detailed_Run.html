@@ -3,25 +3,24 @@
     <section id="run">
         <img src="{{ url_for('static', filename='images/' ~ details.game|replace(' ', '') ~ '.png' ) }}" alt="">
         <div id="infos">
-            <h2>{{ details.category}}</h2>
-            <h2> <a href="{{url_for('user_render', id=1)}}"> By {{ details.user }} </a> </h2>
-            <p>Time : {{ details.time|format_seconds}}</p>
+            <h2>{{ details.category }}</h2>
+            <h2><a href="{{ url_for('user_render', id=1) }}"> By {{ details.user }} </a></h2>
+            <p>Time : {{ details.time|format_seconds }}</p>
         </div>
 
     </section>
 
     <section id="comments">
-        <form method="POST" action="{{url_for('comments', id=details['game_link'])}}">
+        <form method="POST" action="{{ url_for('comments', id=details['game_link']) }}">
             <input type="hidden" name="run_id" value="{{ run }}">
-            <input type="text" placeholder="💬 Write something">
+            <input type="text" name="commentaire" placeholder="💬 Write something" required>
             <button type="submit">Submit</button>
         </form>
         <div class="comm">
-            {% for user in users %}
-            <p>user.name</p>
-            {% endfor %}
             {% for commentaire in commentaires %}
-            <p>commentaires.commentaire</p>
+                <div class="comment">
+                    <p><strong>{{ commentaire.user_name }}:</strong> {{ commentaire.commentaire }}</p>
+                </div>
             {% endfor %}
         </div>
     </section>

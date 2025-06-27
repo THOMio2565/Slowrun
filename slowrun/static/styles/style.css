@@ -43,6 +43,7 @@ header ul {
   display: flex;
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 
 header ul li {
@@ -57,7 +58,9 @@ header ul li a {
   border-radius: 20px;
   transition: background-color 0.3s, transform 0.2s;
   display: inline-block;
-  width: 50px;
+  min-width: 50px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 header ul li a:hover {
@@ -143,6 +146,10 @@ main {
   box-shadow: 0 0 8px var(--secondary-color);
   overflow: hidden;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .run-card:hover {
@@ -292,7 +299,7 @@ button {
 }
 
 /* Section Infos */
-#News {
+#GameRank {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -302,7 +309,7 @@ button {
   box-shadow: 0px 0px 10px var(--secondary-color);
 }
 
-#News img {
+#GameRank img {
   width: 150px;
   height: auto;
   border-radius: 10px;
@@ -446,6 +453,20 @@ h2 {
   width: 20%;
 }
 
+.container2 #news img {
+  width: 175px;
+  height: 250px;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+}
+
+#GameRank img {
+  width: 175px;
+  height: 250px;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+}
+
 /* SECTION RUN */
 #run {
   display: flex;
@@ -503,6 +524,8 @@ h2 {
 
 #comments form {
   display: flex;
+  align-items: center;
+  flex-direction: row;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -514,6 +537,7 @@ h2 {
   border-radius: 5px;
   background-color: var(--light-gray);
   color: var(--dark-gray);
+  width: 680px;
 }
 
 #comments button {
@@ -775,6 +799,18 @@ button.read:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Section sign-in */
+
+.sign-in {
+  width: 700px;
+}
+
+/* Section login */
+
+.login {
+  width: 700px;
 }
 
 /* Footer */
