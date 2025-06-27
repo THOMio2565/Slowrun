@@ -40,7 +40,6 @@ CREATE TABLE commentaires (
     id INTEGER PRIMARY KEY NOT NULL,
     commentaire TEXT NOT NULL,
     user_id INTEGER NOT NULL REFERENCES user (id),
-    game_id INTEGER NOT NULL REFERENCES game (id),
     run_id INTEGER NOT NULL REFERENCES slowrun (id)
 );
 -- Initiating db contents
