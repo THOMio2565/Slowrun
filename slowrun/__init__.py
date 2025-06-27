@@ -486,8 +486,13 @@ def user_render(id):
         (id,)
     ).fetchall()
 
+    run_count = cursor.execute(
+        """SELECT COUNT(*) FROM slowrun WHERE user_id = ?""",
+        (id,)
+    ).fetchone()[0]
+
     cursor.close()
-    return fl.render_template("user.html", user=user, runs=runs)
+    return fl.render_template("user.html", user=user, runs=runs, run_count=run_count)
 
 
 @app.route("/profile/<int:id>")
