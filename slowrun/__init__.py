@@ -293,13 +293,14 @@ def run_render(id):
         flash("Run non trouvé", "error")
         return redirect(url_for('index_render'))
 
-    commentaires = cursor.execute("""
-                                  SELECT c.commentaire, u.name as user_name, c.id as comment_id
-                                  FROM commentaires c
-                                           JOIN user u ON c.user_id = u.id
-                                  WHERE c.game_id = ?
-                                  ORDER BY c.id DESC
-                                  """, (details['game_link'],)).fetchall()
+    commentaires = cursor.execute(
+        """
+        SELECT c.commentaire, u.name as user_name, c.id as comment_id
+        FROM commentaires c
+                 JOIN user u ON c.user_id = u.id
+        WHERE c.run_id = ?
+        ORDER BY c.id DESC
+        """, (id,)).fetchall()
 
     cursor.close()
 
