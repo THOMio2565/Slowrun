@@ -807,14 +807,15 @@ button.read:hover {
 
 /* Section sign-in */
 
-.sign-in {
-  width: 700px;
+form .sign-in {
+  width: 96.5%;
+  align-items: center;
 }
 
 /* Section login */
 
-.login {
-  width: 700px;
+form .login {
+  width: 96.5%;
 }
 
 /* Footer */
