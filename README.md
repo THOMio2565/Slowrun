@@ -17,6 +17,6 @@
 - Install the dependencies inside your venv with `pip install -r requirements.txt`
 
 - Create or reset the database with `python createdb.py`
--# The database will come with pre-registered games and categories so you can experiment with it
+> The database will come with pre-registered games and categories so you can experiment with it
 
 - Finally, to run the website, type `flask --app slowrun run`
