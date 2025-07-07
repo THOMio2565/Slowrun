@@ -62,6 +62,7 @@ def format_seconds(seconds):
 
 
 app = fl.Flask(__name__)
+app.secret_key = 'votre_cle_secrete_tres_longue_et_complexe_123456789'
 app.jinja_env.filters["format_seconds"] = format_seconds
 
 
@@ -194,8 +195,7 @@ def login_render():
 
                 flash(f"Bienvenue {user['name']} !", "success")
 
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('index_render'))
+                return redirect(url_for('index_render'))
             else:
                 error = "Username or password is incorrect."
 
@@ -232,7 +232,8 @@ def signup_render():
             if existing_user:
                 error = "Username or email is already in use."
             else:
-                hashed_password = password
+                hashed_password = hash_password(password)
+                print(hashed_password)
 
                 cursor.execute(
                     "INSERT INTO user (name, email, date, password) VALUES (?, ?, DATE('now'), ?)",
@@ -485,7 +486,7 @@ def actus_render():
 
 
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(e):
     return fl.render_template("404.html"), 404
 
 
