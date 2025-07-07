@@ -36,9 +36,9 @@ CREATE TABLE categories (
     game_id INTEGER NOT NULL REFERENCES game (id)
 );
 
-CREATE TABLE commentaires (
+CREATE TABLE comments (
     id INTEGER PRIMARY KEY NOT NULL,
-    commentaire TEXT NOT NULL,
+    comment TEXT NOT NULL,
     user_id INTEGER NOT NULL REFERENCES user (id),
     run_id INTEGER NOT NULL REFERENCES slowrun (id)
 );
@@ -63,10 +63,10 @@ VALUES
 ("Rollover", 1),
 ("Any%", 2),
 ("All advancement", 2),
-("how did we get here", 2),
+("How did we get here", 2),
 ("All Authors", 3),
 ("Max Rank", 4),
 ("Tea Bag%", 5),
-("any%", 6),
+("Any%", 6),
 ("0 Stars", 7),
 ("Great ? block ruins", 8);

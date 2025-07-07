@@ -18,18 +18,16 @@ def get_connection():
     return connection
 
 
-# def hash_password(password):
-#     """Hash un mot de passe avec SHA-256."""
-#     return hashlib.sha256(password.encode()).hexdigest()
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def login_required(f):
-    """Décorateur pour protéger les routes qui nécessitent une authentification."""
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
-            flash('Vous devez être connecté pour accéder à cette page.', 'error')
+            flash('You must be logged in to access this page', 'error')
             return redirect(url_for('login_render'))
         return f(*args, **kwargs)
 
@@ -64,7 +62,6 @@ def format_seconds(seconds):
 
 
 app = fl.Flask(__name__)
-app.secret_key = 'votre_cle_secrete_tres_longue_et_complexe_123456789'
 app.jinja_env.filters["format_seconds"] = format_seconds
 
 
@@ -182,7 +179,7 @@ def login_render():
         password = request.form.get("password", "")
 
         if not username or not password:
-            error = "Veuillez remplir tous les champs !"
+            error = "Please fill all fields."
         else:
             conn = get_connection()
             cursor = conn.cursor()
@@ -190,7 +187,7 @@ def login_render():
             cursor.execute("SELECT * FROM user WHERE name = ?", (username,))
             user = cursor.fetchone()
 
-            if user and user["password"] == password:
+            if user and user["password"] == hash_password(password):
                 session['user_id'] = user["id"]
                 session['username'] = user["name"]
                 cursor.close()
@@ -200,7 +197,7 @@ def login_render():
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('index_render'))
             else:
-                error = "Nom d'utilisateur ou mot de passe incorrect !"
+                error = "Username or password is incorrect."
 
             cursor.close()
 
@@ -208,8 +205,8 @@ def login_render():
 
 
 
-@app.route("/inscription", methods=["GET", "POST"])
-def inscription_render():
+@app.route("/signup", methods=["GET", "POST"])
+def signup_render():
     if 'user_id' in session:
         return redirect(url_for('index_render'))
 
@@ -221,9 +218,9 @@ def inscription_render():
 
         # Validation des données
         if not all([name, email, password]):
-            error = "Veuillez remplir tous les champs !"
+            error = "Please fill all fields."
         elif len(password) < 6:
-            error = "Le mot de passe doit contenir au moins 6 caractères !"
+            error = "Password must be at least 6 characters long."
         else:
             conn = get_connection()
             cursor = conn.cursor()
@@ -233,7 +230,7 @@ def inscription_render():
             ).fetchone()
 
             if existing_user:
-                error = "Le nom d'utilisateur ou l'email est déjà utilisé !"
+                error = "Username or email is already in use."
             else:
                 hashed_password = password
 
@@ -250,7 +247,6 @@ def inscription_render():
 
                 cursor.close()
 
-                flash(f"Inscription réussie ! Bienvenue {name} !", "success")
                 return redirect(url_for('index_render'))
 
             cursor.close()
@@ -259,10 +255,8 @@ def inscription_render():
 
 @app.route("/logout")
 def logout():
-    """Déconnexion de l'utilisateur."""
     username = session.get('username', 'Utilisateur')
     session.clear()
-    flash(f"Au revoir {username} !", "info")
     return redirect(url_for('index_render'))
 
 
@@ -288,13 +282,12 @@ def run_render(id):
     ).fetchone()
 
     if not details:
-        flash("Run non trouvé", "error")
         return redirect(url_for('index_render'))
 
-    commentaires = cursor.execute(
+    comments = cursor.execute(
         """
-        SELECT c.commentaire, u.name as user_name, c.id as comment_id
-        FROM commentaires c
+        SELECT c.comment, u.name as user_name, c.id as comment_id
+        FROM comments c
                  JOIN user u ON c.user_id = u.id
         WHERE c.run_id = ?
         ORDER BY c.id DESC
@@ -302,29 +295,28 @@ def run_render(id):
 
     cursor.close()
 
-    return fl.render_template("run.html", run=id, details=details, commentaires=commentaires)
+    return fl.render_template("run.html", run=id, details=details, comments=comments)
 
 @app.route("/comments/<int:run_id>", methods=["POST"])
 def comments(run_id):
     if 'user_id' not in session:
         return redirect(url_for('login_render'))
 
-    commentaire = request.form.get("commentaire", "").strip()
+    comment = request.form.get("comment", "").strip()
     user_id = session['user_id']
 
-    if commentaire:
+    if comment:
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute(
-            """INSERT INTO commentaires (commentaire, user_id, run_id) VALUES (?, ?, ?)""",
-            (commentaire, user_id, run_id)
+            """INSERT INTO comments (comment, user_id, run_id) VALUES (?, ?, ?)""",
+            (comment, user_id, run_id)
         )
         conn.commit()
         cursor.close()
         conn.close()
-        flash("Commentaire ajouté avec succès !", "success")
     else:
-        flash("Le commentaire ne peut pas être vide !", "error")
+        flash("Comment cannot be empty", "error") # convert to error variable
 
     return redirect(url_for('run_render', id=run_id))
 
@@ -343,14 +335,13 @@ def poster_run(id):
         user_id = session['user_id']
 
         if not all([game_name, time_input, date_input]):
-            flash("Tous les champs sont obligatoires", "error")
+            flash("All fields are required", "error") # convert to error variable
             return redirect(url_for("rankings_render", id=id))
 
         try:
             from datetime import datetime
             datetime.strptime(date_input, '%Y-%m-%d')
         except ValueError:
-            flash("Format de date invalide. Utilisez YYYY-MM-DD", "error")
             return redirect(url_for("rankings_render", id=id))
 
         try:
@@ -363,15 +354,13 @@ def poster_run(id):
                     hours, minutes, seconds = map(int, time_parts)
                     time_seconds = hours * 3600 + minutes * 60 + seconds
                 else:
-                    raise ValueError("Format de temps invalide")
+                    raise ValueError("Invalid time format")
             else:
                 time_seconds = int(float(time_input))
         except (ValueError, TypeError):
-            flash("Format de temps invalide. Utilisez MM:SS, HH:MM:SS ou un nombre de secondes", "error")
             return redirect(url_for("rankings_render", id=id))
 
         if time_seconds <= 0:
-            flash("Le temps doit être positif", "error")
             return redirect(url_for("rankings_render", id=id))
 
         game_result = cursor.execute(
@@ -384,7 +373,7 @@ def poster_run(id):
                 "SELECT name FROM game ORDER BY name LIMIT 10"
             ).fetchall()
             game_list = ", ".join([g["name"] for g in available_games])
-            flash(f"Le jeu '{game_name}' n'existe pas. Jeux disponibles : {game_list}...", "error")
+            flash(f"Game '{game_name}' does not exist. List of games : {game_list}...", "error") #convert to error variable
             return redirect(url_for("rankings_render", id=id))
 
         game_id = game_result["id"]
@@ -402,17 +391,10 @@ def poster_run(id):
                 """, (game_id,)
             ).fetchall()
             categories_list = ", ".join([g["name"] for g in available_categories])
-            flash(f"La catégorie '{category_input}' n'existe pas pour ce jeu. Catégories disponibles : {categories_list}...", "error")
+            flash(f"Category '{category_input}' does not exist for this game. Available categories : {categories_list}...", "error")
             return redirect(url_for("rankings_render", id=id))
 
         category_id = category_result["id"]
-
-        # Ajouter la run
-        app.logger.info(
-            "Requête SQL : INSERT INTO slowrun (time, date, user_id, game_id, category_id) "
-            "VALUES (%s, %s, %s, %s, %s)",
-            (time_seconds, date_input, user_id, game_id, category_id)
-        )
 
         cursor.execute(
             "INSERT INTO slowrun (time, date, user_id, game_id, category_id) VALUES (?, ?, ?, ?, ?)",
@@ -422,14 +404,11 @@ def poster_run(id):
         conn.commit()
 
         username = session.get('username', 'Utilisateur')
-        flash(f"Run enregistrée avec succès ! {username} - {game_result['name']} : {format_seconds(time_seconds)}",
-              "success")
+
     except sqlite3.Error as e:
         conn.rollback()
-        flash(f"Erreur de base de données : {str(e)}", "error")
     except Exception as e:
         conn.rollback()
-        flash(f"Erreur lors de l'enregistrement : {str(e)}", "error")
     finally:
         cursor.close()
         conn.close()
@@ -471,7 +450,6 @@ def user_render(id):
     ).fetchone()
 
     if not user:
-        flash("Utilisateur introuvable", "error")
         return redirect(url_for('index_render'))
 
     runs = cursor.execute(
@@ -497,8 +475,7 @@ def user_render(id):
 
 @app.route("/profile/<int:id>")
 @login_required
-def profile(id):
-    """Page de profil de l'utilisateur connecté."""
+def profile():
     return redirect(url_for('user_render', id=session['user_id']))
 
 
@@ -508,7 +485,7 @@ def actus_render():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return fl.render_template("404.html"), 404
 
 

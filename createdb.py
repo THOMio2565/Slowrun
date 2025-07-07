@@ -19,8 +19,14 @@ def delete_db_file(db_connection, db_path):
     else:
         print(f"Database file '{db_path}' does not exist.")
 
-# if db_slowrun.exists():
-#     db = sqlite3.connect(db_slowrun)
-#     delete_db_file(db, db_slowrun)
-# db = sqlite3.connect(db_slowrun)
-# create_db_file(db, sql, db_slowrun)
+if db_slowrun.exists():
+    db = sqlite3.connect(db_slowrun)
+    delete_db_file(db, db_slowrun)
+db = sqlite3.connect(db_slowrun)
+create_db_file(db, sql, db_slowrun)
+
+# if db_test.exists():
+#     db = sqlite3.connect(db_test)
+#     delete_db_file(db, db_test)
+# db = sqlite3.connect(db_test)
+# create_db_file(db, sql, db_test)
