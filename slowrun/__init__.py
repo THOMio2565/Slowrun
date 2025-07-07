@@ -5,7 +5,7 @@ from flask import request, session, flash, redirect, url_for
 from functools import wraps
 import hashlib
 
-db = Path(__file__).parents[1] / "test.db"
+db = Path(__file__).parents[1] / "slowrun.db"
 
 
 def get_connection():
@@ -162,7 +162,7 @@ def rankings_render(id):
     ).fetchall()
     cursor.close()
     return fl.render_template(
-        "Rank_Tetris.html",
+        "rankings.html",
         game=game,
         runs=runs,
         articles=articles,
@@ -204,7 +204,7 @@ def login_render():
 
             cursor.close()
 
-    return fl.render_template("Login.html", error=error)
+    return fl.render_template("login.html", error=error)
 
 
 
@@ -255,7 +255,7 @@ def inscription_render():
 
             cursor.close()
 
-    return fl.render_template("inscription.html", error=error)
+    return fl.render_template("signup.html", error=error)
 
 @app.route("/logout")
 def logout():
@@ -302,7 +302,7 @@ def run_render(id):
 
     cursor.close()
 
-    return fl.render_template("Detailed_Run.html", run=id, details=details, commentaires=commentaires)
+    return fl.render_template("run.html", run=id, details=details, commentaires=commentaires)
 
 @app.route("/comments/<int:run_id>", methods=["POST"])
 def comments(run_id):
@@ -504,7 +504,7 @@ def profile(id):
 
 @app.route("/Actus")
 def actus_render():
-    return fl.render_template("Actus.html")
+    return fl.render_template("news.html")
 
 
 @app.errorhandler(404)
